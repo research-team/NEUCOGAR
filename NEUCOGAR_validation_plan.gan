@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><project name="NEUCOGAR (neurobiologicaly inspired cognitive architecture)" company="MC lab" webLink="http://" view-date="2014-11-01" view-index="0" gantt-divider-location="431" resource-divider-location="300" version="2.0" locale="en">
+    <description/>
+    <view zooming-state="default:9" id="gantt-chart">
+        <field id="tpd10" name="ID" width="4" order="0"/>
+        <field id="tpd3" name="Name" width="47" order="1"/>
+        <field id="tpd4" name="Begin date" width="18" order="2"/>
+        <field id="tpd5" name="End date" width="17" order="3"/>
+        <field id="tpd6" name="Duration" width="12" order="4"/>
+    </view>
+    <view id="resource-table">
+        <field id="0" name="Name" width="56" order="0"/>
+        <field id="1" name="Default role" width="43" order="1"/>
+    </view>
+    <!-- -->
+    <calendars>
+        <day-types>
+            <day-type id="0"/>
+            <day-type id="1"/>
+            <calendar id="1" name="default">
+                <default-week sun="1" mon="0" tue="0" wed="0" thu="0" fri="0" sat="1"/>
+                <only-show-weekends value="false"/>
+                <overriden-day-types/>
+                <days/>
+            </calendar>
+        </day-types>
+        <date year="2012" month="1" date="2"/>
+        <date year="2012" month="4" date="6"/>
+        <date year="2012" month="4" date="9"/>
+        <date year="2012" month="5" date="7"/>
+        <date year="2012" month="6" date="4"/>
+        <date year="2012" month="6" date="5"/>
+        <date year="2012" month="8" date="27"/>
+        <date year="2005" month="3" date="25"/>
+        <date year="2005" month="3" date="28"/>
+        <date year="2005" month="5" date="2"/>
+        <date year="2005" month="5" date="30"/>
+        <date year="2005" month="8" date="29"/>
+        <date year="2005" month="12" date="27"/>
+        <date year="2006" month="4" date="14"/>
+        <date year="2006" month="4" date="17"/>
+        <date year="2006" month="5" date="1"/>
+        <date year="2006" month="5" date="29"/>
+        <date year="2006" month="8" date="28"/>
+        <date year="2006" month="12" date="25"/>
+        <date year="2007" month="4" date="6"/>
+        <date year="2007" month="4" date="9"/>
+        <date year="2007" month="5" date="7"/>
+        <date year="2007" month="5" date="28"/>
+        <date year="2007" month="8" date="27"/>
+        <date year="2007" month="12" date="25"/>
+        <date year="2008" month="3" date="21"/>
+        <date year="2008" month="3" date="24"/>
+        <date year="2008" month="5" date="5"/>
+        <date year="2008" month="5" date="26"/>
+        <date year="2008" month="8" date="25"/>
+        <date year="2008" month="12" date="25"/>
+        <date year="" month="1" date="1"/>
+        <date year="" month="12" date="25"/>
+        <date year="" month="12" date="26"/>
+    </calendars>
+    <tasks empty-milestones="true">
+        <taskproperties>
+            <taskproperty id="tpd0" name="type" type="default" valuetype="icon"/>
+            <taskproperty id="tpd1" name="priority" type="default" valuetype="icon"/>
+            <taskproperty id="tpd2" name="info" type="default" valuetype="icon"/>
+            <taskproperty id="tpd3" name="name" type="default" valuetype="text"/>
+            <taskproperty id="tpd4" name="begindate" type="default" valuetype="date"/>
+            <taskproperty id="tpd5" name="enddate" type="default" valuetype="date"/>
+            <taskproperty id="tpd6" name="duration" type="default" valuetype="int"/>
+            <taskproperty id="tpd7" name="completion" type="default" valuetype="int"/>
+            <taskproperty id="tpd8" name="coordinator" type="default" valuetype="text"/>
+            <taskproperty id="tpd9" name="predecessorsr" type="default" valuetype="text"/>
+        </taskproperties>
+        <task id="4" name="Review" meeting="false" start="2014-12-29" duration="30" complete="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+            <task id="0" name="Damasio" meeting="false" start="2014-12-29" duration="30" complete="0" expand="true"/>
+            <task id="2" name="Receptors" meeting="false" start="2014-12-29" duration="20" complete="0" expand="true"/>
+            <task id="3" name="Neurotransmitters" meeting="false" start="2014-12-29" duration="30" complete="0" expand="true"/>
+        </task>
+        <task id="7" name="NEST Review" meeting="false" start="2015-02-10" duration="40" complete="0" expand="true">
+            <depend id="12" type="2" difference="0" hardness="Strong"/>
+            <task id="8" name="Review Dopamine system" meeting="false" start="2015-02-10" duration="15" complete="0" expand="true"/>
+            <task id="10" name="Review Serotonine" meeting="false" start="2015-02-10" duration="30" complete="0" expand="true"/>
+            <task id="11" name="Review Noradrenaline" meeting="false" start="2015-02-10" duration="30" complete="0" expand="true">
+                <depend id="9" type="2" difference="0" hardness="Strong"/>
+            </task>
+            <task id="9" name="Review Tero's commens" meeting="false" start="2015-03-24" duration="10" complete="0" expand="true"/>
+        </task>
+        <task id="12" name="NEST extension" meeting="false" start="2015-05-05" duration="30" complete="0" expand="true">
+            <depend id="32" type="2" difference="0" hardness="Strong"/>
+            <task id="28" name="Serotonine" meeting="false" start="2015-05-05" duration="20" complete="0" expand="true"/>
+            <task id="30" name="Noradrenaline" meeting="false" start="2015-05-05" duration="30" complete="0" expand="true"/>
+        </task>
+        <task id="32" name="Experiment with simple DM" meeting="false" start="2015-06-16" duration="15" complete="0" expand="true">
+            <task id="34" name="Train" meeting="false" start="2015-06-16" duration="15" complete="0" expand="true"/>
+            <task id="35" name="Run experiment" meeting="false" start="2015-06-16" duration="10" complete="0" expand="true"/>
+        </task>
+    </tasks>
+    <resources/>
+    <allocations/>
+    <vacations/>
+    <taskdisplaycolumns>
+        <displaycolumn property-id="tpd2" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd7" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd11" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd10" order="0" width="21" visible="true"/>
+        <displaycolumn property-id="tpd3" order="1" width="201" visible="true"/>
+        <displaycolumn property-id="tpd4" order="2" width="77" visible="true"/>
+        <displaycolumn property-id="tpd5" order="3" width="76" visible="true"/>
+        <displaycolumn property-id="tpd6" order="4" width="52" visible="true"/>
+    </taskdisplaycolumns>
+    <previous/>
+    <roles roleset-name="Default"/>
+    <roles roleset-name="SoftwareDevelopment"/>
+    <roles>
+        <role id="1" name="architect"/>
+        <role id="2" name="researcher"/>
+        <role id="3" name="developer"/>
+    </roles>
+</project>
