@@ -1,5 +1,70 @@
 #Cube of emotions experiment description
 
+##General neuromodulation
+
+###Description
+
+Idea is based on basal ganglia dopamine neuromodulation described:
+
+1. https://en.wikipedia.org/wiki/Basal_ganglia#Circuit_connections
+1. https://github.com/max-talanov/1/blob/master/computational%20emotional%20thinking%20course/neurotransmission.md#emotional-loop
+
+In short:
+
+![Basal ganglia connectivity diagram](http://upload.wikimedia.org/wikipedia/commons/4/45/Basal-ganglia-classic.png)
+
+Connectivity diagram showing excitatory glutamatergic pathways as red, inhibitory GABAergic pathways as blue, and modulatory dopaminergic pathways as magenta. (Abbreviations: GPe: globus pallidus external; GPi: globus pallidus internal; STN: subthalamic nucleus; SNc: substantia nigra compacta; SNr: substantia nigra reticulata)
+
+The antagonistic functions of the direct and indirect pathways are modulated by the **substantia nigra pars compacta (SNc)**, which produces **dopamine**. In the presence of dopamine, D1-receptors in the basal ganglia stimulate the GABAergic neurons, favoring the direct pathway, and thus increasing movement. The GABAergic neurons of the indirect pathway are stimulated by excitatory neurotransmitters acetylcholine and glutamate. This sets off the indirect pathway that ultimately results in inhibition of upper motor neurons, and less movement. In the presence of dopamine, D2-receptors in the basal ganglia inhibit these GABAergic neurons, which reduces the indirect pathways inhibitory effect. **Dopamine therefore increases the excitatory effect of the direct pathway (causing movement) and reduces the inhibitory effect of the indirect pathway (preventing full inhibition of movement)**. 
+
+This way we have to simulate:
+
+1. Cortex
+1. Striatum
+1. GPe: globus pallidus external
+1. GPi: globus pallidus internal 
+1. SNr: substantia nigra reticulata
+1. STN: subthalamic nucleus
+1. SNc: substantia nigra compacta
+1. SNr: substantia nigra reticulata
+
+With two main pathways/algorithms:
+
+**Direct pathway**
+
+**Cortex** (stimulates) → **Striatum** (inhibits) → **"SNr-GPi" complex** (less inhibition of thalamus) → **Thalamus** (stimulates) → **Cortex** (stimulates) → **Muscles, etc.**
+
+**Indirect pathway**
+
+**Cortex** (stimulates) → **Striatum** (inhibits) → **GPe** (less inhibition of STN) → **STN** (stimulates) → **"SNr-GPi" complex** (inhibits) → **Thalamus** (is stimulating less) → **Cortex** (is stimulating less) → Muscles, etc.
+
+Neuromodulation is implemented by SNc via production of the **dopamine** that influences Striatum triggering direct or indirect pathway.
+
+###Input
+
+1. Spikes generators of the Cortex generate series of spikes that stimulates the Striatum.
+1. Dopamine neurons produce dopamine that modulates Striatum.
+
+##Output
+
+1. In case of dopamine relative cortex activity (number of spikes) is increased.
+1. In case of no dopamine modulation relative cortex activity (number of spikes) is decreased. 
+
+##Assumptions
+
+We propose to start from following structure:
+
+1. Cortex = 100 neurons
+1. Striatum = 10 neurons
+1. GPe: globus pallidus external = 10 neurons
+1. GPi: globus pallidus internal = 10 neurons 
+1. SNr: substantia nigra reticulata = 10 neurons
+1. STN: subthalamic nucleus = 10 neurons
+1. SNc: substantia nigra compacta = 10 neurons
+1. SNr: substantia nigra reticulata = 10 neurons
+
+This is really coarse model that do not take in account real scales and cytoarchitecture of neurons in the structures listed above. There are several evolutions available: create proper neurons of cortical and subcortical areas of brain, create proper neuron populations of proper scales, create proper topology of the neuronal networks for each area.
+
 ##Computing power and memory distribution (attention)
 
 ###Description
