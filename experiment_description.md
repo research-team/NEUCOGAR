@@ -23,7 +23,6 @@ This way we have to simulate:
 1. Striatum
 1. GPe: globus pallidus external
 1. GPi: globus pallidus internal 
-1. SNr: substantia nigra reticulata
 1. STN: subthalamic nucleus
 1. SNc: substantia nigra compacta
 1. SNr: substantia nigra reticulata
@@ -54,16 +53,18 @@ Neuromodulation is implemented by SNc via production of the **dopamine** that in
 
 We propose to start from following structure:
 
-1. Cortex = 100 neurons
-1. Striatum = 10 neurons
-1. GPe: globus pallidus external = 10 neurons
-1. GPi: globus pallidus internal = 10 neurons 
-1. SNr: substantia nigra reticulata = 10 neurons
-1. STN: subthalamic nucleus = 10 neurons
-1. SNc: substantia nigra compacta = 10 neurons
-1. SNr: substantia nigra reticulata = 10 neurons
+1. Cortex = 100 neurons, aeif_cond_alpha glutamatergic
+1. Striatum = 10 neurons, aeif_cond_alpha GABAergic 
+1. GPe: globus pallidus external = 10 neurons, aeif_cond_alpha GABAergic
+1. GPi: globus pallidus internal = 10 neurons, aeif_cond_alpha GABAergic
+1. STN: subthalamic nucleus = 10 neurons, aeif_cond_alpha glutamatergic
+1. SNr: substantia nigra reticulata = 10 neurons, aeif_cond_alpha GABAergic
+1. SNc: substantia nigra compacta = 10 neurons, aeif_cond_alpha dopaminergic
+1. Thalamus = 10 neurons, aeif_cond_alpha glutamatergic
 
-This is really coarse model that do not take in account real scales and cytoarchitecture of neurons in the structures listed above. There are several evolutions available: create proper neurons of cortical and subcortical areas of brain, create proper neuron populations of proper scales, create proper topology of the neuronal networks for each area.
+This is really coarse model that do not take in account real scales and cytoarchitecture of neurons in the structures listed above. There are several evolutions available: create proper neurons of cortical and subcortical areas of brain, create proper neuron populations of proper scales, create proper topology of the neuronal networks for each area. Thus we could use 100 cortex neurons, 10 rest, then increase to 5000 cortex, 30 rest, then 4000000 cortex and rest based on actual number of neurons in brain areas of a mouse.
+
+We can start experiments with aeif_cond_alpha, if the experiments goes too long we could use iaf_cond_alpha instead, then we could use iaf_psc_alpha.
 
 ##Computing power and memory distribution (attention)
 
