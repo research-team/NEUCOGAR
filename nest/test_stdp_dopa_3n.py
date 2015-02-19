@@ -33,7 +33,7 @@ import numpy as np
 import nest
 import nest.raster_plot
 import nest.voltage_trace
-
+import pylab as pl
 
 def plot_weights(weights_list, title="Neurons weights progress", y_lim = None):
 
@@ -83,60 +83,54 @@ nu_in = 10.0#2.
 
 T = 1000.0
 dt = 10.0
+
+neuron_model = "iaf_psc_alpha"
+#neuron_model = "iaf_psc_delta"
+#neuron_model = "iaf_psc_exp"
+dopa_neuron_model = "iaf_psc_alpha"
+
 vt_flag = True
 
-number_of_neurons = 2
-neurons1 = []
-neurons2 = []
-
-#stdp_dopamine_synapse_weight = 66.3485433
 stdp_dopamine_synapse_weight = 35.
 
-# Setup nest: create Poisson generator, spike detector and volume transmitter
 pg_ex = nest.Create("poisson_generator")
 nest.SetStatus(pg_ex, {"rate": K_ex * nu_ex})
-
-pgs_ex = nest.Create("poisson_generator", number_of_neurons)
-nest.SetStatus(pgs_ex, {"rate": K_ex * nu_ex})
 
 pg_in = nest.Create("poisson_generator")
 nest.SetStatus(pg_in, {"rate": K_in * nu_in})
 
-pgs_in = nest.Create("poisson_generator", number_of_neurons)
-nest.SetStatus(pgs_in, {"rate": K_in * nu_in})
-
-
 sd = nest.Create("spike_detector")
-nest.SetStatus(sd,  {"label": "spikes", "withtime": True, "withgid": True, "to_file": True})
+nest.SetStatus(sd, {"label": "spikes", "withtime": True, "withgid": True, "to_file": True})
 
-mm = nest.Create('multimeter', params = {'withtime': True, 'withgid': True, 'interval': 0.1, 'record_from': ['V_m', 'a_ex', 'a_in']})
+mm = nest.Create('multimeter', params = {'withtime': True, 'interval': 0.1, 'record_from': ['V_m']})
+
+neuron1 = nest.Create(neuron_model)
+neuron2 = nest.Create(neuron_model)
+dopa_neuron = nest.Create(dopa_neuron_model)
+if neuron_model=="iaf_psc_alpha":
+    nest.SetStatus(neuron1, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
+    nest.SetStatus(neuron2, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
+if neuron_model=="iaf_psc_delta":
+    nest.SetStatus(neuron1, {"tau_minus": 20.0})
+    nest.SetStatus(neuron2, {"tau_minus": 20.0})
+if neuron_model=="iaf_psc_exp":
+    nest.SetStatus(neuron1, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
+    nest.SetStatus(neuron2, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
 
 vt = nest.Create("volume_transmitter")
-
-# Neurogenesis
-dopa_neuron = nest.Create("iaf_psc_alpha")
-
-neuron1 = nest.Create("iaf_psc_alpha")
-neuron2 = nest.Create("iaf_psc_alpha")
-nest.SetStatus(neuron1, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
-nest.SetStatus(neuron2, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
-
-
-# Connect neurons with poisson generators and spike detectors
-nest.Connect(dopa_neuron, sd)
-nest.ConvergentConnect(neuron1, mm)
-nest.ConvergentConnect(neuron2, mm)
-
-nest.Connect(neuron1, sd)
-nest.Connect(neuron2, sd)
 
 nest.Connect(pg_ex, neuron1, syn_spec={'weight': w_ex, 'delay': delay})
 nest.Connect(pg_ex, neuron2, syn_spec={'weight': w_ex, 'delay': delay})
 nest.Connect(pg_ex, dopa_neuron, syn_spec={'weight': w_ex, 'delay': delay})
 
-nest.Connect(pg_in, neuron1, syn_spec={'weight': w_ex, 'delay': delay})
-nest.Connect(pg_in, neuron2, syn_spec={'weight': w_ex, 'delay': delay})
+nest.Connect(pg_in, neuron1, syn_spec={'weight': w_in, 'delay': delay})
+nest.Connect(pg_in, neuron2, syn_spec={'weight': w_in, 'delay': delay})
 nest.Connect(pg_in, dopa_neuron, syn_spec={'weight': w_in, 'delay': delay})
+
+nest.Connect(neuron1, sd)
+nest.Connect(mm, neuron1)
+#nest.Connect(neuron2, sd)
+#nest.Connect(dopa_neuron, sd)
 
 # Volume transmission
 if vt_flag :
@@ -148,9 +142,8 @@ else:
 
 nest.CopyModel("static_synapse", "static", {"delay": delay})
 
-nest.Connect(dopa_neuron, vt, syn_spec="static")
-nest.Connect(neuron1, neuron2, syn_spec="dopa")
-
+nest.Connect(dopa_neuron, vt, model="static")
+nest.Connect(neuron1, neuron2, model="dopa")
 
 if nest.GetStatus(neuron2)[0]['local']:
     filename = 'weight_dopa.gdf'
@@ -158,21 +151,17 @@ if nest.GetStatus(neuron2)[0]['local']:
 else:
     raise
 
-# Simulation
+weight_list = []
 weight = None
-weight_list = [(0, 1)]
-i = 0
 for t in np.arange(0, T + dt, dt):
     if nest.GetStatus(neuron2)[0]['local']:
-
-        weight = nest.GetStatus(nest.GetConnections(neuron1, synapse_model="dopa"))[0]['weight']
+        weight = nest.GetStatus(nest.FindConnections(neuron1, synapse_model="dopa"))[0]['weight']
         print(weight)
         weight_list.append((t, weight))
         weightstr = str(weight)
         timestr = str(t)
         data = timestr + ' ' + weightstr + '\n'
         fname.write(data)
-
         nest.Simulate(dt)
 
 if nest.GetStatus(neuron2)[0]['local']:
@@ -180,61 +169,16 @@ if nest.GetStatus(neuron2)[0]['local']:
     print("weight at last event: " + str(weight) + " pA")
     fname.close()
 
+plot_weights(weight_list, "Neurons currents of 3 neurons " + neuron_model)
+
+# obtain and display data
+events = nest.GetStatus(mm)[0]['events']
+t = events['times']
+
+pl.subplot(111)
+pl.plot(t, events['V_m'])
+#pl.axis([0, 100, -75, -53])
+pl.ylabel('Membrane potential [mV]')
+
 nest.raster_plot.from_device(sd)
 nest.raster_plot.show()
-
-plot_weights(weight_list, "Neurons weights progress neuron 1")
-#plot_weights(weight_lists[0], "Neurons weights progress neuron 0")
-#plot_weights(weight_list_neurons[number_of_neurons/2], "Neurons weights progress neuron " + str(number_of_neurons/2))
-#plot_weights(weight_list_neurons2, "Neurons weights progress neuron " + str(number_of_neurons-1))
-
-print "Simulation of %.0f milliseconds" % T
-print "Volume transmission is on = ", vt_flag
-print "number of spikes = %.4f " % nest.GetStatus(sd, "n_events")[0]
-
-'''
-Simulation of 100000.0000 milliseconds
-Volume transmission is on =  False
-number of spikes = 12976.0000
-'''
-'''
-Simulation of 100000.0000 milliseconds
-Volume transmission is on =  True
-number of spikes = 12977.0000
-'''
-
-'''
-Simulation of 1000000 milliseconds
-Volume transmission is on =  False
-number of spikes = 130565.0000
-'''
-'''
-Simulation of 1000000 milliseconds
-Volume transmission is on =  True
-number of spikes = 130557.0000
-'''
-'''
-expected weight at T=1000 ms: 28.6125 pA
-weight at last event: 0.0 pA
-Simulation of 1000000 milliseconds
-Volume transmission is on =  True
-number of spikes = 170041.0000
-
-expected weight at T=1000 ms: 28.6125 pA
-weight at last event: 35.0 pA
-Simulation of 1000000 milliseconds
-Volume transmission is on =  False
-number of spikes = 170104.0000
-'''
-'''
-Simulation of 1000000 milliseconds
-Volume transmission is on =  True
-number of spikes = 170432.0000
-
-Simulation of 1000000 milliseconds
-Volume transmission is on =  False
-number of spikes = 170757.0000
-'''
-#nest.raster_plot.from_device(sd)
-#nest.raster_plot.show()
-
