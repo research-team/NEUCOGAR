@@ -73,6 +73,9 @@ w_ex = 45.
 g = 3.83
 w_in = -w_ex * g
 
+g_w_ex =  40.
+g_w_in = -20.
+
 K = 10000
 f_ex = 0.8
 K_ex = f_ex * K
@@ -81,15 +84,22 @@ K_in = (1.0 - f_ex) * K
 nu_ex = 10.0#2.
 nu_in = 10.0#2.
 
-T = 1000.0
+T = 300.0
 dt = 10.0
+
+vt_flag = True
+pg_flag = True
 
 neuron_model = "iaf_psc_alpha"
 #neuron_model = "iaf_psc_delta"
 #neuron_model = "iaf_psc_exp"
+#neuron_model = "iaf_cond_exp" -
+#neuron_model = "iaf_cond_alpha" -
+#neuron_model = "aeif_cond_alpha" -
+#neuron_model = "mat2_psc_exp"
+#neuron_model = "hh_psc_alpha" -
+#neuron_model = "hh_cond_exp_traub" -
 dopa_neuron_model = "iaf_psc_alpha"
-
-vt_flag = True
 
 stdp_dopamine_synapse_weight = 35.
 
@@ -99,14 +109,19 @@ nest.SetStatus(pg_ex, {"rate": K_ex * nu_ex})
 pg_in = nest.Create("poisson_generator")
 nest.SetStatus(pg_in, {"rate": K_in * nu_in})
 
+# Create spike generators and connect
+sg_ex = nest.Create('spike_generator', params={'spike_times': np.array([10.0, 20.0, 50.0])})
+sg_in = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
+
 sd = nest.Create("spike_detector")
 nest.SetStatus(sd, {"label": "spikes", "withtime": True, "withgid": True, "to_file": True})
 
-mm = nest.Create('multimeter', params = {'withtime': True, 'interval': 0.1, 'record_from': ['V_m']})
+mm = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m']})
 
 neuron1 = nest.Create(neuron_model)
 neuron2 = nest.Create(neuron_model)
 dopa_neuron = nest.Create(dopa_neuron_model)
+
 if neuron_model=="iaf_psc_alpha":
     nest.SetStatus(neuron1, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
     nest.SetStatus(neuron2, {"tau_syn_ex": 0.3, "tau_syn_in": 0.3, "tau_minus": 20.0})
@@ -119,13 +134,24 @@ if neuron_model=="iaf_psc_exp":
 
 vt = nest.Create("volume_transmitter")
 
-nest.Connect(pg_ex, neuron1, syn_spec={'weight': w_ex, 'delay': delay})
-nest.Connect(pg_ex, neuron2, syn_spec={'weight': w_ex, 'delay': delay})
-nest.Connect(pg_ex, dopa_neuron, syn_spec={'weight': w_ex, 'delay': delay})
+if pg_flag:
+    nest.Connect(pg_ex, neuron1, syn_spec={'weight': w_ex, 'delay': delay})
+    nest.Connect(pg_ex, neuron2, syn_spec={'weight': w_ex, 'delay': delay})
+    nest.Connect(pg_ex, dopa_neuron, syn_spec={'weight': w_ex, 'delay': delay})
 
-nest.Connect(pg_in, neuron1, syn_spec={'weight': w_in, 'delay': delay})
-nest.Connect(pg_in, neuron2, syn_spec={'weight': w_in, 'delay': delay})
-nest.Connect(pg_in, dopa_neuron, syn_spec={'weight': w_in, 'delay': delay})
+    nest.Connect(pg_in, neuron1, syn_spec={'weight': w_in, 'delay': delay})
+    nest.Connect(pg_in, neuron2, syn_spec={'weight': w_in, 'delay': delay})
+    nest.Connect(pg_in, dopa_neuron, syn_spec={'weight': w_in, 'delay': delay})
+else:
+    # Simplify to get proper generations
+    nest.Connect(sg_ex, neuron1, syn_spec={'weight': g_w_ex})
+    nest.Connect(sg_ex, neuron2, syn_spec={'weight': g_w_ex})
+    nest.Connect(sg_ex, dopa_neuron, syn_spec={'weight': g_w_ex})
+
+    nest.Connect(sg_in, neuron1, syn_spec={'weight': g_w_in})
+    nest.Connect(sg_in, neuron2, syn_spec={'weight': g_w_in})
+    nest.Connect(sg_in, dopa_neuron, syn_spec={'weight': g_w_in})
+
 
 nest.Connect(neuron1, sd)
 nest.Connect(mm, neuron1)
@@ -133,7 +159,7 @@ nest.Connect(mm, neuron1)
 #nest.Connect(dopa_neuron, sd)
 
 # Volume transmission
-if vt_flag :
+if vt_flag:
     # Turn on volume transmission
     nest.CopyModel("stdp_dopamine_synapse", "dopa", {"vt": vt[0], "weight": stdp_dopamine_synapse_weight, "delay": delay})
 else:
@@ -177,7 +203,6 @@ t = events['times']
 
 pl.subplot(111)
 pl.plot(t, events['V_m'])
-#pl.axis([0, 100, -75, -53])
 pl.ylabel('Membrane potential [mV]')
 
 nest.raster_plot.from_device(sd)
