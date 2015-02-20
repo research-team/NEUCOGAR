@@ -5,15 +5,19 @@ import numpy as np
 import pylab as pl
 import nest.raster_plot
 
-#neuron_model = "iaf_psc_alpha"
-#neuron_model = "iaf_psc_delta"
-#neuron_model = "iaf_psc_exp"
+neuron_model = "iaf_psc_alpha"
+neuron_model = "iaf_psc_delta"
+neuron_model = "iaf_psc_exp"
 #neuron_model = "iaf_cond_exp" -
 #neuron_model = "iaf_cond_alpha" -
 #neuron_model = "aeif_cond_alpha" -
-neuron_model = "mat2_psc_exp"
+#neuron_model = "mat2_psc_exp"
 #neuron_model = "hh_psc_alpha" -
 #neuron_model = "hh_cond_exp_traub" -
+
+#spike detector
+sd = nest.Create("spike_detector")
+nest.SetStatus(sd, {"label": "spikes", "withtime": True, "withgid": True, "to_file": False})
 
 # display recordables for illustration
 print neuron_model, ' recordables: ', nest.GetDefaults(neuron_model)['recordables']
@@ -40,6 +44,7 @@ gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0
 nest.Connect(gex, n, syn_spec={'weight':  40.0}) # excitatory
 nest.Connect(gin, n, syn_spec={'weight': -20.0}) # inhibitory
 nest.Connect(m, n)
+nest.Connect(n, sd)
 
 # simulate
 nest.Simulate(100)
@@ -80,5 +85,5 @@ else:
     pl.plot(t, events['V_m'])
     pl.ylabel('Membrane potential [mV]')
 
-
+nest.raster_plot.from_device(sd)
 nest.raster_plot.show()
