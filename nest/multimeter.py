@@ -15,7 +15,6 @@ neuron_model = "mat2_psc_exp"
 #neuron_model = "hh_psc_alpha" -
 #neuron_model = "hh_cond_exp_traub" -
 
-
 # display recordables for illustration
 print neuron_model, ' recordables: ', nest.GetDefaults(neuron_model)['recordables']
 
@@ -35,7 +34,7 @@ elif neuron_model == "mat2_psc_exp":
     m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m', 'V_th']})
 
 # Create spike generators and connect
-gex = nest.Create('spike_generator', params={'spike_times': np.array([10.0, 20.0, 50.0])})
+gex = nest.Create('spike_generator', params={'spike_times': np.array(np.arange(10.0, 25.0, 0.1))})
 gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
 
 nest.Connect(gex, n, syn_spec={'weight':  40.0}) # excitatory
