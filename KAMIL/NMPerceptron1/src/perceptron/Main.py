@@ -2,7 +2,8 @@
 Created on Feb 2, 2015
 @author: kamil
 '''
-from numpy import floor, empty, array
+from numpy import floor, empty, array, zeros, set_printoptions, nan
+import numpy as np
 from pybrain.datasets import SupervisedDataSet
 from pybrain.structure.connections.full import FullConnection
 from pybrain.structure.modules.linearlayer import LinearLayer
@@ -11,6 +12,7 @@ from pybrain.structure.networks.feedforward import FeedForwardNetwork
 from pybrain.supervised import BackpropTrainer
 import pickle
 import random
+import matplotlib.pyplot as plt
 
 class MLP:
 
@@ -62,6 +64,37 @@ class MLP:
             print res[0][i][0],res[0][i][1],res[0][i][2],res[0][i][3], " out", res[1][i][0],res[1][i][1]
         return res
 
+    def getFullDataSet(self):
+        res = zeros((50**4, 4))
+        a = 0
+        b = 0
+        c = 0
+        d = 0
+        for i in range(len(res)):
+            if (a % 50 == 0):
+                a = 0
+            a = a + 1
+            if (i % 2 == 0):
+                if (b % 50 == 0):
+                    b = 0
+                b = b + 1
+
+            if (i % 4 == 0):
+                if (c % 50 == 0):
+                    c = 0
+                c = c + 1
+            if (i % 8 ==0):
+                if (d % 50 == 0):
+                    d = 0
+                d = d + 1
+            res[i][0] = a
+            res[i][1] = b
+            res[i][2] = c
+            res[i][3] = d
+
+        res += 75
+
+        return res
 
     def make_dataset(self):
         """
@@ -111,7 +144,6 @@ class MLP:
         "generate big sized training set"
         trainingSet = SupervisedDataSet(4,2)
 
-        random.seed()
         trainArr = self.generate_training_set()
         for ri in range(2000):
             input = ((trainArr[0][ri][0],trainArr[0][ri][1],trainArr[0][ri][2],trainArr[0][ri][3]))
@@ -133,18 +165,11 @@ class MLP:
         """
         Builds a new test dataset and tests the trained network on it.
         """
-    #     print "[5,6,123,156] ->", trained.activate((5,6,123,156))
-    #     print "[46,68,199,163] ->", trained.activate((46,68,199,163))
-    #     print "[134,101,99,99] ->", trained.activate((134,101,99,99))
-    #     print "[105,188,65,55] ->", trained.activate((105,188,65,55))
 
         testArr = self.generate_training_set()
         for i in range(2000):
             print floor(testArr[0][i]),floor(testArr[1][i])
 
-    #     print "[0,1] ->", trained.activate((0,1))
-    #     print "[1,0] ->", trained.activate((1,0))
-    #     print "[1,1] ->", trained.activate((1,1))
 
     def exportWeights(self, fileName):
         fileObject = open(fileName, 'w')
@@ -166,7 +191,65 @@ class MLP:
         """
 
         trained = self.importWeights(__root__.path()+'/res/weights')
-        self.test(trained)
+        # self.test(trained)
+        # return
+        import matplotlib.pyplot as plt
+
+        value = 150
+        plt.figure(1)
+        plt.title("["+str(value)+",50"+",x,"+"y"+"]")
+        for i in range(50,500, 5):
+            print i
+            for j in range(50, 500, 5):
+                color = 'black'
+
+                if np.around(trained.activate([value,50,i,j]))[0] == np.float32(1.0):
+                    color = 'red'
+                else:
+                    color = 'blue'
+
+                x = i
+                y = j
+                plt.scatter(x,y,c=color,s = 20, label = color, alpha=0.9, edgecolor = 'none')
+        plt.grid(True)
+
+        plt.figure(2)
+        plt.title("["+str(value)+",100"+",x,"+"y"+"]")
+        for i in range(50,500, 5):
+            print i
+            for j in range(50, 500, 5):
+                color = 'black'
+
+                if np.around(trained.activate([value,100,i,j]))[0] == np.float32(1.0):
+                    color = 'red'
+                else:
+                    color = 'blue'
+
+                x = i
+                y = j
+                plt.scatter(x,y,c=color,s = 20, label = color, alpha=0.9, edgecolor = 'none')
+        plt.grid(True)
+
+        plt.figure(3)
+        plt.title("["+str(value)+",150"+",x,"+"y"+"]")
+        for i in range(50,500, 5):
+            print i
+            for j in range(50, 500, 5):
+                color = 'black'
+
+                if np.around(trained.activate([value,150,i,j]))[0] == np.float32(1.0):
+                    color = 'red'
+                else:
+                    color = 'blue'
+
+                x = i
+                y = j
+                plt.scatter(x,y,c=color,s = 20, label = color, alpha=0.9, edgecolor = 'none')
+        plt.grid(True)
+
+        plt.show()
+
+
 
 mlp = MLP()
 mlp.run()
