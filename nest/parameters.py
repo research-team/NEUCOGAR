@@ -18,30 +18,52 @@ Prefix description:
     inh_ - inhibitory
     STP_ - Short Term Plasticity
 '''
+import nest
+
+# Configure logger
+import logging
+FORMAT = '%(name)s.%(levelname)s: %(message)s.'
+logging.basicConfig(format=FORMAT,level=logging.DEBUG)
 
 # general settings
-T = 300.0
-dt = 10.0
+T = 300.
+dt = 10.
+sd_folder_name = "spike_detector_data/"
+sd_filename = "spike_detector-cortex-0.gdf"
+# dopamine modulation flag
+vt_flag = True
+# dopamine model key
+dopa_model = "dopa"
 
 # ========
 # NEURONS
 # ========
 
-# neurons model for every part of BS
-cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_model = stn_neurons_model = snc_neurons_model = snr_neurons_model = thalamus_neurons_model = 'iaf_psc_exp'
-
+# neurons model without neuromodulation
+cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_model = stn_neurons_model = snr_neurons_model = thalamus_neurons_model = 'iaf_psc_exp'
+# with dopamine
+snc_neurons_model = 'iaf_psc_alpha'
 # Count of neurons in every parts of BS
 cortex_number_of_neurons = 100
 striatum_number_of_neurons = gpe_number_of_neurons = gpi_number_of_neurons = stn_number_of_neurons = snc_number_of_neurons = snr_number_of_neurons = thalamus_number_of_neurons = 10
 
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
-STP_neuronparams = {'tau_m': 30., 'E_L': 0., 'V_th': 15, 'V_reset': 13.5, 'C_m': 30., 'tau_ex': 3.}
-STP_ex_neuronparams = dict([{'tau_ref_abs': 3., 'tau_ref_tot': 3.}] + STP_neuronparams.items())
-STP_inh_neuronparams = dict([{'tau_ref_abs': 2., 'tau_ref_tot': 2.}] + STP_neuronparams.items())
+STP_neuronparams = {'E_L': 0., 'V_th': 15., 'V_reset': 13.5, 'C_m': 30.}
+nest.SetDefaults('iaf_psc_alpha', STP_neuronparams)
+STP_ex_neuronparams = {}
+STP_inh_neuronparams = {}
+# for if_neurons
+# dict([{'tau_ref_abs': 3., 'tau_ref_tot': 3.}] +
+# dict([{'tau_ref_abs': 2., 'tau_ref_tot': 2.}] +
+#'tau_m': 30.,
+# 'tau_ex': 3.
 
+# Excitory neurons
 cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = STP_ex_neuronparams
+# Inhibitory neurons
 striatum_neuronparams = gpe_neuronparams = gpi_neuronparams = snr_neuronparams = STP_inh_neuronparams
-snc_neuronparams = STP_neuronparams
+# Neuromodulation neurons
+snc_neuronparams = {}
 
 # =========
 # SYNAPSES
@@ -63,8 +85,8 @@ K_inh = (1.0 - f_ex) * K
 nu_ex = 10.0  # 2.
 nu_inh = 10.0  # 2.
 
-stdp_dopamine_synapse_weight = 35.
 vt_delay = 1.
+delay = 1.
 
 '''
     ===========
@@ -72,15 +94,18 @@ vt_delay = 1.
  has been found short term facilitation in MSN synapses onto SNr neurons from SNc.
 '''
 
-# synapses model are same for test facilitation
-bs_synapse_model = 'stdp_synapse'
-conn_dict = {'rule': 'all_to_all', 'autapses': True, 'multapses': True}
-syn_dict_ex = {'model': bs_synapse_model, 'weight': w_ex, 'delay': vt_delay}
-syn_dict_inh = {'model': bs_synapse_model, 'weight': w_inh, 'delay': vt_delay}
-syn_dict_dop = {'model': 'stdp_dopamine_synapse', 'weight': stdp_dopamine_synapse_weight, 'delay': vt_delay}
+
+# Volume transmission
+stdp_dopamine_synapse_weight = 35.
+
 # ============
 # CONNECTIONS
 # ============
+conn_dict = {'rule': 'all_to_all', 'multapses': True}
+# synapses model are same for test facilitation
+bs_synapse_model = 'stdp_synapse'
+syn_excitory = "excitatory"
+syn_inhibitory = "inhibitory"
 
 '''
 ==========================|
