@@ -18,18 +18,17 @@ Prefix description:
     inh_ - inhibitory
     STP_ - Short Term Plasticity
 '''
-import nest
-
 # Configure logger
 import logging
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT,level=logging.DEBUG)
 
 # general settings
-T = 300.
+T = 1000.
 dt = 10.
 sd_folder_name = "spike_detector_data/"
-sd_filename = "spike_detector-cortex-0.gdf"
+sd_filename = "spikes-172-0.gdf"
+#"spike_detector-cortex-0.gdf"
 # dopamine modulation flag
 vt_flag = True
 # dopamine model key
@@ -48,8 +47,10 @@ cortex_number_of_neurons = 100
 striatum_number_of_neurons = gpe_number_of_neurons = gpi_number_of_neurons = stn_number_of_neurons = snc_number_of_neurons = snr_number_of_neurons = thalamus_number_of_neurons = 10
 
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
-STP_neuronparams = {'E_L': 0., 'V_th': 15., 'V_reset': 13.5, 'C_m': 30.}
-nest.SetDefaults('iaf_psc_alpha', STP_neuronparams)
+STP_neuronparams = {'E_L': 0., 'V_th': 30., 'V_reset': 13.5, 'C_m': 0.01}
+#ToDO define appropriate params
+
+
 STP_ex_neuronparams = {}
 STP_inh_neuronparams = {}
 # for if_neurons
