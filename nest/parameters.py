@@ -30,7 +30,7 @@ sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"
 #"spike_detector-cortex-0.gdf"
 # dopamine modulation flag
-vt_flag = True
+vt_flag = False
 # dopamine model key
 dopa_model = "dopa"
 
@@ -71,9 +71,9 @@ snc_neuronparams = {}
 # =========
 
 # parameters of synapses
-w_ex = 45.
-g = 3.83
-w_inh = -w_ex * g
+w_ex = 65.
+g = 0.6
+w_inh = w_ex * g
 
 g_w_ex = 40.
 g_w_inh = -20.

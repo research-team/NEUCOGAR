@@ -8,7 +8,7 @@ import numpy as np
 # from NeuroTools import signals, io
 # import matplotlib
 # Force matplotlib to not use any Xwindows backend.
-#matplotlib.use('Agg')
+# matplotlib.use('Agg')
 import nest.raster_plot
 # local project parameters
 from parameters import *
@@ -76,20 +76,17 @@ nest.Connect(snr, thalamus, conn_dict, syn_inhibitory)
 nest.Connect(thalamus, cortex, conn_dict, syn_excitory)
 # Volume transmission: init dopa_model
 if vt_flag:
-    #ToDO observe the point of neuromodulation
+    # ToDO observe the point of neuromodulation
     vt = nest.Create("volume_transmitter")
     # Turn on volume transmission
-    nest.CopyModel("stdp_dopamine_synapse", dopa_model,
+    nest.CopyModel("stdp_dopamine_synapse", dopa_model,  #check with no neuromodulation
                    {"vt": vt[0], "weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
 else:
     # Turn off volume transmission
-    nest.CopyModel("static_synapse", dopa_model, {"weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
-nest.Connect(snc, striatum, conn_dict, syn_spec=dopa_model)
-
-#ToDo pathway
+    nest.CopyModel(bs_synapse_model, dopa_model, {"weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
+#nest.Connect(snc, striatum, conn_dict, dopa_model)
+# ToDo pathway: check if it is working with inhibitory weights
 # ! Direct pathway: Cortex (stimulates) → Striatum (inhibits) → "SNr-GPi" complex (less inhibition of thalamus) → Thalamus (stimulates) → Cortex (stimulates) → Muscles, etc.
-
-
 # ! Indirect pathwat: Cortex (stimulates) → Striatum (inhibits) → GPe (less inhibition of STN) → STN (stimulates) → "SNr-GPi" complex (inhibits) → Thalamus (is stimulating less) → Cortex (is stimulating less) → Muscles, etc.
 
 
@@ -111,7 +108,7 @@ device_static_synapse = "excitatory_static"
 nest.CopyModel("static_synapse", device_static_synapse, {"weight": 1.})
 
 # Input #1 : 1) Cortex excitory2
-nest.Connect(sg_ex, cortex, model=device_static_synapse)
+# nest.Connect(sg_ex, cortex, model=device_static_synapse)
 # Input #2 : 2) Dopamine neurons produce dopamine that modulates Striatum.
 nest.Connect(sg_ex, snc, model=device_static_synapse)
 
@@ -122,9 +119,9 @@ nest.Connect(sg_ex, snc, model=device_static_synapse)
 spikedetector = nest.Create("spike_detector",
                             params={"label": "spikes", "withtime": True, "withgid": True, "to_file": True})
 # Spike detector connects to cortex neurons
-nest.Connect(cortex, spikedetector)
+nest.Connect(snc, spikedetector)
 logger.debug("spike detecor is attached to cortex: %d", (cortex_number_of_neurons))
-#nest.PrintNetwork()
+# nest.PrintNetwork()
 
 nest.Simulate(T)
 
