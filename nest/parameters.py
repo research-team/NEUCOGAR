@@ -30,7 +30,7 @@ sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"
 #"spike_detector-cortex-0.gdf"
 # dopamine modulation flag
-vt_flag = False   #ToDo do that element more visible in code
+vt_flag = True   #ToDo do that element more visible in code
 # dopamine model key
 dopa_model = "dopa"
 
@@ -43,7 +43,8 @@ cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_
 # with dopamine
 snc_neurons_model = 'iaf_psc_exp' # ToDo iaf_psc_alpha    understand the purpose of alpha for neuromodulation
 # Count of neurons in every parts of BS
-NN_cortex = 100
+# table for neuron number: https://docs.google.com/spreadsheets/d/1cAm5uosBoKaaPyC1mvb527nYkVcW2YsAA2ECiCDASzg/edit?usp=sharing
+NN_cortex = 150
 NN_striatum = NN_gpe = NN_gpi = NN_stn = NN_snc = NN_thalamus = 10
 NN_snr = 10
 
