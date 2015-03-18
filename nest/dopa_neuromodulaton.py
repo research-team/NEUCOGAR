@@ -61,8 +61,9 @@ nest.SetStatus(snc, snc_neuronparams)
 nest.SetStatus(thalamus, thalamus_neuronparams)
 
 # synapses model are same for test facilitation
-nest.CopyModel(bs_synapse_model, syn_excitory, {"weight": w_ex, "delay": delay})
-nest.CopyModel(bs_synapse_model, syn_inhibitory, {'weight': w_inh, 'delay': delay})
+# ToDo test direct indirect parameters
+nest.CopyModel(bs_synapse_model, syn_excitory, {"weight": w_ex, "delay": delay_ex})
+nest.CopyModel(bs_synapse_model, syn_inhibitory, {'weight': w_inh, 'delay': delay_inh})
 
 nest.Connect(cortex, striatum, conn_spec=conn_dict, syn_spec=syn_excitory)
 nest.Connect(striatum, gpe, conn_dict, syn_inhibitory)
@@ -79,12 +80,13 @@ if vt_flag:
     # ToDO observe the point of neuromodulation
     vt = nest.Create("volume_transmitter")
     # Turn on volume transmission
-    nest.CopyModel("stdp_dopamine_synapse", dopa_model,  #check with no neuromodulation
+    nest.CopyModel("stdp_dopamine_synapse", dopa_model,  # check with no neuromodulation
                    {"vt": vt[0], "weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
 else:
     # Turn off volume transmission
+    # ToDo  synaps param test
     nest.CopyModel(bs_synapse_model, dopa_model, {"weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
-#nest.Connect(snc, striatum, conn_dict, dopa_model)
+nest.Connect(snc, striatum, conn_dict, dopa_model)
 # ToDo pathway: check if it is working with inhibitory weights
 # ! Direct pathway: Cortex (stimulates) → Striatum (inhibits) → "SNr-GPi" complex (less inhibition of thalamus) → Thalamus (stimulates) → Cortex (stimulates) → Muscles, etc.
 # ! Indirect pathwat: Cortex (stimulates) → Striatum (inhibits) → GPe (less inhibition of STN) → STN (stimulates) → "SNr-GPi" complex (inhibits) → Thalamus (is stimulating less) → Cortex (is stimulating less) → Muscles, etc.
@@ -108,7 +110,7 @@ device_static_synapse = "excitatory_static"
 nest.CopyModel("static_synapse", device_static_synapse, {"weight": 1.})
 
 # Input #1 : 1) Cortex excitory2
-# nest.Connect(sg_ex, cortex, model=device_static_synapse)
+nest.Connect(sg_ex, cortex, model=device_static_synapse)
 # Input #2 : 2) Dopamine neurons produce dopamine that modulates Striatum.
 nest.Connect(sg_ex, snc, model=device_static_synapse)
 
@@ -118,8 +120,8 @@ nest.Connect(sg_ex, snc, model=device_static_synapse)
 # SPIKEDETECTOR
 spikedetector = nest.Create("spike_detector",
                             params={"label": "spikes", "withtime": True, "withgid": True, "to_file": True})
-# Spike detector connects to cortex neurons
-nest.Connect(snc, spikedetector)
+# Spike detector connects to thalamus neurons
+nest.Connect(thalamus, spikedetector)
 logger.debug("spike detecor is attached to cortex: %d", (cortex_number_of_neurons))
 # nest.PrintNetwork()
 
