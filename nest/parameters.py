@@ -30,7 +30,7 @@ sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"
 #"spike_detector-cortex-0.gdf"
 # dopamine modulation flag
-vt_flag = True
+vt_flag = False   #ToDo do that element more visible in code
 # dopamine model key
 dopa_model = "dopa"
 
@@ -41,18 +41,19 @@ dopa_model = "dopa"
 # neurons model without neuromodulation
 cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_model = stn_neurons_model = snr_neurons_model = thalamus_neurons_model = 'iaf_psc_exp'
 # with dopamine
-snc_neurons_model = 'iaf_psc_alpha'
+snc_neurons_model = 'iaf_psc_exp' # ToDo iaf_psc_alpha    understand the purpose of alpha for neuromodulation
 # Count of neurons in every parts of BS
-cortex_number_of_neurons = 100
-striatum_number_of_neurons = gpe_number_of_neurons = gpi_number_of_neurons = stn_number_of_neurons = snc_number_of_neurons = snr_number_of_neurons = thalamus_number_of_neurons = 10
+NN_cortex = 100
+NN_striatum = NN_gpe = NN_gpi = NN_stn = NN_snc = NN_thalamus = 10
+NN_snr = 10
 
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
-STP_neuronparams = {'E_L': 0., 'V_th': 30., 'V_reset': 13.5, 'C_m': 0.01}
+STP_neuronparams = {'E_L': 0., 'V_th': 30., 'V_reset': 19.5, 'C_m': 0.05}
 #ToDO define appropriate params
 
 
-STP_ex_neuronparams = {}
-STP_inh_neuronparams = {}
+STP_ex_neuronparams =  {'E_L':0.}#{'tau_m':0.5, 'E_L':0.}
+STP_inh_neuronparams = {'E_L':-75.}#{'tau_m':40.,'E_L':-75.}
 # for if_neurons
 # dict([{'tau_ref_abs': 3., 'tau_ref_tot': 3.}] +
 # dict([{'tau_ref_abs': 2., 'tau_ref_tot': 2.}] +
@@ -64,7 +65,7 @@ cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = STP_ex_neuronpa
 # Inhibitory neurons
 striatum_neuronparams = gpe_neuronparams = gpi_neuronparams = snr_neuronparams = STP_inh_neuronparams
 # Neuromodulation neurons
-snc_neuronparams = {}
+snc_neuronparams = STP_ex_neuronparams
 
 # =========
 # SYNAPSES
@@ -72,11 +73,15 @@ snc_neuronparams = {}
 
 # parameters of synapses
 # Glutamate
-w_ex = 65.
-g = 0.4
-# GABA2
+w_ex = 1.5
+g = 0.3
+# GABA
 w_inh = w_ex * g
 
+# Volume transmission
+stdp_dopamine_synapse_weight = 65.
+
+#--------------------------- ToDo what for?
 g_w_ex = 40.
 g_w_inh = -20.
 
@@ -87,6 +92,7 @@ K_inh = (1.0 - f_ex) * K
 
 nu_ex = 10.0  # 2.
 nu_inh = 10.0  # 2.
+#--------------------------
 
 vt_delay = 1.
 delay_inh = 1.
@@ -98,9 +104,6 @@ delay_ex = 1.
  has been found short term facilitation in MSN synapses onto SNr neurons from SNc.
 '''
 
-
-# Volume transmission
-stdp_dopamine_synapse_weight = 35.
 
 # ============
 # CONNECTIONS

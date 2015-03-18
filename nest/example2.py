@@ -17,7 +17,8 @@ nest.CopyModel("static_synapse", "excitatory", {"weight": J_ex, "delay": 1.5})
 
 
 # Create neurons and devices
-nodes_ex_1 = nest.Create("iaf_psc_exp", 10)
+
+nodes_ex_1 = nest.Create("iaf_psc_alpha", 10)
 nodes_ex_2 = nest.Create("iaf_psc_exp", 10)
 
 
