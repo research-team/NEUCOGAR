@@ -170,23 +170,33 @@ def draw_graphics(net):
             k = k + 1
             plt.figure(k)
             # plt.title("["+str(value)+",50"+",x,"+"y"+"]")
-            plt.title("["+"x"+","+str(value1)+","+"y"+","+str(value2)+"]")
+            plt.title("["+str(value1)+","+str(value2)+","+"x"+","+"y"+"]")
             for i in range(50,500, 5):
                 print k," ",i
                 for j in range(50, 500, 5):
-                    if np.around(net.activate([i, value1, j, value2]))[0] == np.float32(1.0):
+                    activation = np.around(net.activate([value1, value2, i, j]))
+                    if activation[0] == np.float32(1.0) and activation[1] == np.float32(0.0):
                         color = 'red'
                     else:
-                        if np.around(net.activate([i, value1, j, value2]))[0] == np.float32(0.0):
+                        if activation[0] == np.float32(0.0) and activation[1] == np.float32(1.0):
                             color = 'blue'
                         else:
                             color = 'black'
+
                     x = i
                     y = j
-                    plt.scatter(x,y,c=color,s = 20, label = color, alpha=0.9, edgecolor = 'none')
-                plt.grid(True)
 
+
+                    plt.scatter(x,y,c=color,s = 20, alpha=0.9, edgecolor = 'none')
+                plt.grid(True)
     plt.show()
+
+
+def subplot(data, fig=None, index=111):
+    if fig is None:
+        fig = plt.figure()
+    ax = fig.add_subplot(index)
+    ax.plot(data)
 
 def run():
     # n = trainedANN()
