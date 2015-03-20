@@ -97,8 +97,8 @@ nest.Connect(snc, striatum, conn_dict, dopa_model)
 # ===============
 # Spike Generator
 # ===============
-ex_spikes_times = np.array([10.0, 30.0, 45.0])  #[10.0, 20.0, 50.0])
-snc_spikes_times = np.array([20.0, 40.0, 55.0])  #[15.0, 25.0, 55.0])
+ex_spikes_times = np.array([5.0, 10.0, ])  #[10.0, 20.0, 50.0]) [10.0, 30.0, 45.0]
+snc_spikes_times = np.array([5.0, 10.0, 15, 20, 25, 30])  #[15.0, 25.0, 55.0]) [20.0, 40.0, 55.0]
 sg_ex = nest.Create('spike_generator', params={'spike_times': ex_spikes_times})
 sg_snc = nest.Create('spike_generator', params={'spike_times': snc_spikes_times})
 
@@ -106,7 +106,7 @@ sg_snc = nest.Create('spike_generator', params={'spike_times': snc_spikes_times}
 device_static_synapse = "excitatory_static"
 nest.CopyModel("static_synapse", device_static_synapse, {"weight": 3.})
 
-# Input #1 : 1) Cortex excitory
+# Input #1 : 1) Cortex excitatory
 nest.Connect(sg_ex, cortex)
 # Input #2 : 2) Dopamine neurons produce dopamine that modulates Striatum.
 if vt_flag: nest.Connect(sg_snc, snc, syn_spec=device_static_synapse)
