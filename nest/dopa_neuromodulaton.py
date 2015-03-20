@@ -97,8 +97,8 @@ nest.Connect(snc, striatum, conn_dict, dopa_model)
 # ===============
 # Spike Generator
 # ===============
-ex_spikes_times = np.array([5.0, 10.0, ])  #[10.0, 20.0, 50.0]) [10.0, 30.0, 45.0]
-snc_spikes_times = np.array([5.0, 10.0, 15, 20, 25, 30])  #[15.0, 25.0, 55.0]) [20.0, 40.0, 55.0]
+ex_spikes_times = np.array([10.0, 30.0, 45.0])  #[10.0, 20.0, 50.0]) [10.0, 30.0, 45.0]
+snc_spikes_times = np.array([20.0, 40.0, 55.0])  #[15.0, 25.0, 55.0]) [20.0, 40.0, 55.0]
 sg_ex = nest.Create('spike_generator', params={'spike_times': ex_spikes_times})
 sg_snc = nest.Create('spike_generator', params={'spike_times': snc_spikes_times})
 
