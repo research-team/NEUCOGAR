@@ -170,11 +170,11 @@ def draw_graphics(net):
             k = k + 1
             plt.figure(k)
             # plt.title("["+str(value)+",50"+",x,"+"y"+"]")
-            plt.title("["+str(value1)+","+str(value2)+","+"x"+","+"y"+"]")
+            plt.title("["+str(value1)+","+"x"+","+str(value2)+","+"y"+"]")
             for i in range(50,500, 5):
                 print k," ",i
                 for j in range(50, 500, 5):
-                    activation = np.around(net.activate([value1, value2, i, j]))
+                    activation = np.around(net.activate([value1, i, value2, j]))
                     if activation[0] == np.float32(1.0) and activation[1] == np.float32(0.0):
                         color = 'red'
                     else:
@@ -192,6 +192,27 @@ def draw_graphics(net):
     plt.show()
 
 
+def calculateCapacity(net):
+    count1st = 0
+    count2nd = 0
+    neither = 0
+    for x1 in range(0, 500, 10):
+        for x2 in range(0, 500, 10):
+            for x3 in range(0, 500, 10):
+                for x4 in range(0, 500, 10):
+                    activation = np.around(net.activate([x1, x2, x3, x4]))
+                    if activation[0] == np.float32(1.0) and activation[1] == np.float32(0.0):
+                        count1st += 1
+                    else:
+                        if activation[0] == np.float32(0.0) and activation[1] == np.float32(1.0):
+                            count2nd +=1
+                        else:
+                            neither += 1
+        print 'iteration: ', x1
+    print '1st: ', count1st
+    print '2nd: ', count2nd
+    print 'neither: ', neither
+
 def subplot(data, fig=None, index=111):
     if fig is None:
         fig = plt.figure()
@@ -203,15 +224,28 @@ def run():
     # n = importANN()
 
     # n = trainedRNN()
-    n = importRNN()
-
+    # n = importRNN()
+    n = importANN()
+    print 'ann:'
     # for x in [(1, 15, 150, 160),    (1, 15, 150, 160),
     #           (100, 110, 150, 160), (150, 160, 10, 15),
     #           (150, 160, 10, 15),   (200, 200, 100, 100),
     #           (10, 15, 300, 250),   (250, 300, 15, 10)]:
     #     print("n.activate(%s) == %s\n" % (x, n.activate(x)))
-
-    draw_graphics(n)
+    calculateVolume(n)
+    # draw_graphics(n)
 
 if __name__ == "__main__":
     run()
+
+"""
+RNN:
+1st:  2898658
+2nd:  2901168
+neither:  450174
+
+ANN:
+1st:  1345118
+2nd:  1526494
+neither:  3378388
+"""
