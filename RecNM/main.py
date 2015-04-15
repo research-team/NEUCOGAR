@@ -1,12 +1,12 @@
 import numpy as np
 import pickle
 
-from pybrain.datasets import SupervisedDataSet, SequentialDataSet
-from pybrain.structure import RecurrentNetwork, IdentityConnection, FeedForwardNetwork
+from pybrain.datasets import SupervisedDataSet
+from pybrain.structure import RecurrentNetwork, FeedForwardNetwork
 from pybrain.structure.connections.full import FullConnection
 from pybrain.structure.modules.linearlayer import LinearLayer
 from pybrain.structure.modules.sigmoidlayer import SigmoidLayer
-from pybrain.supervised import BackpropTrainer, RPropMinusTrainer
+from pybrain.supervised import BackpropTrainer
 import matplotlib.pyplot as plt
 
 from neuromodulation.connection import NMConnection
@@ -56,6 +56,17 @@ def exportRNN(net, fileName = root.path()+"/res/recRNN"):
     fileObject.close()
 
 def importRNN(fileName = root.path()+"/res/recRNN"):
+    fileObject = open(fileName, 'r')
+    net = pickle.load(fileObject)
+    fileObject.close()
+    return net
+
+def exportRFCNN(net, fileName = root.path()+"/res/recRFCNN"):
+    fileObject = open(fileName, 'w')
+    pickle.dump(net, fileObject)
+    fileObject.close()
+
+def importRFCNN(fileName = root.path()+"/res/recRFCNN"):
     fileObject = open(fileName, 'r')
     net = pickle.load(fileObject)
     fileObject.close()
@@ -139,6 +150,47 @@ def trainedANN():
 
     return n
 
+#return trained recurrent full connected neural network
+def trainedRFCNN():
+    n = RecurrentNetwork()
+
+    n.addInputModule(LinearLayer(4, name='in'))
+    n.addModule(SigmoidLayer(6, name='hidden'))
+    n.addOutputModule(LinearLayer(2, name='out'))
+    n.addConnection(FullConnection(n['in'], n['hidden'], name='c1'))
+    n.addConnection(FullConnection(n['hidden'], n['out'], name='c2'))
+
+    n.addRecurrentConnection(FullConnection(n['out'], n['hidden'], name='nmc'))
+
+    n.sortModules()
+
+    draw_connections(n)
+    # d = generateTraininqgData()
+    d = getDatasetFromFile(root.path()+"/res/dataSet")
+    t = BackpropTrainer(n, d, learningrate=0.001, momentum=0.75)
+    t.trainOnDataset(d)
+    # FIXME: I'm not sure the recurrent ANN is going to converge
+    # so just training for fixed number of epochs
+
+    count = 0
+    while True:
+        globErr = t.train()
+        print globErr
+        if globErr < 0.01:
+            break
+        # count = count + 1
+        # if (count == 100):
+        #     break
+
+    # for i in range(100):
+    #     print t.train()
+
+
+    exportRFCNN(n)
+    draw_connections(n)
+
+    return n
+
 def draw_connections(net):
 
     for mod in net.modules:
@@ -170,11 +222,11 @@ def draw_graphics(net):
             k = k + 1
             plt.figure(k)
             # plt.title("["+str(value)+",50"+",x,"+"y"+"]")
-            plt.title("["+str(value1)+","+"x"+","+str(value2)+","+"y"+"]")
+            plt.title("["+str(value1)+","+"x"+","+"y"+","+str(value2)+"]")
             for i in range(50,500, 5):
                 print k," ",i
                 for j in range(50, 500, 5):
-                    activation = np.around(net.activate([value1, i, value2, j]))
+                    activation = np.around(net.activate([value1, i, j, value2]))
                     if activation[0] == np.float32(1.0) and activation[1] == np.float32(0.0):
                         color = 'red'
                     else:
@@ -225,14 +277,18 @@ def run():
 
     # n = trainedRNN()
     # n = importRNN()
-    n = importANN()
-    print 'ann:'
+    # n = importANN()
+
+    # n = trainedRFCNN()
+    n = importRFCNN()
+    # draw_graphics(n)
+    # print 'ann:'
     # for x in [(1, 15, 150, 160),    (1, 15, 150, 160),
     #           (100, 110, 150, 160), (150, 160, 10, 15),
     #           (150, 160, 10, 15),   (200, 200, 100, 100),
     #           (10, 15, 300, 250),   (250, 300, 15, 10)]:
     #     print("n.activate(%s) == %s\n" % (x, n.activate(x)))
-    calculateVolume(n)
+    calculateCapacity(n)
     # draw_graphics(n)
 
 if __name__ == "__main__":
@@ -248,4 +304,9 @@ ANN:
 1st:  1345118
 2nd:  1526494
 neither:  3378388
+
+Recurrent full connected neural network
+1st:  4140721
+2nd:  1717309
+neither:  391970
 """
