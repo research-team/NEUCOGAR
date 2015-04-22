@@ -11,7 +11,7 @@ import numpy as np
 # matplotlib.use('Agg')
 import nest.raster_plot
 # local project parameters
-from parameters import *
+from parameters_0 import *
 import os
 
 logger = logging.getLogger("dopa")
@@ -62,8 +62,10 @@ nest.SetStatus(thalamus, thalamus_neuronparams)
 
 # synapses model are same for test facilitation
 # ToDo test direct indirect parameters
-nest.CopyModel(bs_synapse_model, syn_excitory  )#,    {"weight": w_ex, "delay": delay_ex})
-nest.CopyModel(bs_synapse_model, syn_inhibitory)#, {'weight': w_inh, 'delay': delay_inh})
+nest.CopyModel(bs_synapse_model, syn_excitory ,    {"weight": w_ex, "delay": delay_ex})
+nest.CopyModel(bs_synapse_model, syn_inhibitory, {'weight': w_inh, 'delay': delay_inh})
+
+# ToDO delete {'distribution': 'uniform', 'low': 1., 'high': 1.9}
 
 nest.Connect(cortex, striatum, conn_spec=conn_dict, syn_spec=syn_excitory)
 nest.Connect(striatum, gpe, conn_dict, syn_inhibitory)

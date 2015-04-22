@@ -92,13 +92,13 @@ pg_flag = True
 
 neuron_model = "iaf_psc_alpha"
 #neuron_model = "iaf_psc_delta"
-#neuron_model = "iaf_psc_exp"
-#neuron_model = "iaf_cond_exp" -
-#neuron_model = "iaf_cond_alpha" -
-#neuron_model = "aeif_cond_alpha" -
+# neuron_model = "iaf_psc_exp"
+#neuron_model = "iaf_cond_exp"
+# neuron_model = "iaf_cond_alpha"
+#neuron_model = "aeif_cond_alpha"
 #neuron_model = "mat2_psc_exp"
-#neuron_model = "hh_psc_alpha" -
-#neuron_model = "hh_cond_exp_traub" -
+#neuron_model = "hh_psc_alpha"
+#neuron_model = "hh_cond_exp_traub"
 dopa_neuron_model = "iaf_psc_alpha"
 
 stdp_dopamine_synapse_weight = 35.

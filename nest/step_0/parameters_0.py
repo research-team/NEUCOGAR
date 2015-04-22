@@ -49,12 +49,14 @@ NN_striatum = NN_gpe = NN_gpi = NN_stn = NN_snc = NN_thalamus = 10
 NN_snr = 10
 
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
-STP_neuronparams = {'E_L': 0., 'V_th': 30., 'V_reset': 19.5, 'C_m': 0.05}
-#ToDO define appropriate params
+# for a time the neuron model parameters would be setted as STP inhibitory or excitory
+STP_neuronparams = {'E_L': -55., 'V_th': 30., 'V_reset': -75., 'C_m': 0.05, 't_ref': 2.,
+                    'tau_m': 15.}
+# ToDO define appropriate params
 
 
-STP_ex_neuronparams =  {'E_L':0.}#{'tau_m':0.5, 'E_L':0.}
-STP_inh_neuronparams = {'E_L':-75.}#{'tau_m':40.,'E_L':-75.}
+STP_ex_neuronparams = {'tau_syn_ex': 0.7}
+STP_inh_neuronparams = {'tau_syn_inh': 1.13}
 # for if_neurons
 # dict([{'tau_ref_abs': 3., 'tau_ref_tot': 3.}] +
 # dict([{'tau_ref_abs': 2., 'tau_ref_tot': 2.}] +
@@ -62,11 +64,11 @@ STP_inh_neuronparams = {'E_L':-75.}#{'tau_m':40.,'E_L':-75.}
 # 'tau_ex': 3.
 
 # Excitory neurons
-cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = STP_ex_neuronparams
+cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = STP_neuronparams
 # Inhibitory neurons
-striatum_neuronparams = gpe_neuronparams = gpi_neuronparams = snr_neuronparams = STP_inh_neuronparams
+striatum_neuronparams = gpe_neuronparams = gpi_neuronparams = snr_neuronparams = STP_neuronparams
 # Neuromodulation neurons
-snc_neuronparams = STP_ex_neuronparams
+snc_neuronparams = STP_neuronparams
 
 # =========
 # SYNAPSES
@@ -75,9 +77,9 @@ snc_neuronparams = STP_ex_neuronparams
 # parameters of synapses
 # Glutamate
 w_ex = 1.5
-g = 0.3
 # GABA
-w_inh = w_ex * g
+g = 0.3
+w_inh = -w_ex * g
 
 # Volume transmission
 stdp_dopamine_synapse_weight = 65.

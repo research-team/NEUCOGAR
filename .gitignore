@@ -93,3 +93,4 @@ obj
 # generated files by dopa_neuromodulation
 spike_detector_data/
 example.py
+nest/test_scripts/*.gdf
