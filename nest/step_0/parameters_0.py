@@ -21,10 +21,11 @@ Prefix description:
 # Configure logger
 import logging
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
-logging.basicConfig(format=FORMAT,level=logging.DEBUG)
+logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 
 # general settings
-T = 1000.
+#T = 1000.
+T = 100.
 dt = 10.
 sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"
