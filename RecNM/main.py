@@ -229,16 +229,20 @@ def draw_graphics(net):
                     activation = np.around(net.activate([value1, i, j, value2]))
                     if activation[0] == np.float32(1.0) and activation[1] == np.float32(0.0):
                         color = 'red'
+                    # else:
+                    #     if activation[0] == np.float32(0.0) and activation[1] == np.float32(1.0):
+                    #         color = 'blue'
+                    #     else:
+                    #         color = 'black'
+                    elif activation[0] == np.float32(0.0) and activation[1] == np.float32(1.0):
+                        color = 'blue'
+                    elif activation[0] == np.float32(1.0) and activation[1] == np.float32(1.0):
+                        color = 'orange'
                     else:
-                        if activation[0] == np.float32(0.0) and activation[1] == np.float32(1.0):
-                            color = 'blue'
-                        else:
-                            color = 'black'
-
+                        # activation[0] == np.float32(0.0) and activation[1] == np.float32(0.0):
+                        color = 'black'
                     x = i
                     y = j
-
-
                     plt.scatter(x,y,c=color,s = 20, alpha=0.9, edgecolor = 'none')
                 plt.grid(True)
     plt.show()
@@ -280,7 +284,7 @@ def run():
     # n = importANN()
 
     # n = trainedRFCNN()
-    n = importRFCNN()
+    # n = importRFCNN()
     # draw_graphics(n)
     # print 'ann:'
     # for x in [(1, 15, 150, 160),    (1, 15, 150, 160),
@@ -288,8 +292,11 @@ def run():
     #           (150, 160, 10, 15),   (200, 200, 100, 100),
     #           (10, 15, 300, 250),   (250, 300, 15, 10)]:
     #     print("n.activate(%s) == %s\n" % (x, n.activate(x)))
-    calculateCapacity(n)
+    # calculateCapacity(n)
     # draw_graphics(n)
+
+    n = importRFCNN()
+    draw_graphics(n)
 
 if __name__ == "__main__":
     run()
