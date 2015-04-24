@@ -34,33 +34,26 @@ dt = 10.
 # ========
 
 # neurons model without neuromodulation
-cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_model = stn_neurons_model = snr_neurons_model = thalamus_neurons_model = 'iaf_psc_exp'
+cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_model = stn_neurons_model = snr_neurons_model = thalamus_neurons_model = tan_neuron_model = tan_neurons_model= 'iaf_psc_exp'
 # with dopamine
 snc_neurons_model = 'iaf_psc_alpha'  # ToDo iaf_psc_alpha    understand the purpose of alpha for neuromodulation
 # Count of neurons in every parts of BS
 # table for neuron number: https://docs.google.com/spreadsheets/d/1cAm5uosBoKaaPyC1mvb527nYkVcW2YsAA2ECiCDASzg/edit?usp=sharing
 NN_cortex = 110
 
+NN_tan = 25
 NN_striatum = {D1: 20, D2: 20}
 NN_gpe = NN_gpi = NN_stn = NN_snc = 10
 NN_snr = 10
 NN_thalamus = 40
 
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
-STP_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -70., 'C_m': 1., 't_ref': 2.,'V_m':-70.,}
-                    # 'tau_m':20.}
+STP_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -70., 'C_m': 1., 't_ref': 2., 'V_m': -70., 'tau_syn_ex': 1., 'tau_syn_in': 1.13, 'tau_m':20.}
 # 'tau_m': {'distribution': 'uniform', 'low': 15., 'high': 25.}}
 # ToDO define appropriate params
 
-
-STP_ex_neuronparams = {'tau_syn_ex': 1.}
-STP_inh_neuronparams = {'tau_syn_in': 1.13}
-# Excitory neurons
-cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = STP_ex_neuronparams
-# Inhibitory neurons
-striatum_neuronparams = gpe_neuronparams = gpi_neuronparams = snr_neuronparams = STP_inh_neuronparams
-# Neuromodulation neurons
-snc_neuronparams = STP_ex_neuronparams
+cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = tan_neuronparams = \
+    striatum_neuronparams = gpe_neuronparams = gpi_neuronparams = snr_neuronparams = snc_neuronparams = STP_neuronparams
 
 # =========
 # SYNAPSES
@@ -85,13 +78,14 @@ nu_ex = 10.0
 nu_in = 10.0
 
 # Volume transmission
-stdp_dopamine_synapse_weight = 45.
+stdp_dopamine_synapse_w_ex = 45.
+stdp_dopamine_synapse_w_in = -20.
 # generator delay
 delay = 1.
 
 vt_delay = 1.
-delay_ex = 0.8 # {'distribution': 'uniform', 'low': 0.8, 'high': 1.5}
-delay_inh = 1.4 # {'distribution': 'uniform', 'low': 1., 'high': 1.9}
+delay_ex = 0.8  # {'distribution': 'uniform', 'low': 0.8, 'high': 1.5}
+delay_inh = 1.4  # {'distribution': 'uniform', 'low': 1., 'high': 1.9}
 '''
     ===========
  In SNr neurons according to recent experimental findings [http://www.biomedcentral.com/1471-2202/12/S1/P145#B2]

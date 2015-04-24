@@ -8,7 +8,8 @@ syn_excitory = "excitatory"
 syn_inhibitory = "inhibitory"
 
 # dopamine model key
-dopa_model = "dopa"
+dopa_model_ex = "dopa_ex"
+dopa_model_in = "dopa_in"
 
 sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"

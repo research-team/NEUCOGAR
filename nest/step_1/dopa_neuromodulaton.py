@@ -46,7 +46,8 @@ nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name})  # 
 # neuron set
 nest.SetDefaults('iaf_psc_exp', STP_neuronparams)
 cortex = nest.Create(cortex_neurons_model, NN_cortex)
-# striatum = nest.Create(striatum_neurons_model, NN_striatum)
+
+tan = nest.Create(tan_neurons_model, NN_tan)
 striatum = {D1: nest.Create(striatum_neurons_model, NN_striatum[D1]),
             D2: nest.Create(striatum_neurons_model, NN_striatum[D2])}
 gpe = nest.Create(gpe_neurons_model, NN_gpe)
@@ -56,6 +57,7 @@ snr = nest.Create(snr_neurons_model, NN_snr)
 thalamus = nest.Create(thalamus_neurons_model, NN_thalamus)
 snc = nest.Create(snc_neurons_model, NN_snc)
 
+nest.SetStatus(tan, tan_neuronparams)
 nest.SetStatus(cortex, cortex_neuronparams)
 (nest.SetStatus(striatum_part, striatum_neuronparams) for striatum_part in striatum.values())
 nest.SetStatus(gpe, gpe_neuronparams)
@@ -72,6 +74,8 @@ nest.CopyModel(bs_synapse_model, syn_inhibitory, {'weight': w_in, 'delay': delay
 
 nest.Connect(cortex, striatum[D1], conn_spec=conn_dict, syn_spec=syn_excitory)
 nest.Connect(cortex, striatum[D2], conn_spec=conn_dict, syn_spec=syn_excitory)
+nest.Connect(tan, striatum[D1], conn_spec=conn_dict, syn_spec=syn_inhibitory)
+nest.Connect(tan, striatum[D2], conn_spec=conn_dict, syn_spec=syn_excitory)
 # ! Direct pathway: → Striatum (inhibits) [D1] → "SNr-GPi" complex (less inhibition of thalamus) →
 nest.Connect(striatum[D1], snr, conn_dict, syn_inhibitory)
 nest.Connect(striatum[D1], gpe, conn_dict, syn_inhibitory)
@@ -91,16 +95,19 @@ vt = nest.Create("volume_transmitter")
 # ==================
 # Dopamine modulator
 # ==================
-nest.CopyModel("static_synapse", device_static_synapse, {'weight': stdp_dopamine_synapse_weight, 'delay': delay})
+nest.CopyModel("static_synapse", device_static_synapse,{'delay': delay})
 
 if vt_flag:
-    nest.CopyModel("stdp_dopamine_synapse", dopa_model, {"vt": vt[0], "weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
+    nest.CopyModel("stdp_dopamine_synapse", dopa_model_ex, {"vt": vt[0], "weight": stdp_dopamine_synapse_w_ex, "delay": vt_delay})
+    nest.CopyModel("stdp_dopamine_synapse", dopa_model_in, {"vt": vt[0], "weight": stdp_dopamine_synapse_w_in, "delay": vt_delay})
 else:
-    nest.CopyModel("static_synapse", dopa_model, {"weight": stdp_dopamine_synapse_weight, "delay": vt_delay})
+    nest.CopyModel("static_synapse", dopa_model_ex, {"weight": stdp_dopamine_synapse_w_ex, "delay": vt_delay})
+    nest.CopyModel("static_synapse", dopa_model_in, {"weight": stdp_dopamine_synapse_w_in, "delay": vt_delay})
 nest.Connect(snc, vt, model=device_static_synapse)
 
-(nest.Connect(snc, striatum_part, conn_dict, dopa_model) for striatum_part in striatum.values())
-
+nest.Connect(snc, striatum[D1], conn_dict, dopa_model_ex)
+nest.Connect(snc, striatum[D2], conn_dict, dopa_model_in)
+nest.Connect(snc, tan, conn_dict, dopa_model_in)
 # ===============
 # Spike Generator
 # ===============
@@ -110,7 +117,7 @@ if pg_flag:
     # pg_in = nest.Create("poisson_generator")
     # nest.SetStatus(pg_in, {"rate": K_in * nu_in})
     # nest.Connect(pg_in, ..., syn_spec={'weight': w_in, 'delay': delay})
-
+    nest.Connect(pg_ex, tan, syn_spec={'weight': w_ex, 'delay': delay})
     nest.Connect(pg_ex, cortex, syn_spec={'weight': w_ex, 'delay': delay})
     nest.Connect(pg_ex, gpe, syn_spec={'weight': w_ex, 'delay': delay})
     nest.Connect(pg_ex, stn, syn_spec={'weight': w_ex, 'delay': delay})
@@ -127,8 +134,10 @@ else:
     sg_cortex = nest.Create('spike_generator', params={'spike_times': spikes_times})
     sg_snc = nest.Create('spike_generator', params={'spike_times': snc_spikes_times})
     # Input #1 : 1) Cortex excitory
+    dt = 5; ddt = 5
+    nest.Connect(nest.Create('spike_generator', params={'spike_times': f_spike_times(spikes_times, -dt )}), tan, syn_spec={'weight': w_ex})
     nest.Connect(sg_cortex, cortex)
-    dt = 0; ddt = 5
+
     nest.Connect(nest.Create('spike_generator', params={'spike_times': f_spike_times(spikes_times, dt )}), gpe,
                  syn_spec={'weight': g_w_ex})
     dt+=ddt
