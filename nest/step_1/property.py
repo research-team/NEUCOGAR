@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-# static final names and values
+# static final names
 D1 = 0
 D2 = 1
+tan = 2  # Tonically active neurons
+
+# static final values
+dpi_n = 86
 
 bs_synapse_model = 'stdp_synapse'
 syn_excitory = "excitatory"
