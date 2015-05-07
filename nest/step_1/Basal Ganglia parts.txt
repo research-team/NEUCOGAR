@@ -1,0 +1,53 @@
+About BG: http://brainmind.com/BasalGanglia.html
+
+Structure
+BG are strongly interconnected with the cerebral cortex, thalamus, and brainstem, as well as several other brain areas.
+1.1 Striatum
+    96 % Medium spiny neurons - GABA-ergic cells
+    2 % cholinergic interneurons
+    Here, we show that dopamine neurons make direct fast dopaminergic and glutamatergic connections with cholinergic interneurons, with regional heterogeneity.
+        tonic active neurons ?
+    The largest component, the striatum, receives input from many brain areas beyond the basal ganglia, but only sends output to other components of the basal ganglia.
+    striatum and globus pallidus may be considered anatomically distinct from the substantia nigra, nucleus accumbens, and subthalamic nucleus.
+    The ventral striatum is a portion of the striatum. It consists of the nucleus accumbens, olfactory tubercle,[1] and islands of Calleja.
+1.2 Pallidum (Globus Palidus)
+    -GPi
+    -GPe -> STN
+1.3 Substantia nigra
+    -SNr (union with GPi: SNr-GPi complex)
+    -SNc (modulates striatal pathways)
+1.4 Subthalamic nucleus (STN) only it is excitory
+1.5 Circuit connections
+
+not mentioned:
+1.6 Striatum consist of Caudate nucleus, Putamen and nucleus accumbens
+
+EPSC - Excitatory postsynaptic potential
+
+Human: http://binoniq.net/2012/02/14.html
+
+Rat neurons number:
+total -  331.65 (+-8.84) mln cells in which 200.13 (+-20.17) neurons   | 60%
+cortex -  80 mln cells in which 30 mln neurons          | 40%
+
+STN -        22700 (+-1300)
+GPe -        84100 (+-2100)
+GPi -        12600 (+-700)
+SNc -        12700 (+-1000)
+SNr -        47200 (+-5000)
+Striatum - 2791000
+Thalamus - in 1 mm^3 = ?    assume 3 900 000
+Motor cortex - ?  assume percentage
+    |- Supplementary motor cortex (20%)
+    |- Primary motor cortex (60 %)
+    |- Primary somatosensory cortex (20%)
+
+112 000 cells/mg in somatosensory cortex
+101 520 cells/mg average cell density in the entire rat cortex of
+106 140 cells/mg cerebral cortex
+119 000 cells/mm 3 in somatosensory cortex.
+
+Additional data about circuit paths: http://thebrain.mcgill.ca/flash/a/a_06/a_06_cr/a_06_cr_mou/a_06_cr_mou.html
+-> Supplementary motor cortex (plan of move and control)
+-> Primary motor cortex (control execution) ->
+   Primary somatosensory cortex (sensor, ex heat)   ->

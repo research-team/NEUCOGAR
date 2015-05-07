@@ -5,9 +5,9 @@ D2 = 1
 tan = 2  # Tonically active neurons
 
 # static final values
-dpi_n = 86
+dpi_n = 120
 
-bs_synapse_model = 'stdp_synapse'
+bg_synapse_model = 'stdp_synapse'
 syn_excitory = "excitatory"
 syn_inhibitory = "inhibitory"
 
@@ -19,7 +19,8 @@ sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"
 
 device_static_synapse = "static_device"
+gen_static_syn = "noise_conn"
 # dopamine modulation flag
-vt_flag = True
+vt_flag = False
 # poisson generator with rate set up flag
 pg_flag = False

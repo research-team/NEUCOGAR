@@ -74,7 +74,7 @@ g = 3.83
 w_in = -w_ex * g
 
 K = 10000
-f_ex = 0.8
+f_ex = 1.
 K_ex = f_ex * K
 K_in = (1.0 - f_ex) * K
 
