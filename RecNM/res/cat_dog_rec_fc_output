@@ -1,0 +1,75 @@
+/opt/local/bin/python2.7 /Users/kamil/Documents/workspacePy/Inno_Thesis/NEUCOGAR/RecNM/main.py
+hello
+402.525917536
+338.08668734
+261.727247302
+217.061469355
+199.675261256
+149.141959947
+134.184227309
+112.225635937
+104.914404554
+83.4994996151
+75.6827668914
+67.5894413563
+60.2099837588
+40.9895062855
+45.4466080599
+36.5227060365
+32.9917920177
+26.8103173689
+24.0039328775
+24.4010653198
+20.088439699
+16.0186663691
+17.6241913199
+12.2225802289
+11.9903410106
+10.6237645759
+9.95659682315
+8.29954963718
+7.26683826032
+6.3099332289
+<class 'pybrain.structure.networks.recurrent.RecurrentNetwork'>
+activate: [-10.87353513 -12.87044143] expected: [ 1.  0.]
+activate: [-7.08496007  3.54236357] expected: [ 1.  0.]
+activate: [-3.41262756 -2.98305289] expected: [ 1.  0.]
+activate: [-0.68797625  0.677858  ] expected: [ 1.  0.]
+activate: [-1.41680842  2.9685577 ] expected: [ 1.  0.]
+activate: [-2.78119258  7.04265061] expected: [ 1.  0.]
+activate: [-0.72922432  2.56747562] expected: [ 1.  0.]
+activate: [ 0.48351746 -2.00812351] expected: [ 1.  0.]
+activate: [-2.68395752  6.53602636] expected: [ 1.  0.]
+activate: [-2.5156104   1.18870611] expected: [ 1.  0.]
+activate: [-0.97365623  1.09804626] expected: [ 1.  0.]
+activate: [-1.795852    0.82307706] expected: [ 1.  0.]
+activate: [-1.27132429  4.88896442] expected: [ 1.  0.]
+activate: [ 1.16719976  6.02110587] expected: [ 1.  0.]
+activate: [ 0.2225068   3.24455868] expected: [ 1.  0.]
+activate: [-4.65051974  6.58862014] expected: [ 1.  0.]
+activate: [-2.91526015  6.59378898] expected: [ 1.  0.]
+activate: [-1.3304817   4.48155775] expected: [ 1.  0.]
+activate: [-2.99748103  1.71363451] expected: [ 1.  0.]
+activate: [-5.65150945  3.53290553] expected: [ 1.  0.]
+activate: [-2.75824208  0.5304109 ] expected: [ 0.  1.]
+activate: [-2.53183201  0.78203773] expected: [ 0.  1.]
+activate: [-1.08543921  4.12383567] expected: [ 0.  1.]
+activate: [ -0.59159403  10.2209078 ] expected: [ 0.  1.]
+activate: [-5.5603683   5.62814774] expected: [ 0.  1.]
+activate: [-2.45807673  4.649726  ] expected: [ 0.  1.]
+activate: [-1.96423646  0.26945751] expected: [ 0.  1.]
+activate: [-6.0950633   3.87520421] expected: [ 0.  1.]
+activate: [-3.50450219  4.74424518] expected: [ 0.  1.]
+activate: [ 2.86450723 -2.40252115] expected: [ 0.  1.]
+activate: [-11.87678185  -2.73922916] expected: [ 0.  1.]
+activate: [ 0.21565004  2.14986742] expected: [ 0.  1.]
+activate: [-7.6901869   8.92198429] expected: [ 0.  1.]
+activate: [-2.53769628  4.2757727 ] expected: [ 0.  1.]
+activate: [-8.59476208  4.70822374] expected: [ 0.  1.]
+activate: [-6.60659843  2.59160366] expected: [ 0.  1.]
+activate: [-1.20665048  4.96000969] expected: [ 0.  1.]
+activate: [ 3.93753134  4.43405006] expected: [ 0.  1.]
+activate: [ 2.81689103 -0.49308536] expected: [ 0.  1.]
+activate: [-3.07890043  5.52106735] expected: [ 0.  1.]
+
+Process finished with exit code 0
