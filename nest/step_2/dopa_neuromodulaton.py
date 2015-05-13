@@ -42,14 +42,13 @@ startbuild = clock()
 
 if not os.path.exists(sd_folder_name):
     os.mkdir(sd_folder_name)
-nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, 'data_prefix': f_name_gen(''),
-                      "local_num_threads": 2, "resolution": dt})
+nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 1, "resolution": dt})
 
 # ============
 # Creating BS
 # ============
 parts_BG = generate_neurons_BG(nest)
-cortex = get_ids('cortex', parts_BG)
+cortex = get_ids('motor_cortex', parts_BG)
 striatum = (get_ids('D1'), get_ids('D2'), get_ids('tan'))
 gpe = get_ids('gpe')
 gpi = get_ids('gpi')
@@ -59,14 +58,8 @@ thalamus = get_ids('thalamus')
 snc = get_ids('snc')
 del (parts_BG, get_ids, generate_neurons_BG)
 
-# synapses model are same for test facilitation
-nest.CopyModel(bg_synapse_model, syn_excitory,
-               {"weight": w_ex, "delay": delay_ex, "tau_plus": tau_plus, "Wmax": wmax})
-nest.CopyModel(bg_synapse_model, syn_inhibitory,
-               {'weight': w_in, 'delay': delay_inh, "tau_plus": tau_plus, "Wmax": wmax})
-
 connect = lambda ner_from, ner_to, is_syn_ex=False: nest.Connect(ner_from, ner_to, conn_spec=conn_dict,
-                                                                 syn_spec=syn_excitory if is_syn_ex else syn_inhibitory)
+                                                                 syn_spec=STDP_synapseparams_ex if is_syn_ex else STDP_synapseparams_in)
 connect(cortex, striatum[D1], is_syn_ex=True)
 connect(cortex, striatum[D2], is_syn_ex=True)
 connect(striatum[tan], striatum[D1])
@@ -90,59 +83,58 @@ del (connect)
 if vt_flag:
     # Volume transmission: init dopa_model
     vt_ex = nest.Create("volume_transmitter")
-    vt_inh = nest.Create("volume_transmitter")
-    nest.CopyModel("static_synapse", device_static_synapse, {'delay': delay})
-    nest.CopyModel("stdp_dopamine_synapse", dopa_model_ex,
-                   {"vt": vt_ex[0], "weight": stdp_dopamine_synapse_w_ex, "delay": vt_delay})
-    nest.CopyModel("stdp_dopamine_synapse", dopa_model_in,
-                   {"vt": vt_inh[0], "weight": stdp_dopamine_synapse_w_in, "delay": vt_delay})
-    # nest.Connect(snc, vt_ex, syn_spec=device_static_synapse)
-    # nest.Connect(snc, vt_inh, syn_spec=device_static_synapse)
+    vt_in = nest.Create("volume_transmitter")
+    DOPA_synparams_ex['vt'] = vt_ex[0]
+    DOPA_synparams_in['vt'] = vt_in[0]
+    nest.Connect(snc, vt_ex)
+    nest.Connect(snc, vt_in)
+    nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
+    nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
 
-    # placed in if clause for simple imitatingreinforcment learning
-    nest.Connect(snc, striatum[tan], conn_dict, dopa_model_in)
+    nest.Connect(snc, striatum[tan], conn_dict, syn_spec=dopa_model_in)
 else:
-    nest.CopyModel(bg_synapse_model, dopa_model_ex)
-    nest.CopyModel(bg_synapse_model, dopa_model_in)
+    dopa_model_ex = STDP_synapseparams_ex
+    dopa_model_in = STDP_synapseparams_in
 
-nest.Connect(snc, striatum[D1], conn_dict, dopa_model_ex)
-nest.Connect(snc, striatum[D2], conn_dict, dopa_model_in)
+nest.Connect(snc, striatum[D1], conn_dict, syn_spec=dopa_model_ex)
+nest.Connect(snc, striatum[D2], conn_dict, syn_spec=dopa_model_in)
 
 # ===============
 # Spike Generator
 # ===============
 if pg_flag:
-    pg_ex = nest.Create("poisson_generator", 1, {"rate": K_ex * nu_ex})  # ToDo find out nu_ex
-    pg_in = nest.Create("poisson_generator", 1, {"rate": K_in * nu_in, 'start': 1., 'stop': 200.})
-    # nest.SetStatus(pg_in, {"rate": K_in * nu_in})
-    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_ex, 'delay': delay})
-    # nest.Connect(pg_in, ..., syn_spec={'weight': w_in, 'delay': delay})
-    nest.Connect(pg_ex, striatum[tan], syn_spec=gen_static_syn)
-    nest.Connect(pg_in, cortex, syn_spec=gen_static_syn)
-    nest.Connect(pg_in, gpe, syn_spec=gen_static_syn)
-    nest.Connect(pg_ex, stn, syn_spec=gen_static_syn)
-    nest.Connect(pg_in, snr, syn_spec=gen_static_syn)
-    nest.Connect(pg_ex, thalamus, syn_spec=gen_static_syn)
+    pg_fast = nest.Create("poisson_generator", 1, {"rate": K_fast, 'start': 1., 'stop': 100.})  # ToDo find out nu_ex
+    pg_slow = nest.Create("poisson_generator", 1, {"rate": K_slow, 'start': 1., 'stop': 100.})
+    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_ex, 'delay': pg_delay})
+    nest.Connect(pg_fast, striatum[tan], syn_spec=gen_static_syn)
+    nest.Connect(pg_slow, cortex, syn_spec=gen_static_syn)
+    nest.Connect(pg_slow, gpe, syn_spec=gen_static_syn)
+    nest.Connect(pg_fast, stn, syn_spec=gen_static_syn)
+    # nest.Connect(pg_fast, snr, syn_spec=gen_static_syn)
+    nest.Connect(pg_slow, thalamus, syn_spec=gen_static_syn)
     # neuromodulation
+    # nest.Connect(nest.Create("poisson_generator", 1, {"rate": 150.}), snc, syn_spec=gen_static_syn)
     if vt_flag:
-        nest.Connect(nest.Create("poisson_generator", 1, {"rate": 10000.}), snc, syn_spec=gen_static_syn)
+        nest.Connect(nest.Create("poisson_generator", 1, {"rate": 300.}), snc, syn_spec=gen_static_syn)
     else:
-        nest.Connect(nest.Create("poisson_generator", 1, {"rate": 800.}), snc, syn_spec=gen_static_syn)
+        nest.Connect(nest.Create("poisson_generator", 1, {"rate": 100.}), snc, syn_spec=gen_static_syn)
 else:
     nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_ex})
-    spikes_times = np.arange(1, 100., 30.)
+    spikes_times = np.arange(1, T, 20.)
     f_spike_times = lambda dt: np.array([t + dt for t in spikes_times])
     f_gen_connect = lambda part, dt=0, rang=None: nest.Connect(nest.Create('spike_generator', params={
         'spike_times': (f_spike_times(dt) if rang is None else rang)}), part, syn_spec=gen_static_syn)
 
     f_gen_connect(cortex)
     f_gen_connect(stn)
-    f_gen_connect(striatum[tan], rang=np.arange(1, T, 10.))
+    f_gen_connect(striatum[tan], rang=np.arange(1, T, 30.))
     f_gen_connect(gpe)
     f_gen_connect(snr)
-    f_gen_connect(thalamus)
+    f_gen_connect(thalamus, )  #rang=np.arange(1., T,)
     if vt_flag:
-        f_gen_connect(snc, rang=np.arange(1, T, 10.))
+        f_gen_connect(snc, rang=np.arange(1., 200., 20.))
+        f_gen_connect(snc, rang=np.arange(200., 300., 10.))
+        f_gen_connect(snc, rang=np.arange(300., T, 20.))
     else:
         f_gen_connect(snc, )
     del (f_gen_connect, f_spike_times)
@@ -151,8 +143,7 @@ else:
 # =============
 spikedetector = nest.Create("spike_detector", params=detector_param)
 nest.Connect(thalamus[:N_rec], spikedetector)
-logger.debug("spike detecor is attached to cortex")
-# nest.PrintNetwork()
+logger.debug("spike detecor is attached to cortex: tracing %d neurons" % N_rec)
 # ============
 # MULTIMETER
 # ============
@@ -169,6 +160,7 @@ logger.debug("%s - %d", mm_param["label"], snc[0])
 # ==========
 # SIMULATING
 # ==========
+nest.PrintNetwork()
 endbuild = clock()
 logger.debug("Simulating")
 nest.Simulate(T)
@@ -193,21 +185,22 @@ logger.info('Noise: ' + ('YES' if pg_flag else 'NO'))
 # =====
 # Draw
 # =====
-nest.raster_plot.from_device(spikedetector, hist=True)
-pl.savefig(f_name_gen('spikes', is_image=True, with_folder=True), format='png')
-nest.raster_plot.show()
-pl.close()
-
 nest.voltage_trace.from_device(mm1)
 pl.axis(axis)
-pl.savefig(f_name_gen('thalamus', True, True), dpi=dpi_n, format='png')
+pl.savefig(f_name_gen('thalamus', True), dpi=dpi_n, format='png')
 # nest.voltage_trace.show()
 pl.close()
 
+pl.axis(axis)
 nest.voltage_trace.from_device(mm2)
 pl.axis(axis)
-pl.savefig(f_name_gen('snc', True, True), dpi=dpi_n, format='png')
+pl.savefig(f_name_gen('snc', True), dpi=dpi_n, format='png')
 # nest.voltage_trace.show()
+pl.close()
+
+nest.raster_plot.from_device(spikedetector, hist=True)
+pl.savefig(f_name_gen('spikes', is_image=True), format='png')
+nest.raster_plot.show()
 pl.close()
 
 # another type of visual representation

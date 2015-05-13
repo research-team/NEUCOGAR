@@ -22,16 +22,17 @@ Prefix description:
 import logging
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+dpi_n = 120
 
 # general settings
-#T = 1000.
-T = 100.
+T = 1000.
 dt = 10.
 sd_folder_name = "spike_detector_data/"
 sd_filename = "spikes-172-0.gdf"
 #"spike_detector-cortex-0.gdf"
 # dopamine modulation flag
-vt_flag = True   #ToDo do that element more visible in code
+vt_flag = False
+pg_flag = False
 # dopamine model key
 dopa_model = "dopa"
 
@@ -42,27 +43,23 @@ dopa_model = "dopa"
 # neurons model without neuromodulation
 cortex_neurons_model = striatum_neurons_model = gpe_neurons_model = gpi_neurons_model = stn_neurons_model = snr_neurons_model = thalamus_neurons_model = 'iaf_psc_exp'
 # with dopamine
-snc_neurons_model = 'iaf_psc_exp' # ToDo iaf_psc_alpha    understand the purpose of alpha for neuromodulation
+snc_neurons_model = 'iaf_psc_alpha'
 # Count of neurons in every parts of BS
 # table for neuron number: https://docs.google.com/spreadsheets/d/1cAm5uosBoKaaPyC1mvb527nYkVcW2YsAA2ECiCDASzg/edit?usp=sharing
-NN_cortex = 150
+NN_cortex = 100
 NN_striatum = NN_gpe = NN_gpi = NN_stn = NN_snc = NN_thalamus = 10
 NN_snr = 10
 
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
 # for a time the neuron model parameters would be setted as STP inhibitory or excitory
-STP_neuronparams = {'E_L': -55., 'V_th': 30., 'V_reset': -75., 'C_m': 0.05, 't_ref': 2.,
-                    'tau_m': 15.}
+STP_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -75., 'C_m': 2., 't_ref': 2., 'V_m': -60.,
+                        'tau_syn_ex': 1.,
+                        'tau_syn_in': 1.33, 'tau_m': 20.,}
 # ToDO define appropriate params
 
 
 STP_ex_neuronparams = {'tau_syn_ex': 0.7}
 STP_inh_neuronparams = {'tau_syn_inh': 1.13}
-# for if_neurons
-# dict([{'tau_ref_abs': 3., 'tau_ref_tot': 3.}] +
-# dict([{'tau_ref_abs': 2., 'tau_ref_tot': 2.}] +
-#'tau_m': 30.,
-# 'tau_ex': 3.
 
 # Excitory neurons
 cortex_neuronparams = stn_neuronparams = thalamus_neuronparams = STP_neuronparams
@@ -77,13 +74,13 @@ snc_neuronparams = STP_neuronparams
 
 # parameters of synapses
 # Glutamate
-w_ex = 1.5
+w_ex = 30.
 # GABA
-g = 0.3
-w_inh = -w_ex * g
+g = 0.9
+w_in = -w_ex * g
 
 # Volume transmission
-stdp_dopamine_synapse_weight = 65.
+stdp_dopamine_synapse_weight = 95.
 
 #--------------------------- ToDo what for?
 g_w_ex = 40.
@@ -117,6 +114,11 @@ conn_dict = {'rule': 'all_to_all', 'multapses': True}
 bs_synapse_model = 'stdp_synapse'
 syn_excitory = "excitatory"
 syn_inhibitory = "inhibitory"
+
+mm_param = {"to_memory": True, "to_file": False, 'withtime': True,  'interval': 0.1,
+            'record_from': ['V_m'], 'withgid': True}
+detector_param = {"label": "spikes", "withtime": True, "withgid": True, "to_file": False, "to_memory": True}
+axis = [0, T, -78, -48]
 
 '''
 ==========================|

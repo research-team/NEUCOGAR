@@ -29,6 +29,7 @@ Human: http://binoniq.net/2012/02/14.html
 Rat neurons number:
 total -  331.65 (+-8.84) mln cells in which 200.13 (+-20.17) neurons   | 60%
 cortex -  80 mln cells in which 30 mln neurons          | 40%
+cerebral - 21 mln
 
 STN -        22700 (+-1300)
 GPe -        84100 (+-2100)
