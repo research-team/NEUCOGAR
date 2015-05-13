@@ -4,17 +4,23 @@ from numpy import dot
 from pybrain.structure.connections.connection import Connection
 
 
+NM_INTENCITY = 0.2
+
 class NMConnection(Connection):
-	"""Simulates neuromodulation with randomized connection"""
-	def __init__(self, *args, **kwargs):
-		Connection.__init__(self, *args, **kwargs)
-		n = self.outdim # self.indim*self.outdim # connect only 1 input neuron to random output
-		self.params = np.random.random_integers(0, 1, n)
+    """Simulates neuromodulation with randomized connection"""
 
-	def _forwardImplementation(self, inbuf, outbuf):
-		outbuf += self.params*inbuf[0]
+    def __init__(self, *args, **kwargs):
+        Connection.__init__(self, *args, **kwargs)
+        n = self.outdim  # self.indim*self.outdim # connect only 1 input neuron to random output
+        self.params = np.random.random_integers(0, 1, n)
 
-	def _backwardImplementation(self, outerr, inerr, inbuf):
-		inerr += dot(self.params, outerr)
-		# no calculation for self.derivs - we don't want to "educate" this connection
-		# this is why we don't inherit `ParameterContainer`
+    def _forwardImplementation(self, inbuf, outbuf):
+        # outbuf += self.params * inbuf[0]
+        if inbuf[0] > 0:
+            outbuf += self.params * NM_INTENCITY
+
+    def _backwardImplementation(self, outerr, inerr, inbuf):
+        inerr += dot(self.params, outerr)
+
+    # no calculation for self.derivs - we don't want to "educate" this connection
+    # this is why we don't inherit `ParameterContainer`

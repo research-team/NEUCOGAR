@@ -547,20 +547,20 @@ def get_class(arr):
 
 def run():
     # n = trainedANN()
-    n1 = importANN()
+    # n1 = importANN()
 
     # n2 = trainedRNN()
     n2 = importRNN()
 
     # n = trainedRFCNN()
-    n3 = importRFCNN()
+    # n3 = importRFCNN()
     # draw_graphics(n1, path_net=root.path() + '/Graphics/ANN/')
     # draw_graphics(n2, path_net=root.path() + '/Graphics/RNMNN/')
     # draw_graphics(n3, path_net=root.path() + '/Graphics/RFCNN/')
 
-    calculateCapacity(n1)
+    # calculateCapacity(n1)
     calculateCapacity(n2)
-    calculateCapacity(n3)
+    # calculateCapacity(n3)
 
 
     # print 'ann:'
