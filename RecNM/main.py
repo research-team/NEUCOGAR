@@ -135,8 +135,10 @@ def trainedRNN():
         print globErr
         if globErr < 0.01:
             break
-
-    exportRNN(n)
+        count += 1
+        if count == 50:
+            return trainedRNN()
+    # exportRNN(n)
     draw_connections(n)
 
     return n
@@ -166,7 +168,9 @@ def trainedANN():
         print globErr
         if globErr < 0.01:
             break
-
+        count += 1
+        if count == 200:
+            return trainedANN()
 
     exportANN(n)
     draw_connections(n)
@@ -201,9 +205,9 @@ def trainedRFCNN():
         print globErr
         if globErr < 0.01:
             break
-        # count = count + 1
-        # if (count == 100):
-        #     break
+        count = count + 1
+        if (count == 100):
+            return trainedRFCNN()
 
     # for i in range(100):
     #     print t.train()
@@ -423,34 +427,40 @@ def calculateCapacity(net):
     count2nd = 0
     both = 0
     neither = 0
-    for x1 in range(0, 500, 10):
-        for x2 in range(0, 500, 10):
-            for x3 in range(0, 500, 10):
-                for x4 in range(0, 500, 10):
+    total = 0
+    for x1 in range(0, 500, 20):
+        for x2 in range(0, 500, 20):
+            for x3 in range(0, 500, 20):
+                for x4 in range(0, 500, 20):
                     activation = net.activate([x1, x2, x3, x4])
                     if activation[0] > np.float32(0.0) and activation[1] <= np.float32(0.0):
                         color = 'red'
                         count1st += 1
+                        total += 1
                     elif activation[0] <= np.float32(0.0) and activation[1] > np.float32(0.0):
                         color = 'blue'
                         count2nd += 1
+                        total += 1
                     elif activation[0] > np.float32(0.0) and activation[1] > np.float32(0.0):
                         color = 'orange'
                         both += 1
+                        total += 1
                     else:
                         color = 'black'
                         neither += 1
+                        total += 1
         print 'iteration: ', x1
+    count1st = float(count1st)*100/float(total)
+    count2nd = float(count2nd)*100/float(total)
+    neither = float(neither)*100/float(total)
+    both = float(both)*100/float(total)
+
     print '1st: ', count1st
     print '2nd: ', count2nd
     print 'neither: ', neither
     print 'both', both
+    return count1st, count2nd, both, neither
 
-def subplot(data, fig=None, index=111):
-    if fig is None:
-        fig = plt.figure()
-    ax = fig.add_subplot(index)
-    ax.plot(data)
 
 def trained_cat_dog_ANN():
     n = FeedForwardNetwork()
@@ -548,9 +558,24 @@ def get_class(arr):
 def run():
     # n = trainedANN()
     # n1 = importANN()
+    total_first = []
+    total_second = []
+    total_both = []
+    total_neither = []
+    for i in range(10):
+        n2 = trainedRFCNN()
+        res = calculateCapacity(n2)
+        total_first.append(res[0])
+        total_second.append(res[1])
+        total_both.append(res[2])
+        total_neither.append(res[3])
 
-    # n2 = trainedRNN()
-    n2 = importRNN()
+    print 'first: mean', np.mean(total_first), 'variance', np.var(total_first)
+    print 'second: mean', np.mean(total_second), 'variance', np.var(total_second)
+    print 'both: mean', np.mean(total_both), 'variance', np.var(total_both)
+    print 'neither: mean', np.mean(total_neither), 'variance', np.var(total_neither)
+    exit()
+    # n2 = importRNN()
 
     # n = trainedRFCNN()
     # n3 = importRFCNN()
@@ -559,10 +584,9 @@ def run():
     # draw_graphics(n3, path_net=root.path() + '/Graphics/RFCNN/')
 
     # calculateCapacity(n1)
-    calculateCapacity(n2)
     # calculateCapacity(n3)
 
-
+    exit()
     # print 'ann:'
     # for x in [(1, 15, 150, 160),    (1, 15, 150, 160),
     #           (100, 110, 150, 160), (150, 160, 10, 15),
@@ -596,6 +620,12 @@ RNN(neuromodulation):
 2nd:  2643229
 neither:  28162
 both 3575514
+
+RNN(neuromodulation new)
+1st:  3533955
+2nd:  1977645
+neither:  0
+both 738400
 
 ANN:
 1st:  9803

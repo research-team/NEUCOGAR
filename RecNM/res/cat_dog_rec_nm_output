@@ -31,12 +31,12 @@ hello
 8.1833782137
 8.91202368367
 <class 'pybrain.structure.networks.recurrent.RecurrentNetwork'>
-activate: [ -5.92269703  40.64551625] expected: [ 1.  0.]
+activate: [-5.92269703  40.64551625] expected: [ 1.  0.]
 activate: [ 6.27683859 -3.4284323 ] expected: [ 1.  0.]
 activate: [ 4.19895946 -2.12668224] expected: [ 1.  0.]
 activate: [ 2.47588879  0.80541917] expected: [ 1.  0.]
 activate: [ 1.72474393  2.81640636] expected: [ 1.  0.]
-activate: [  1.61751759  13.03611596] expected: [ 1.  0.]
+activate: [1.61751759  13.03611596] expected: [ 1.  0.]
 activate: [-6.18400933  5.07152299] expected: [ 1.  0.]
 activate: [-1.6296294   3.20504189] expected: [ 1.  0.]
 activate: [-0.46247758  7.55506429] expected: [ 1.  0.]
@@ -61,7 +61,7 @@ activate: [ 0.96336407  0.18917683] expected: [ 0.  1.]
 activate: [ 4.98727909  6.81482459] expected: [ 0.  1.]
 activate: [ 5.04903089  7.01676613] expected: [ 0.  1.]
 activate: [-4.34187235  7.71397446] expected: [ 0.  1.]
-activate: [  2.73384122  10.50469097] expected: [ 0.  1.]
+activate: [2.73384122  10.50469097] expected: [ 0.  1.]
 activate: [-3.2096752   2.04564997] expected: [ 0.  1.]
 activate: [-5.16739157  4.04259605] expected: [ 0.  1.]
 activate: [-2.7976873   0.29105332] expected: [ 0.  1.]
