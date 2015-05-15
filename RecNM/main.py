@@ -15,7 +15,7 @@ from image_processing import get_cat_dog_trainset, get_cat_dog_testset
 from neuromodulation.connection import NMConnection
 import root
 
-def generateTrainingData(size=100, saveAfter = False):
+def generateTrainingData(size=10000, saveAfter = False):
     """
     Creates a set of training data with 4-dimensioanal input and 2-dimensional output
     with `size` samples
@@ -25,12 +25,12 @@ def generateTrainingData(size=100, saveAfter = False):
     for i in xrange(1, int(size/2)):
         [a, b] = np.random.random_integers(1, 100, 2)
         [c, d] = np.random.random_integers(100, 500, 2)
-        data.addSample((a, b, c, d), (0, 1))
+        data.addSample((a, b, c, d), (-1, 1))
 
     for i in xrange(1, int(size/2)):
         [a, b] = np.random.random_integers(100, 500, 2)
         [c, d] = np.random.random_integers(1, 100, 2)
-        data.addSample((a, b, c, d), (1, 0))
+        data.addSample((a, b, c, d), (1, -1))
 
     if saveAfter:
         data.saveToFile(root.path()+"/res/dataSet")
@@ -120,8 +120,8 @@ def trainedRNN():
     n.addConnection(FullConnection(n['in'], n['hidden'], name='c1'))
     n.addConnection(FullConnection(n['hidden'], n['out'], name='c2'))
 
-    n.addRecurrentConnection(NMConnection(n['out'], n['hidden'], name='nmc'))
-
+    n.addRecurrentConnection(NMConnection(n['out'], n['out'], name='nmc'))
+    # n.addRecurrentConnection(FullConnection(n['out'], n['hidden'], inSliceFrom = 0, inSliceTo = 1, outSliceFrom = 0, outSliceTo = 3))
     n.sortModules()
 
     draw_connections(n)
@@ -169,7 +169,7 @@ def trainedANN():
         if globErr < 0.01:
             break
         count += 1
-        if count == 200:
+        if count == 20:
             return trainedANN()
 
     exportANN(n)
@@ -563,7 +563,7 @@ def run():
     total_both = []
     total_neither = []
     for i in range(10):
-        n2 = trainedRFCNN()
+        n2 = trainedRNN()
         res = calculateCapacity(n2)
         total_first.append(res[0])
         total_second.append(res[1])
@@ -610,7 +610,10 @@ def run():
         print "activate:", activate, "expected:", targ
     # draw_graphics(n)
 
-
+# n = 4
+# print np.random.random_integers(0, 1, n)
+# exit()
+# generateTrainingData(saveAfter=True)
 if __name__ == "__main__":
     run()
 
