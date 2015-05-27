@@ -200,6 +200,7 @@ if nest.GetStatus(neuron2)[0]['local']:
 nest.raster_plot.from_device(sd)
 nest.raster_plot.show()
 
+
 nest.voltage_trace.from_device(mm)
 nest.voltage_trace.show()
 
