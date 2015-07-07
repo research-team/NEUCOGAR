@@ -32,6 +32,23 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # your network.
   config.vm.network "public_network"
 
+  # Copy proxy configuration from shell environment
+  # vagrant plugin install vagrant-proxyconf
+  if Vagrant.has_plugin?("vagrant-proxyconf")
+    puts "Proxyconf plugin is found!"
+    if ENV["http_proxy"]
+      puts "http_proxy: " + ENV["http_proxy"]
+      config.proxy.http   = ENV["http_proxy"]
+    end
+    if ENV["https_proxy"]
+      puts "https_proxy: " + ENV["https_proxy"]
+      config.proxy.https   = ENV["https_proxy"]
+    end
+    if ENV["no_proxy"]
+      config.proxy.no_proxy = ENV["no_proxy"]
+    end
+  end
+
   # If true, then any SSH connections made will enable agent forwarding.
   # Default value: false
   # config.ssh.forward_agent = true
