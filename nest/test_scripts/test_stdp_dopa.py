@@ -74,7 +74,7 @@ g = 3.83
 w_in = -w_ex * g
 
 K = 10000
-f_ex = 0.8
+f_ex = 1.
 K_ex = f_ex * K
 K_in = (1.0 - f_ex) * K
 
@@ -199,6 +199,7 @@ if nest.GetStatus(neuron2)[0]['local']:
 
 nest.raster_plot.from_device(sd)
 nest.raster_plot.show()
+
 
 nest.voltage_trace.from_device(mm)
 nest.voltage_trace.show()
