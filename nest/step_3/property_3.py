@@ -7,7 +7,7 @@ D1 = 0
 D2 = 1
 tan = 2  # Tonically active neurons
 
-# static final values
+# Quality of graphics
 dpi_n = 120
 
 syn_excitory = "excitatory"
@@ -28,5 +28,7 @@ vt_flag = True
 pg_flag = True
 # testing mode or real number neurons
 test_flag = True
-#save weight change when vt_flag is True
+#display graphic
+disp_flag = False
+#save weight change when vt_flag is True (a graphic and dat file of weigh change of one synapse)
 save_weight_flag = False

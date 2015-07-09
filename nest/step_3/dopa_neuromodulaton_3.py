@@ -78,7 +78,9 @@ del (parts_BG, get_ids, generate_neurons_BG)
 log_conn = lambda a, b, is_syn_ex=None: logger.debug('%s -> %s (%s)' % (parts_dict_log[a[0]], parts_dict_log[b[0]],
                                                                         'generator' if is_syn_ex is None else 'excitatory' if is_syn_ex else 'inhibitory'))
 
-
+'''
+help method for connection syntax facilitation
+'''
 def connect(ner_from, ner_to, is_syn_ex=False):
     nest.Connect(ner_from, ner_to, conn_spec=conn_dict,
                  syn_spec=STDP_synapseparams_ex if is_syn_ex else STDP_synapseparams_in)
@@ -259,24 +261,24 @@ if save_weight_flag: plot_weights(weight_list, "Neurons weights progress neuron 
 nest.voltage_trace.from_device(mm1)
 pl.axis(axis)
 pl.savefig(f_name_gen('thalamus', True), dpi=dpi_n, format='png')
-# nest.voltage_trace.show()
+if disp_flag: nest.voltage_trace.show()
 pl.close()
 
 pl.axis(axis)
 nest.voltage_trace.from_device(mm2)
 pl.axis(axis)
 pl.savefig(f_name_gen('snc', True), dpi=dpi_n, format='png')
-# nest.voltage_trace.show()
+if disp_flag: nest.voltage_trace.show()
 pl.close()
 
 nest.raster_plot.from_device((spikedetector[0],), hist=True)
 pl.savefig(f_name_gen('spikes_thalamus', is_image=True), format='png')
-# nest.raster_plot.show()
+if disp_flag: nest.raster_plot.show()
 pl.close()
 
 nest.raster_plot.from_device((spikedetector[1],), hist=True)
 pl.savefig(f_name_gen('spikes_motorcortex', is_image=True), format='png')
-# nest.raster_plot.show()
+if disp_flag: nest.raster_plot.show()
 pl.close()
 
 # another type of visual representation

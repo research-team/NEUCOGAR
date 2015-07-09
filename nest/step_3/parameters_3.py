@@ -39,6 +39,10 @@ N_rec = 100
 k_ids = 'ids'
 k_name = 'name'
 # functions just for easy settings readability
+'''
+Set up parameters of brain parts (GPe, GPi...).
+If you need new brain part just write name = {k_name: 'name'} and add to iter_all_part variable (dict{'name':neurons_list}).
+'''
 def generate_neurons_BG(nest):
     logger = logging.getLogger("parameters")
     iaf_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -67., 'C_m': 2., 't_ref': 2., 'V_m': -60.,
@@ -129,7 +133,9 @@ def generate_neurons_BG(nest):
 
     return iter_all_parts
 
-
+'''
+help method to get neurons_list from iter_BG{'name':neurons_list}
+'''
 def get_ids(name, iter_BG=None):
     if iter_BG is not None: get_ids.iter_BG = iter_BG
     for part_BG in get_ids.iter_BG:
@@ -190,8 +196,11 @@ DOPA_synparams_in = dict({"weight": stdp_dopamine_synapse_w_in, 'Wmax': -100., '
 conn_dict = {'rule': 'all_to_all', 'multapses': True}
 # conn_dict = {'rule': 'fixed_outdegree', 'outdegree': 100}
 # =========
-# FUNCTIONS
+# USEFUL FUNCTIONS
 # =========
+'''
+Generates string ful name (subfolders with respect to flags defined in properties) of an image
+'''
 def f_name_gen(name, is_image=False):
     sub_folder = os.path.join(sd_folder_name, 'noise/' if pg_flag else 'static/')
     if not os.path.exists(sub_folder): os.makedirs(sub_folder)
@@ -202,7 +211,9 @@ def f_name_gen(name, is_image=False):
            ('noise' if pg_flag else 'static') + \
            ('.png' if is_image else '_')
 
-
+'''
+if save_weight_flag if True then do plotting of weight change in a synapse
+'''
 def plot_weights(weights_list, title="Neurons weights progress", y_lim=None):
     # Plot
     # Make a list of colors cycling through the rgbcmyk series.
