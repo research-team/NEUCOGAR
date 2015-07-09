@@ -10,3 +10,5 @@ NEUCOGAR project for validation of cube of NEUCOGAR architecture of affects base
 ## Striatum diagram is based on [This article](http://www.ncbi.nlm.nih.gov/pubmed/20521851 "A computational model of how cholinergic interneurons protect striatal-dependent learning.") with tonically active neurons
 
 ![striatum diagram](./nest/step_2/Striatum_D1_D2.png)
+
+[Instructions](./instruction.md)
