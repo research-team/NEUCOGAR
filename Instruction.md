@@ -2,7 +2,7 @@
 Experiment description: [link](experiment_description.md)
 
 ##Dopamine pathway description
-The last implementation of dopamine pathway is in step_3 folder is based on schema below. Список соединений частей представлен в файле [nest/step_3/BG_advanced.txt](https://github.com/research-team/NEUCOGAR/nest/step_3/BG_advanced.txt)
+The last implementation of dopamine pathway is in step_3 folder is based on schema below. Список соединений частей представлен в файле [nest/step_3/BG_advanced.txt](https://github.com/research-team/NEUCOGAR/blob/master/nest/step_3/BG_advanced.txt)
 
 ![Interpretation of modern schema of dopamine pathway](./dopamine_pathway.png )
 
