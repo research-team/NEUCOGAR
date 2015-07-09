@@ -11,4 +11,4 @@ NEUCOGAR project for validation of cube of NEUCOGAR architecture of affects base
 
 ![striatum diagram](./nest/step_2/Striatum_D1_D2.png)
 
-[Instructions](./instruction.md)
+[Instructions](./Instruction.md)
