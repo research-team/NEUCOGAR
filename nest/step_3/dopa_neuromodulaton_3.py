@@ -124,6 +124,7 @@ connect(thalamus, striatum[D1], is_syn_ex=True)
 connect(thalamus, striatum[D2], is_syn_ex=True)
 connect(thalamus, stn, is_syn_ex=True)
 
+logger.debug('Making neuromodulating connections...')
 
 # ==================
 # Dopamine modulator
@@ -155,6 +156,9 @@ if vt_flag:
     nest.Connect(snc, stn, conn_dict, syn_spec=dopa_model_ex)
     log_conn(snc, stn, dopa_model_in)
 del (connect)
+
+logger.debug('Starting spike generators')
+
 # ===============
 # Spike Generator
 # ===============
@@ -185,6 +189,9 @@ else:
         nest.Connect(sg_fast, motor_cortex[motivation], syn_spec=gen_static_syn, )
         # conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(motor_cortex[motivation]) / 4})
         log_conn(sg_fast, motor_cortex[motivation])
+
+logger.debug('Attaching spikes detector')
+
 # =============
 # SPIKEDETECTOR
 # =============

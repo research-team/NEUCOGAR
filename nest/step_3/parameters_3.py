@@ -89,6 +89,21 @@ def generate_neurons_BG(nest):
         snc[k_NN] = 10
         snr[k_NN] = 21
         thalamus[k_NN] = 90
+
+        # increase numbers by k
+        k = 5
+        motor_cortex[motivation][k_NN] *= k
+        motor_cortex[action][k_NN] *= k
+        striatum[D1][k_NN] *= k
+        striatum[D2][k_NN] *= k
+        striatum[tan][k_NN] *= k
+        gpe[k_NN] *= k
+        gpi[k_NN] *= k
+        stn[k_NN] *= k
+        snc[k_NN] *= k
+        snr[k_NN] *= k
+        thalamus[k_NN] *= k
+
     else:
         # ===========
         # REAL NUMBER
@@ -110,7 +125,9 @@ def generate_neurons_BG(nest):
         # COEFFICIENT COUNT
         # =================
         # possible different coefficients
-        k = 0.25
+        # k = 0.25
+        # k = 0.0015 # 54640 neurons
+        k = 0.0015 # 54640 neurons
         motor_cortex[motivation][k_coef] = k
         motor_cortex[action][k_coef] = k
         striatum[D1][k_coef] = k

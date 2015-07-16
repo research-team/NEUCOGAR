@@ -1,0 +1,23 @@
+
+              -- N E S T --
+
+  Copyright (C) 2004 The NEST Initiative
+  Version 2.6.0 May 13 2015 17:58:16
+
+This program is provided AS IS and comes with
+NO WARRANTY. See the file LICENSE for details.
+
+Problems or suggestions?
+  Website     : http://www.nest-initiative.org
+  Mailing list: nest_user@nest-initiative.org
+
+Type 'nest.help()' to find out more about NEST.
+
+Jul 14 18:54:08 Network::clear_models [Info]: 
+    Models will be cleared and parameters reset.
+
+Jul 14 18:54:08 Network::clear_models [Info]: 
+    Models will be cleared and parameters reset.
+
+Jul 14 18:54:08 Scheduler::set_status [Info]: 
+    Temporal resolution changed.

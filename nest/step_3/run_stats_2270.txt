@@ -1,0 +1,125 @@
+
+              -- N E S T --
+
+  Copyright (C) 2004 The NEST Initiative
+  Version 2.6.0 May 13 2015 17:58:16
+
+This program is provided AS IS and comes with
+NO WARRANTY. See the file LICENSE for details.
+
+Problems or suggestions?
+  Website     : http://www.nest-initiative.org
+  Mailing list: nest_user@nest-initiative.org
+
+Type 'nest.help()' to find out more about NEST.
+
+Jul 15 16:44:07 Network::clear_models [Info]: 
+    Models will be cleared and parameters reset.
+
+Jul 15 16:44:07 Network::clear_models [Info]: 
+    Models will be cleared and parameters reset.
+
+Jul 15 16:44:07 Scheduler::set_status [Info]: 
+    Temporal resolution changed.
+parameters.DEBUG: Initialised: 2270 neurons.
+dopa.DEBUG: Start connection initialisation.
+dopa.DEBUG: Motor Cortex[motivation] -> Striatum[D1] (excitatory).
+dopa.DEBUG: Motor Cortex[action] -> Striatum[D1] (excitatory).
+dopa.DEBUG: Motor Cortex[motivation] -> Striatum[D2] (excitatory).
+dopa.DEBUG: Motor Cortex[action] -> Striatum[D2] (excitatory).
+dopa.DEBUG: Motor Cortex[motivation] -> Thalamus (excitatory).
+dopa.DEBUG: Motor Cortex[action] -> Thalamus (excitatory).
+dopa.DEBUG: Motor Cortex[motivation] -> STN (excitatory).
+dopa.DEBUG: Motor Cortex[action] -> STN (excitatory).
+dopa.DEBUG: Striatum[tan] -> Striatum[D1] (inhibitory).
+dopa.DEBUG: Striatum[tan] -> Striatum[D2] (excitatory).
+dopa.DEBUG: Striatum[D1] -> SNr (inhibitory).
+dopa.DEBUG: Striatum[D1] -> GPi (inhibitory).
+dopa.DEBUG: Striatum[D1] -> GPe (inhibitory).
+dopa.DEBUG: Striatum[tan] -> SNc (inhibitory).
+dopa.DEBUG: Striatum[D2] -> GPe (inhibitory).
+dopa.DEBUG: GPe -> STN (inhibitory).
+dopa.DEBUG: GPe -> Striatum[D1] (inhibitory).
+dopa.DEBUG: GPe -> Striatum[D2] (inhibitory).
+dopa.DEBUG: GPe -> GPi (inhibitory).
+dopa.DEBUG: STN -> SNr (excitatory).
+dopa.DEBUG: STN -> GPi (excitatory).
+dopa.DEBUG: STN -> GPe (excitatory).
+dopa.DEBUG: GPi -> Thalamus (inhibitory).
+dopa.DEBUG: SNr -> Thalamus (inhibitory).
+dopa.DEBUG: Thalamus -> Motor Cortex[action] (excitatory).
+dopa.DEBUG: Thalamus -> Striatum[D1] (excitatory).
+dopa.DEBUG: Thalamus -> Striatum[D2] (excitatory).
+dopa.DEBUG: Thalamus -> STN (excitatory).
+dopa.DEBUG: Making neuromodulating connections....
+dopa.DEBUG: Motor Cortex[motivation] -> SNc (excitatory).
+dopa.DEBUG: STN -> SNc (excitatory).
+dopa.DEBUG: SNc -> Striatum[D1] (excitatory).
+dopa.DEBUG: SNc -> Striatum[D2] (excitatory).
+dopa.DEBUG: SNc -> Striatum[tan] (excitatory).
+dopa.DEBUG: SNc -> GPe (excitatory).
+dopa.DEBUG: SNc -> STN (excitatory).
+dopa.DEBUG: Starting spike generators.
+dopa.DEBUG: Poisson Generator(slow) -> Motor Cortex[action] (generator).
+dopa.DEBUG: Poisson Generator(fast) -> Motor Cortex[motivation] (generator).
+dopa.DEBUG: Attaching spikes detector.
+dopa.DEBUG: spike detecor is attached to thalamus: tracing 100 neurons.
+dopa.DEBUG: spike detecor is attached to motor cortex: tracing 100 neurons.
+dopa.DEBUG: thalamus - 381.
+dopa.DEBUG: snc - 2221.
+dopa.DEBUG: Simulating.
++-[0] root dim=[2278]
+   |
+   +-[1]...[2220] iaf_psc_exp
+   +-[2221]...[2270] iaf_psc_alpha
+   +-[2271]...[2272] volume_transmitter
+   +-[2273]...[2274] poisson_generator
+   +-[2275]...[2276] spike_detector
+   +-[2277]...[2278] multimeter
+   
+
+Jul 15 16:44:10 Simulate [Info]: 
+    Simulating 1000 ms.
+
+Jul 15 16:44:10 Scheduler::prepare_nodes [Info]: 
+    Please wait. Preparing elements.
+
+Jul 15 16:44:10 Scheduler::prepare_nodes [Info]: 
+    Simulating 2278 local nodes.
+
+Jul 15 16:44:10 Scheduler::update [Info]: 
+    Simulating using OpenMP.
+
+Jul 15 16:44:32 Scheduler::resume [Info]: 
+    Simulation finished.
+
+Jul 15 16:44:32 Scheduler::finalize_nodes() [Info]: 
+     using OpenMP.
+dopa.INFO: Building time     : 3.39 s.
+dopa.INFO: Simulation time   : 21.51 s.
+dopa.INFO: Thalamus rate   : 697.34 Hz.
+dopa.INFO: Dopamine: YES.
+dopa.INFO: Noise: YES.
+	Command being timed: "python dopa_neuromodulaton_3.py"
+	User time (seconds): 26.12
+	System time (seconds): 0.21
+	Percent of CPU this job got: 99%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:26.38
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 298752
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 78535
+	Voluntary context switches: 1192
+	Involuntary context switches: 3146
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 416
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
