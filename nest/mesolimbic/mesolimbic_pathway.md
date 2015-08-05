@@ -5,3 +5,4 @@
 |Cortex[Glu]|NAc[GABA]|excitory|
 |Cortex[Glu]|VTA[GABA]|excitory|
 |Cortex[Glu]|VTA[DA]|excitory|
+|NAc[Ach]|NAc[GABA]|inhibitory|

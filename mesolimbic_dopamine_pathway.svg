@@ -269,9 +269,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.1058327"
-     inkscape:cx="256.80205"
-     inkscape:cy="681.90657"
+     inkscape:zoom="4.4233308"
+     inkscape:cx="423.602"
+     inkscape:cy="831.03372"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1012,14 +1012,15 @@
        inkscape:connection-end-point="d4" />
     <path
        style="fill:none;stroke:#000000;stroke-width:1.20000005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL)"
-       d="m 381.51548,196.08691 160.16394,0"
+       d="m 381.51548,196.08691 36.94745,-36.62399 89.20773,-0.26565 37.62594,22.64698"
        id="path10050"
        inkscape:connector-type="polyline"
        inkscape:connector-curvature="0"
        inkscape:connection-start="#g6345"
        inkscape:connection-start-point="d4"
        inkscape:connection-end="#g6353"
-       inkscape:connection-end-point="d4" />
+       inkscape:connection-end-point="d4"
+       sodipodi:nodetypes="cccc" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
