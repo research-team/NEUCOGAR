@@ -74,7 +74,7 @@ Serotonin - plays the role of neurotransmitter in the CNS. Serotonergic neurons 
 
 ![Pathway](https://camo.githubusercontent.com/d3b25bf4ee477c6a7e89d8b6321a5c299683d53f/687474703a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f656e2f382f38382f446f70616d696e6573657261746f6e696e2e706e67)
 
-[Serotonin pathway video](http://www.argosymedical.com/Nervous/samples/animations/Serotonin%20Pathways/]
+[Serotonin pathway video](http://www.argosymedical.com/Nervous/samples/animations/Serotonin%20Pathways/)
 
 Serotonin is used throughout the body in multiple physiological roles, and just 2% of serotonin used in CNS.
 In the brain serotonin is produced in the upper raphe nuclei and in the caudal raphe nuclei and then travels along the serotonins pathway to other parts of the brain and spinal cord. The Limbic system is subdivision of the cortex, it is a network of the neuron clusters connected by neurotransmitter pathways. It plays a role in behavior, physiologic changes and emotions. A decrease of the availability of the serotonin to the amygdala (the emotional saddler of the brain) can class sadness, a decrease libido and a general lack of motivation.
@@ -83,7 +83,6 @@ Because serotonin also modulates NE  secretion, reduce levels are associated  wi
 Serotonin is released as neurotransmitter but also released non-synoptically through some axon terminals. Neurotransmitter pathways can be consolidated into 3 major paths. All paths emerge from same set of neurons in the Raphe region of the brainstem, a group of nuclei along midline of midbrain, pons and medulla.
 
 ###Caudal pathway
-
 (from Raphe nuclei to medulla and spinal cord):
 
 * Uses mainly 5HT1 receptors "slow excitation”;
@@ -94,18 +93,18 @@ Serotonin is released as neurotransmitter but also released non-synoptically thr
 * 5HT3 receptors in area postrema trigger vomiting.
 
 
-###Middle pathway
+###Middle pathway **
 (from Raphe neurons to cerebral cortex and basal ganglia):
 
 * Goes to cortex along with NE axons.;
 * Goes to basal ganglia along with DA & ACh neurons;
-* 5HT2 “slow excitation” receptors;
+* 5HT2 "slow excitation" receptors;
 * Serotonin induces positive mood and affect cortex;
 * "This is the system where SSRIs work by inhibiting the transporter protein necessary for serotonin reuptake".
 
 
-###Rostral pathway
-(from Raphe nuclei to 5 areas): Uses 5HT1 “slow inhibition” &5HT2 “slow excitation”
+###Rostral pathway *
+(from Raphe nuclei to 5 areas): Uses 5HT1 "slow inhibition" &5HT2 "slow excitation"
 
 1. Raphe nuclei within: within Raphe,there are autoreceptors(5HT1-self inhibit)
 1. Raphe to sensory cortex: Sensory cortex-particularly visual perception-5HT2 relevant to hallucinogens (LSD, psilocybin mushrooms)
