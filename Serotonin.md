@@ -1,7 +1,9 @@
-**Serotonin (pleasure hormones)** - a chemical created by the human body, a hormone that acts as a neurotransmitter. It supports conversion of signals from one part of brain to the other. Serotonin is associated with psychological and physical activity: appetite, mood, libido, social behavior and cognitive reasoning. 
-__________________________________________________________________________________________________________________
+#Serotonin
 
-<strong> Glossary </strong>
+**Serotonin (pleasure hormones)** - a chemical created by the human body, a hormone that acts as a neurotransmitter. It supports conversion of signals from one part of brain to the other. Serotonin is associated with psychological and physical activity: appetite, mood, libido, social behavior and cognitive reasoning. 
+
+
+##Glossary
 
 
 <table>
@@ -40,44 +42,44 @@ The rostral aspect of the dorsal raphe is further divided into interfascicular, 
 </tbody>
 </table>
 
-<p><a href="http://www.ocduk.org/siteimages/OCD/neurotransmitter.jpg" target="_blank"><img src="http://www.ocduk.org/siteimages/OCD/neurotransmitter.jpg"</a></p>
+![Serotonin as neurotransmmiter](http://www.ocduk.org/siteimages/OCD/neurotransmitter.jpg)
+
+![Serotonergic neurotransmission](http://www.ocduk.org/siteimages/OCD/neurotransmitter.jpg)
 
 
-<p><a href="http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687" target="_blank"><img src="http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687"</a></p>
+<p>
+
+<a href="http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687" target="_blank">
+<img src="http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687">
+</a>
+
+</p>
 
 
-__________________________________________________________________________________________________________________
-
-<strong> Serotonin functions </strong>
+##Serotonin functions
 
 Serotonin is widely believed to play a key role in the central nervous system, as well as in the general functioning of the body and in particular the GI tract. But, it is should be mentioned, that serotonin cannot cross the blood-brain barrier, therefore, serotonin that is used inside the brain must be produced within it. Studies have found links between serotonin and bone metabolism, breast milk production, liver regeneration and cell division.
 
 
-<li>
-<strong>Sleep</strong>
+###Sleep
 
 Serotonin influences on sleep. When the level of serotonin is decreasing we go to sleep. When we sleep and have a dream, the level of serotonin is growing. In nighttime hormone melatonin is synthesized in the pineal gland from serotonin. Melatonin regulates the activity of the endocrine system, blood pressure, frequency of sleep and etc.
-</li>
-<li>
-<strong>Mood</strong>
+
+###Mood
 
 It is usually to think that serotonin influences on mood, but it's important to know that there are also dopamine, norepinephrine, GABA. All of them are important for different aspects of mood. Anyway, it is obvious that serotonin pathways are pathways that help to regulate mood control. An association has been made between depression and serotonin. Scientists found out that decreasing of serotonin effects on the onset of depression.</li>
 
-
-<li>
-<strong>The serotonin pathways in depression</strong>
+##The serotonin pathways in depression
 
 Serotonin transmission from both the caudal raphe nuclei and rostal raphe nuclei is reduced in patients with depression compared with non-depressed controls. Increasing the levels of serotonin in these pathways, by reducing serotonin reuptake and hence increasing serotonin function, is one of the therapeutic approaches to treating depression. [7]
 
 <p><a href="https://www.cnsforum.com/upload/imagebank/large/Neuro_path_SN_DPN.png" target="_blank"><img src="https://www.cnsforum.com/upload/imagebank/large/Neuro_path_SN_DPN.png"</a></p>
 </li>
 
-__________________________________________________________________________________________________________________
-
-<strong> Serotonin pathway </strong> 
+##Serotonin pathway
 
 
-· Serotonin - plays the role of neurotransmitter in the CNS. Serotonergic neurons are grouped in the brainstem: in the pons and in the cores of the joint. Descending projections go to the spinal cord from the bridge, raphe nuclei neurons give ascending projection to the cerebellum, to the limbic system, to basal ganglia, to cortex. At the same time, the neurons of the dorsal and medial raphe nuclei give axons, which differ morphologically electrophysiologically, target of innervation and sensitivity to certain neurotoxic agents, such as, methamphetamine.
+Serotonin - plays the role of neurotransmitter in the CNS. Serotonergic neurons are grouped in the brainstem: in the pons and in the cores of the joint. Descending projections go to the spinal cord from the bridge, raphe nuclei neurons give ascending projection to the cerebellum, to the limbic system, to basal ganglia, to cortex. At the same time, the neurons of the dorsal and medial raphe nuclei give axons, which differ morphologically electrophysiologically, target of innervation and sensitivity to certain neurotoxic agents, such as, methamphetamine.
 
 <p><a href="https://camo.githubusercontent.com/d3b25bf4ee477c6a7e89d8b6321a5c299683d53f/687474703a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f656e2f382f38382f446f70616d696e6573657261746f6e696e2e706e67" target="_blank"><img src="https://camo.githubusercontent.com/d3b25bf4ee477c6a7e89d8b6321a5c299683d53f/687474703a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f656e2f382f38382f446f70616d696e6573657261746f6e696e2e706e67"</a></p>
 
@@ -91,69 +93,54 @@ Serotonin is used throughout the body in multiple physiological roles, and just 
 In the brain serotonin is produced in the upper raphe nuclei and in the caudal raphe nuclei and then travels along the serotonins pathway to other parts of the brain and spinal cord. The Limbic system is subdivision of the cortex, it is a network of the neuron clusters connected by neurotransmitter pathways. It plays a role in behavior, physiologic changes and emotions. A decrease of the availability of the serotonin to the amygdala (the emotional saddler of the brain) can class sadness, a decrease libido and a general lack of motivation.
 Because serotonin also modulates NE  secretion, reduce levels are associated  with anxiety disorders. The efficacy of novel antidepressants and SSRI in the treatment of co-occurring mood and anxiety disorders, lie in their ability to modulate serotonin and NE. Deficit of serotonin in the Hypothalamus can influence to the appetite, so person can get an anorexia, or hyperphagia. The Pituitary Gland can react to a decrease of serotonin by releasing an excess of pituitary hormones and the result is gastric distress, menstrual irregularities and sleep disturbances. [5]
 
-______________________________________________________
+Serotonin is released as neurotransmitter but also released non-synoptically through some axon terminals. Neurotransmitter pathways can be consolidated into 3 major paths. All paths emerge from same set of neurons in the Raphe region of the brainstem, a group of nuclei along midline of midbrain, pons and medulla.
 
-Serotonin is released as neurotransmitter but also released non-synoptically through some axon terminals. Neurotransmitter pathways can be consolidated into 3 major paths. All paths emerge from same set of neurons in the Raphe region of the brainstem, a group of nuclei along midline of midbrain, pons and medulla.
+###Caudal pathway
 
-<u>Caudal pathway</u> (from Raphe nuclei to medulla and spinal cord):
+(from Raphe nuclei to medulla and spinal cord):
 
-- Uses mainly 5HT1 receptors "slow excitation”;
-- Causes contraction or uterine muscles cramps;
-- Causes some contraction of blood vessel walls" blood pressure”;
-- Causes mild motor neuron excitation.;
-- Stimulates release of endorphins that then inhibit pain messages.;
-- 5HT3 receptors in area postrema trigger vomiting.
+* Uses mainly 5HT1 receptors "slow excitation”;
+* Causes contraction or uterine muscles cramps;
+* Causes some contraction of blood vessel walls" blood pressure”;
+* Causes mild motor neuron excitation.;
+* Stimulates release of endorphins that then inhibit pain messages.;
+* 5HT3 receptors in area postrema trigger vomiting.
 
 
-___________________________
+###Middle pathway
+(from Raphe neurons to cerebral cortex and basal ganglia):
 
-<u>Middle pathway</u> (from Raphe neurons to cerebral cortex and basal ganglia):
+* Goes to cortex along with NE axons.;
+* Goes to basal ganglia along with DA & ACh neurons;
+* 5HT2 “slow excitation” receptors;
+* Serotonin induces positive mood and affect cortex;
+* "This is the system where SSRIs work by inhibiting the transporter protein necessary for serotonin reuptake".
 
-- Goes to cortex along with NE axons.;
-- Goes to basal ganglia along with DA & ACh neurons;
-- 5HT2 “slow excitation” receptors;
-- Serotonin induces positive mood and affect cortex;
-- “This is the system where SSRIs work by inhibiting the transporter protein necessary for serotonin reuptake”.
 
-___________________________
+###Rostral pathway
+(from Raphe nuclei to 5 areas): Uses 5HT1 “slow inhibition” &5HT2 “slow excitation”
 
-<u>Rostral pathway</u> (from Raphe nuclei to 5 areas):
-Uses 5HT1 “slow inhibition” &5HT2 “slow excitation”
+1. Raphe nuclei within: within Raphe,there are autoreceptors(5HT1-self inhibit)
+1. Raphe to sensory cortex: Sensory cortex-particularly visual perception-5HT2 relevant to hallucinogens (LSD, psilocybin mushrooms)
+1. Raphe to limbic system: Limbic system “Pleasure & anxiety” slow inhibition at 5HT1 receptors.
+1. Raphe to hypothalamus and thalamus: Uses 5HT1 receptors in thermoregulation. Ecstasy causes hyperthermia through here.
+1. Raphe to suprachiasmatic nucleus: Uses 5 HT1. Important in sleep/wakefulness. Serotonin induces sleep-inject into brain-sleep occurs.
+Inhibit serotonin (by PCPA, inhibits Tryptophan hydroxylase and production of serotonin); no sleep and there is an increase in activity. But other neurotransmitter are also important in sleep. [6]
 
-A. Raphe nuclei within:
-within Raphe,there are autoreceptors(5HT1-self inhibit)
-
-B. Raphe to sensory cortex:
-Sensory cortex-particularly visual perception-5HT2 relevant to hallucinogens (LSD, psilocybin mushrooms)
-
-C. Raphe to limbic system:
-Limbic system “Pleasure & anxiety” slow inhibition at 5HT1 receptors.
-
-D. Raphe to hypothalamus and thalamus:
-Uses 5HT1 receptors in thermoregulation.Ecstasy causes hyperthermia through here.
-
-E. Raphe to suprachiasmatic nucleus:
-Uses 5 HT1.Important in sleep/wakefulness.Serotonin induces sleep-inject into brain-sleep occurs. Inhibit serotonin (by PCPA, inhibits Tryptophan hydroxylase and production of serotonin); no sleep and there is an increase in activity. But other neurotransmitter are also important in sleep. [6]
-__________________________________________________________________________________________________________________
-
-<strong> Serotonin in Basal Ganglia  </strong>
+###Serotonin in Basal Ganglia
 
 <p><a href="https://pp.vk.me/c623428/v623428856/3537b/Xz0IKa9vryE.jpg"><img src="https://pp.vk.me/c623428/v623428856/3537b/Xz0IKa9vryE.jpg"</a></p>
 
-<strong> The influence of the DRN on the direct and indirect pathways  </strong>
+**The influence of the DRN on the direct and indirect pathways**
 
 Dopaminergic neurons of the SNc inhibit the indirect pathway and stimulate the direct pathway from the cortex to the thalamus. Serotonin from the DRN projections to the striatum increase DA release and projections from the cortex inhibit DRN firing. The details of basal ganglia circuitry in the direct and indirect pathways is omitted. References for the influences are given in the text. There are many descending projections to the DRN; nucleus X represents one of these that may excite or inhibit the DRN. [8]
-__________________________________________________________________________________________________________________
 
-
-<strong> Conclusion </strong>
-
-
+##Conclusion </strong>
 
 Apart from cortex and brainstem serotonergic neurons are concentrated in some subcortical structures: the caudate nucleus, the nucleus shell lentil, front and medial nucleus thalamus, midbrain, olfactory brain and a number of structures associated with the reticular activating system in the cerebral cortex, amygdala and hypothalamus. In the cortex of the limbic region quantity of serotonin significantly greater than in the neocortex.
-__________________________________________________________________________________________________________________
 
-<strong> References </strong>
+
+##References </strong>
 
 <ol>
 <li><a href="http://www.bio.davidson.edu/Courses/genomics/2003/mccord/5-HTT.html">5-HTT: The Gene for Susceptibility to Depression?</a></li>
