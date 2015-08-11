@@ -44,16 +44,7 @@ The rostral aspect of the dorsal raphe is further divided into interfascicular, 
 
 ![Serotonin as neurotransmmiter](http://www.ocduk.org/siteimages/OCD/neurotransmitter.jpg)
 
-![Serotonergic neurotransmission](http://www.ocduk.org/siteimages/OCD/neurotransmitter.jpg)
-
-
-<p>
-
-<a href="http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687" target="_blank">
-<img src="http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687">
-</a>
-
-</p>
+![Serotonergic pathway](http://image.slidesharecdn.com/original-advancesintheartandscienceofdepression-120419192523-phpapp01/95/dr-shakirs-ctf-presentation-depression-treatment-34-728.jpg?cb=1334863687)
 
 
 ##Serotonin functions
@@ -73,7 +64,7 @@ It is usually to think that serotonin influences on mood, but it's important to 
 
 Serotonin transmission from both the caudal raphe nuclei and rostal raphe nuclei is reduced in patients with depression compared with non-depressed controls. Increasing the levels of serotonin in these pathways, by reducing serotonin reuptake and hence increasing serotonin function, is one of the therapeutic approaches to treating depression. [7]
 
-<p><a href="https://www.cnsforum.com/upload/imagebank/large/Neuro_path_SN_DPN.png" target="_blank"><img src="https://www.cnsforum.com/upload/imagebank/large/Neuro_path_SN_DPN.png"</a></p>
+![Neuro path 5HT](https://www.cnsforum.com/upload/imagebank/large/Neuro_path_SN_DPN.png)
 </li>
 
 ##Serotonin pathway
@@ -81,13 +72,9 @@ Serotonin transmission from both the caudal raphe nuclei and rostal raphe nuclei
 
 Serotonin - plays the role of neurotransmitter in the CNS. Serotonergic neurons are grouped in the brainstem: in the pons and in the cores of the joint. Descending projections go to the spinal cord from the bridge, raphe nuclei neurons give ascending projection to the cerebellum, to the limbic system, to basal ganglia, to cortex. At the same time, the neurons of the dorsal and medial raphe nuclei give axons, which differ morphologically electrophysiologically, target of innervation and sensitivity to certain neurotoxic agents, such as, methamphetamine.
 
-<p><a href="https://camo.githubusercontent.com/d3b25bf4ee477c6a7e89d8b6321a5c299683d53f/687474703a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f656e2f382f38382f446f70616d696e6573657261746f6e696e2e706e67" target="_blank"><img src="https://camo.githubusercontent.com/d3b25bf4ee477c6a7e89d8b6321a5c299683d53f/687474703a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f656e2f382f38382f446f70616d696e6573657261746f6e696e2e706e67"</a></p>
+![Pathway](https://camo.githubusercontent.com/d3b25bf4ee477c6a7e89d8b6321a5c299683d53f/687474703a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f656e2f382f38382f446f70616d696e6573657261746f6e696e2e706e67)
 
-
-
-<p align="center"> <a href="http://www.argosymedical.com/Nervous/samples/animations/Serotonin%20Pathways/">
-Serotonin pathway video </a></p>
-
+[Serotonin pathway video](http://www.argosymedical.com/Nervous/samples/animations/Serotonin%20Pathways/]
 
 Serotonin is used throughout the body in multiple physiological roles, and just 2% of serotonin used in CNS.
 In the brain serotonin is produced in the upper raphe nuclei and in the caudal raphe nuclei and then travels along the serotonins pathway to other parts of the brain and spinal cord. The Limbic system is subdivision of the cortex, it is a network of the neuron clusters connected by neurotransmitter pathways. It plays a role in behavior, physiologic changes and emotions. A decrease of the availability of the serotonin to the amygdala (the emotional saddler of the brain) can class sadness, a decrease libido and a general lack of motivation.
@@ -129,7 +116,7 @@ Inhibit serotonin (by PCPA, inhibits Tryptophan hydroxylase and production of se
 
 ###Serotonin in Basal Ganglia
 
-<p><a href="https://pp.vk.me/c623428/v623428856/3537b/Xz0IKa9vryE.jpg"><img src="https://pp.vk.me/c623428/v623428856/3537b/Xz0IKa9vryE.jpg"</a></p>
+![5HT in BG](https://pp.vk.me/c623428/v623428856/3537b/Xz0IKa9vryE.jpg)
 
 **The influence of the DRN on the direct and indirect pathways**
 
