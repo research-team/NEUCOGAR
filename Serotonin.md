@@ -92,6 +92,7 @@ Serotonin is released as neurotransmitter but also released non-synoptically thr
 * Stimulates release of endorphins that then inhibit pain messages.;
 * 5HT3 receptors in area postrema trigger vomiting.
 
+![Caudal pathway](https://camo.githubusercontent.com/c55515313aa59e908dae80e213e82534c81da119/68747470733a2f2f70702e766b2e6d652f633632333832322f763632333832323434302f33323862312f4b736d77393879334652732e6a7067)
 
 ###Middle pathway **
 (from Raphe neurons to cerebral cortex and basal ganglia):
@@ -102,6 +103,7 @@ Serotonin is released as neurotransmitter but also released non-synoptically thr
 * Serotonin induces positive mood and affect cortex;
 * "This is the system where SSRIs work by inhibiting the transporter protein necessary for serotonin reuptake".
 
+![Middle pathway](https://camo.githubusercontent.com/9648efb543f84d22edfd5cf24160847f0f13496d/68747470733a2f2f70702e766b2e6d652f633632333832322f763632333832323434302f33323862392f526b375a423673324d67592e6a7067)
 
 ###Rostral pathway *
 (from Raphe nuclei to 5 areas): Uses 5HT1 "slow inhibition" &5HT2 "slow excitation"
@@ -112,6 +114,8 @@ Serotonin is released as neurotransmitter but also released non-synoptically thr
 1. Raphe to hypothalamus and thalamus: Uses 5HT1 receptors in thermoregulation. Ecstasy causes hyperthermia through here.
 1. Raphe to suprachiasmatic nucleus: Uses 5 HT1. Important in sleep/wakefulness. Serotonin induces sleep-inject into brain-sleep occurs.
 Inhibit serotonin (by PCPA, inhibits Tryptophan hydroxylase and production of serotonin); no sleep and there is an increase in activity. But other neurotransmitter are also important in sleep. [6]
+
+![Rostral pathway](https://camo.githubusercontent.com/fc096a01125802af0e7f1b9d3d3dc43a22fc2f19/68747470733a2f2f70702e766b2e6d652f633632333832322f763632333832323434302f33323863312f7048715a785049617849632e6a7067)
 
 ###Serotonin in Basal Ganglia
 
