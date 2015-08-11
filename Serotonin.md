@@ -1,5 +1,4 @@
-
-<strong> Serotonin (pleasure hormones) </strong> - a chemical created by the human body, a hormone that acts as a neurotransmitter. It supports conversion of signals from one part of brain to the other. Serotonin is associated with psychological and physical activity: appetite, mood, libido, social behavior and cognitive reasoning. 
+**Serotonin (pleasure hormones)** - a chemical created by the human body, a hormone that acts as a neurotransmitter. It supports conversion of signals from one part of brain to the other. Serotonin is associated with psychological and physical activity: appetite, mood, libido, social behavior and cognitive reasoning. 
 __________________________________________________________________________________________________________________
 
 <strong> Glossary </strong>

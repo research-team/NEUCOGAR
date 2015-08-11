@@ -3,7 +3,7 @@
 '''
 It contains:
 
-    Motor Cortex                           =  neurons, iaf_psc_exp glutamatergic
+    Motor Cortex                     =  neurons, iaf_psc_exp glutamatergic
     Striatum                         =  neurons, iaf_psc_exp GABAergic
     GPe: globus pallidus external    =  neurons, iaf_psc_exp GABAergic
     GPi: globus pallidus internal    =  neurons, iaf_psc_exp GABAergic
