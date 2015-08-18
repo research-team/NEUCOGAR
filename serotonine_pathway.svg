@@ -270,7 +270,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.87424839"
-     inkscape:cx="104.57817"
+     inkscape:cx="459.12707"
      inkscape:cy="523.60979"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -509,7 +509,7 @@
            style="text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:0.8">RRn</tspan></text>
     </g>
     <g
-       transform="translate(-885.24492,557.26448)"
+       transform="translate(796.19941,52.83118)"
        id="g6369">
       <rect
          style="fill:#9e9ecc;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -559,7 +559,7 @@
     </g>
     <g
        id="g6385"
-       transform="translate(-461.80238,185.36254)"
+       transform="translate(1219.642,-319.07076)"
        inkscape:connector-avoid="true">
       <rect
          ry="32.170586"
@@ -584,7 +584,7 @@
     </g>
     <g
        id="g6393"
-       transform="translate(-327.80235,185.36254)"
+       transform="translate(1353.642,-319.07076)"
        inkscape:connector-avoid="true">
       <rect
          ry="32.170586"
@@ -609,7 +609,7 @@
     </g>
     <g
        id="g6401"
-       transform="translate(-955.58711,185.36254)"
+       transform="translate(725.85722,-319.07076)"
        inkscape:connector-avoid="true">
       <rect
          ry="32.170586"
@@ -634,7 +634,7 @@
     </g>
     <g
        inkscape:connector-avoid="true"
-       transform="translate(-595.80235,185.36254)"
+       transform="translate(1085.642,-319.07076)"
        id="g6409">
       <rect
          style="fill:#737ebf;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
@@ -756,12 +756,6 @@
            y="480.17624"
            style="text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:0.8">Glu</tspan></text>
     </g>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:1.20000005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
-       d="m 787.37933,448.68648 0.33296,229.62791"
-       id="path7892"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
@@ -945,6 +939,16 @@
            id="tspan3416"
            sodipodi:role="line">SNc</tspan></text>
     </g>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:1.20000005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
+       d="M 345.03512,499.26209 183.57213,627.03607"
+       id="path7892"
+       inkscape:connector-type="polyline"
+       inkscape:connector-curvature="0"
+       inkscape:connection-end="#g3320"
+       inkscape:connection-end-point="d4"
+       inkscape:connection-start="#g3418"
+       inkscape:connection-start-point="d4" />
     <g
        inkscape:connector-avoid="true"
        transform="translate(177.27185,3.6166835)"
@@ -1142,6 +1146,40 @@
            id="tspan3770"
            sodipodi:role="line">D2</tspan></text>
     </g>
+    <g
+       transform="translate(-331.86664,466.862)"
+       id="g3391">
+      <rect
+         style="fill:#9e9ecc;fill-opacity:1;stroke:#ffffff;stroke-width:1;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+         id="rect3393"
+         width="268.68332"
+         height="81"
+         x="45.170643"
+         y="36.848427"
+         ry="38.270302" />
+      <text
+         xml:space="preserve"
+         style="font-size:40px;font-style:normal;font-weight:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#ffffff;fill-opacity:0.8;stroke:none;font-family:Sans"
+         x="180.23383"
+         y="92.260536"
+         id="text3395"
+         sodipodi:linespacing="125%"><tspan
+           sodipodi:role="line"
+           id="tspan3397"
+           x="180.23383"
+           y="92.260536"
+           style="text-align:center;text-anchor:middle;fill:#ffffff;fill-opacity:0.8">Thalamus</tspan></text>
+    </g>
+    <path
+       inkscape:connector-curvature="0"
+       inkscape:connector-type="polyline"
+       id="path3399"
+       d="m 412.51751,501.02413 112.45022,124.2499"
+       style="fill:none;stroke:#000000;stroke-width:1.20000005;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#TriangleOutL);display:inline"
+       inkscape:connection-start="#g3418"
+       inkscape:connection-start-point="d4"
+       inkscape:connection-end="#g3764"
+       inkscape:connection-end-point="d4" />
   </g>
   <g
      inkscape:groupmode="layer"
