@@ -1,11 +1,22 @@
 # -*- coding: utf-8 -*-
-# keys for motor cortex
-motivation = 0
-action = 1
-# keys for striatum
-D1 = 0
-D2 = 1
-tan = 2  # Tonically active neurons
+# keys for prefrontal cortex
+cortex = 0
+cortex_Glu0 = 1
+cortex_Glu1 = 2
+# keys for NAc
+nac_Ach = 0
+nac_GABA0 = 1
+nac_GABA1 = 2
+# keys for VTA
+vta_GABA0 = 0
+vta_DA0 = 1
+vta_GABA1 = 2
+vta_DA1 = 3
+vta_GABA2 = 4
+# keys for TPP
+tpp_GABA = 0
+tpp_Ach = 1
+tpp_Glu = 2
 
 # Quality of graphics
 dpi_n = 120
@@ -26,9 +37,9 @@ gen_static_syn = "noise_conn"
 vt_flag = True
 # poisson generator with rate set up flag
 pg_flag = True
-# testing mode or real number neurons
+# True - testing mode | False - real number neurons
 test_flag = True
-#display graphic
+# display graphic
 disp_flag = False
-#save weight change when vt_flag is True (a graphic and dat file of weigh change of one synapse)
+# save weight change when vt_flag is True (a graphic and dat file of weigh change of one synapse)
 save_weight_flag = False

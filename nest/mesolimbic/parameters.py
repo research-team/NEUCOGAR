@@ -1,26 +1,19 @@
 # -*- coding: utf-8 -*-
-
 '''
 It contains:
+    Prefrontal Cortex                       = 200 neurons, iaf_psc_exp (100 на каждую)
+    NAc: Nucleus Accumbens                  = 30  neurons, iaf_psc_exp (10 на каждую)
+    VTA: Ventral Tegmental Area             = 50  neurons, iaf_psc_exp (10 на каждую)
+    TPP: Tegmental Pedunculopontine nucleus = 30  neurons, iaf_psc_exp (10 на каждую)
 
-    Motor Cortex                     =  neurons, iaf_psc_exp glutamatergic
-    Striatum                         =  neurons, iaf_psc_exp GABAergic
-    GPe: globus pallidus external    =  neurons, iaf_psc_exp GABAergic
-    GPi: globus pallidus internal    =  neurons, iaf_psc_exp GABAergic
-    STN: subthalamic nucleus         =  neurons, iaf_psc_exp glutamatergic
-    SNr: substantia nigra reticulata =  neurons, iaf_psc_exp GABAergic
-    SNc: substantia nigra compacta   =  neurons, iaf_psc_exp dopaminergic
-    Thalamus                         =  neurons, iaf_psc_exp glutamatergic
-
-Prefix description:
-    MSN_ - Medium Spiny Neurons
-    ex_  -  excitory
-    inh_ - inhibitory
-    STP_ - Short Term Plasticity
+    glutamatergic
+    GABAergic
+    dopaminergic
+    acetylholinergic ???
 '''
 # Configure logger
 import logging
-from property_3 import *
+from property import *
 import os
 from matplotlib import collections
 from matplotlib.colors import colorConverter
@@ -38,12 +31,9 @@ N_rec = 100
 
 k_ids = 'ids'
 k_name = 'name'
-# functions just for easy settings readability
-'''
-Set up parameters of brain parts (GPe, GPi...).
-If you need new brain part just write name = {k_name: 'name'} and add to iter_all_part variable (dict{'name':neurons_list}).
-'''
-def generate_neurons_BG(nest):
+
+
+def generate_neurons_MP(nest):
     logger = logging.getLogger("parameters")
     iaf_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -67., 'C_m': 2., 't_ref': 2., 'V_m': -60.,
                         'tau_syn_ex': 1.,
@@ -52,112 +42,73 @@ def generate_neurons_BG(nest):
     # k - prefix means key
     k_NN = 'NN'
     k_model = 'model'
-    k_coef = 'coefficient'
+
     # ===================
-    # BASAL GANGLIA PARTS
+    # MESOLIMBIC PATHWAY PARTS
     # ===================
-    motor_cortex = ({k_name: 'motivation'}, {k_name: 'action'})
-    striatum = ({k_name: 'D1'}, {k_name: 'D2'}, {k_name: 'tan'})
-    gpe = {k_name: 'gpe'}
-    gpi = {k_name: 'gpi'}
-    stn = {k_name: 'stn'}
-    snr = {k_name: 'snr'}
-    thalamus = {k_name: 'thalamus'}
-    iter_BG_parts_no_dopa = (gpe, gpi, stn, snr, thalamus) + striatum + motor_cortex
-    snc = {k_name: 'snc'}
+    prefrontal_cortex = ({k_name: 'Cortex'}, {k_name: 'Glu0'}, {k_name: 'Glu1'})
+    nac = ({k_name: 'Ach'}, {k_name: 'GABA0'}, {k_name: 'GABA1'})
+    vta = ({k_name: 'GABA0'}, {k_name: 'DA0'}, {k_name: 'GABA1'}, {k_name: 'DA1'}, {k_name: 'GABA2'})
+    tpp = ({k_name: 'GABA'}, {k_name: 'Ach'}, {k_name: 'Glu'})
+    parts_no_dopa = prefrontal_cortex + nac + tpp + (vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2])
+    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1])
     # ========
     # NEURONS
     # ========
-    for bg_part in iter_BG_parts_no_dopa: bg_part[k_model] = 'iaf_psc_exp'
+    # without dopamine
+    for mp_part in parts_no_dopa:
+        mp_part[k_model] = 'iaf_psc_exp'
     # with dopamine
-    snc[k_model] = 'iaf_psc_alpha'
-    iter_all_parts = iter_BG_parts_no_dopa + (snc,)
-    # Count of neurons in every parts of BGs
-    # table for neuron number: https://docs.google.com/spreadsheets/d/1cAm5uosBoKaaPyC1mvb527nYkVcW2YsAA2ECiCDASzg/edit?usp=sharing
+    for mp_part in parts_with_dopa:
+        mp_part[k_model] = 'iaf_psc_alpha'
+
+    all_parts = parts_no_dopa + parts_with_dopa
+
     if test_flag:
         # ===========
         # TEST NUMBER
         # ===========
-        motor_cortex[motivation][k_NN] = 60
-        motor_cortex[action][k_NN] = 150
-        striatum[D1][k_NN] = 30
-        striatum[D2][k_NN] = 30
-        striatum[tan][k_NN] = 8
-        gpe[k_NN] = 30
-        gpi[k_NN] = 10
-        stn[k_NN] = 15
-        snc[k_NN] = 10
-        snr[k_NN] = 21
-        thalamus[k_NN] = 90
-
-        # increase numbers by k
-        k = 5
-        motor_cortex[motivation][k_NN] *= k
-        motor_cortex[action][k_NN] *= k
-        striatum[D1][k_NN] *= k
-        striatum[D2][k_NN] *= k
-        striatum[tan][k_NN] *= k
-        gpe[k_NN] *= k
-        gpi[k_NN] *= k
-        stn[k_NN] *= k
-        snc[k_NN] *= k
-        snr[k_NN] *= k
-        thalamus[k_NN] *= k
-
+        prefrontal_cortex[cortex][k_NN] = 80
+        prefrontal_cortex[cortex_Glu0][k_NN] = 10
+        prefrontal_cortex[cortex_Glu1][k_NN] = 10
+        nac[nac_Ach][k_NN] = 10
+        nac[nac_GABA0][k_NN] = 10
+        nac[nac_GABA1][k_NN] = 10
+        vta[vta_GABA0][k_NN] = 10
+        vta[vta_DA0][k_NN] = 10
+        vta[vta_GABA1][k_NN] = 10
+        vta[vta_DA1][k_NN] = 10
+        vta[vta_GABA2][k_NN] = 10
+        tpp[tpp_GABA][k_NN] = 10
+        tpp[tpp_Ach][k_NN] = 10
+        tpp[tpp_Glu][k_NN] = 10
     else:
         # ===========
         # REAL NUMBER
         # ===========
-        striatum_NN = 2500000
-        striatum[D1][k_NN] = int(striatum_NN * 0.425)
-        striatum[D2][k_NN] = int(striatum_NN * 0.425)
-        striatum[tan][k_NN] = int(striatum_NN * 0.05)
-        motor_cortex_NN = 29000000
-        motor_cortex[motivation][k_NN] = int(motor_cortex_NN * 0.2)
-        motor_cortex[action][k_NN] = int(motor_cortex_NN * 0.8)
-        gpe[k_NN] = 84100
-        gpi[k_NN] = 12600
-        stn[k_NN] = 22700
-        snc[k_NN] = 12700
-        snr[k_NN] = 47200
-        thalamus[k_NN] = 5000000
-        # =================
-        # COEFFICIENT COUNT
-        # =================
-        # possible different coefficients
-        # k = 0.25
-        # k = 0.0015 # 54640 neurons
-        k = 0.0015 # 54640 neurons
-        motor_cortex[motivation][k_coef] = k
-        motor_cortex[action][k_coef] = k
-        striatum[D1][k_coef] = k
-        striatum[D2][k_coef] = k
-        striatum[tan][k_coef] = k
-        gpe[k_coef] = k
-        gpi[k_coef] = k
-        stn[k_coef] = k
-        snc[k_coef] = k
-        snr[k_coef] = k
-        thalamus[k_coef] = k
-        for part in iter_all_parts: part[k_NN] = int(part[k_NN] * part[k_coef])
-    logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in iter_all_parts))
-    # assign neuron params to every part of BG
+        print "IN PROGRESS"
+
+    logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))
+    # assign neuron params to every part of MP
     nest.SetDefaults('iaf_psc_exp', iaf_neuronparams)
     nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
+    # creating all parts
+    for mp_part in all_parts:
+        mp_part[k_ids] = nest.Create(mp_part[k_model], mp_part[k_NN])
 
-    for bg_part in iter_all_parts:
-        bg_part[k_ids] = nest.Create(bg_part[k_model], bg_part[k_NN])
-
-    return iter_all_parts
+    return all_parts
 
 '''
 help method to get neurons_list from iter_BG{'name':neurons_list}
 '''
-def get_ids(name, iter_BG=None):
-    if iter_BG is not None: get_ids.iter_BG = iter_BG
-    for part_BG in get_ids.iter_BG:
-        if part_BG[k_name] == name:
-            return part_BG[k_ids]
+
+
+def get_ids(name, iter_MP=None):
+    if iter_MP is not None:
+        get_ids.iter_MP = iter_MP
+    for part_MP in get_ids.iter_MP:
+        if part_MP[k_name] == name:
+            return part_MP[k_ids]
     raise KeyError
 
 # =========
@@ -191,13 +142,11 @@ STDP_synapseparams = {
 }
 STDP_synapseparams_ex = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
                               'weight': w_ex,
-                              'Wmax': 70.
-                             }, **STDP_synapseparams)
+                              'Wmax': 70.}, **STDP_synapseparams)
 
 STDP_synapseparams_in = dict({'delay': {'distribution': 'uniform', 'low': 1., 'high': 1.9},
                               'weight': w_in,
-                              'Wmax': -60.
-                             }, **STDP_synapseparams)
+                              'Wmax': -60.}, **STDP_synapseparams)
 DOPA_synparams = {"delay": 1.}
 DOPA_synparams_ex = dict({"weight": stdp_dopamine_synapse_w_ex, 'Wmax': 100., 'Wmin': 85.}, **DOPA_synparams)
 DOPA_synparams_in = dict({"weight": stdp_dopamine_synapse_w_in, 'Wmax': -100., 'Wmin': -85.}, **DOPA_synparams)
@@ -216,11 +165,14 @@ conn_dict = {'rule': 'all_to_all', 'multapses': True}
 # USEFUL FUNCTIONS
 # =========
 '''
-Generates string ful name (subfolders with respect to flags defined in properties) of an image
+Generates string full name (subfolders with respect to flags defined in properties) of an image
 '''
+
+
 def f_name_gen(name, is_image=False):
     sub_folder = os.path.join(sd_folder_name, 'noise/' if pg_flag else 'static/')
-    if not os.path.exists(sub_folder): os.makedirs(sub_folder)
+    if not os.path.exists(sub_folder):
+        os.makedirs(sub_folder)
 
     return sub_folder + \
            (name + '_' if len(name) > 0 else '') + \
@@ -231,6 +183,8 @@ def f_name_gen(name, is_image=False):
 '''
 if save_weight_flag if True then do plotting of weight change in a synapse
 '''
+
+
 def plot_weights(weights_list, title="Neurons weights progress", y_lim=None):
     # Plot
     # Make a list of colors cycling through the rgbcmyk series.
