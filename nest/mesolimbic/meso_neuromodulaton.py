@@ -58,10 +58,6 @@ f_register(vta[vta_DA0], 'VTA[DA0]')
 f_register(vta[vta_GABA1], 'VTA[GABA1]')
 f_register(vta[vta_DA1], 'VTA[DA1]')
 f_register(vta[vta_GABA2], 'VTA[GABA2]')
-'''
-    vta = ({k_name: 'GABA0'}, {k_name: 'DA0'}, {k_name: 'GABA1'}, {k_name: 'DA1'}, {k_name: 'GABA2'})
-    tpp = ({k_name: 'GABA'}, {k_name: 'Ach'}, {k_name: 'Glu'})
-'''
 
 tpp = (get_ids('GABA'), get_ids('Ach'), get_ids('Glu'))
 f_register(tpp[tpp_GABA], 'VTA[GABA]')
@@ -86,6 +82,8 @@ def connect(ner_from, ner_to, is_syn_ex=False):
 
 logger.debug('Start connection initialisation')
 
+connect(prefrontal_cortex[cortex], prefrontal_cortex[cortex_Glu0], is_syn_ex=True)
+connect(prefrontal_cortex[cortex], prefrontal_cortex[cortex_Glu1], is_syn_ex=True)
 connect(prefrontal_cortex[cortex_Glu0], vta[vta_DA0], is_syn_ex=True)
 connect(prefrontal_cortex[cortex_Glu1], nac[nac_GABA1], is_syn_ex=True)
 connect(prefrontal_cortex[cortex_Glu1], vta[vta_GABA2], is_syn_ex=True)
@@ -124,7 +122,7 @@ if vt_flag:
     nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
     # === nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
 
-    #ToDo Modulary????????
+    # ToDo Modulary????????
     nest.Connect(vta[vta_DA0], prefrontal_cortex[cortex], conn_dict, syn_spec=dopa_model_ex)
     log_conn(vta[vta_DA0], prefrontal_cortex[cortex], dopa_model_ex)
     nest.Connect(vta[vta_DA1], nac[nac_GABA1], conn_dict, syn_spec=dopa_model_ex)
@@ -143,6 +141,12 @@ if pg_flag:
     nest.Connect(pg_slow, prefrontal_cortex[cortex], syn_spec=gen_static_syn,
                  conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(prefrontal_cortex[cortex]) / 4})
     log_conn(pg_slow, prefrontal_cortex[cortex])
+    if vt_flag:
+        pg_fast = nest.Create("poisson_generator", 1, {"rate": K_fast, 'start': 400., 'stop': 600.})
+        parts_dict_log[pg_fast[0]] = 'Poisson Generator(fast)'
+        nest.Connect(pg_fast, vta[vta_DA0], syn_spec=gen_static_syn,
+                     conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(vta[vta_DA0]) / 4})
+        log_conn(pg_fast, vta[vta_DA0])
 else:
     sg_slow = nest.Create('spike_generator', params={'spike_times': np.arange(1, T, 20.)})
     parts_dict_log[sg_slow[0]] = 'Periodic Generator(slow)'
@@ -157,12 +161,12 @@ logger.debug('Attaching spikes detector')
 # =============
 # SPIKEDETECTOR
 # =============
-spikedetector = nest.Create("spike_detector", 1, params=detector_param)
+spikedetector = nest.Create("spike_detector", 2, params=detector_param)
 # ToDo check spike generators
-# nest.Connect(thalamus[:N_rec], (spikedetector[0],))
-# logger.debug("spike detecor is attached to thalamus: tracing %d neurons" % N_rec)
 nest.Connect(prefrontal_cortex[cortex][:N_rec], (spikedetector[0],))
-logger.debug("spike detecor is attached to motor cortex: tracing %d neurons" % N_rec)
+logger.debug("spike detecor is attached to prefrontal cortex: tracing %d neurons" % N_rec)
+nest.Connect(vta[vta_DA0][:N_rec], (spikedetector[1],))
+logger.debug("spike detecor is attached to VTA[DA0]: tracing %d neurons" % N_rec)
 # ============
 # MULTIMETER
 # ============
@@ -171,7 +175,7 @@ mm_param["label"] = 'prefrontal cortex'
 mm1 = nest.Create('multimeter', params=mm_param)
 nest.Connect(mm1, prefrontal_cortex[cortex])
 logger.debug("%s - %d", mm_param["label"], prefrontal_cortex[cortex])
-mm_param["label"] = 'vta DA0'
+mm_param["label"] = 'vta[DA0]'
 mm2 = nest.Create('multimeter', params=mm_param)
 nest.Connect(mm2, vta[vta_DA0])
 logger.debug("%s - %d", mm_param["label"], vta[vta_DA0])
@@ -227,29 +231,34 @@ logger.info('Noise: ' + ('YES' if pg_flag else 'NO'))
 # =====
 # Draw
 # =====
-if save_weight_flag: plot_weights(weight_list, "Neurons weights progress neuron 1")
+if save_weight_flag:
+    plot_weights(weight_list, "Neurons weights progress neuron 1")
 
 nest.voltage_trace.from_device(mm1)
 pl.axis(axis)
 pl.savefig(f_name_gen('prefrontaal cortex', True), dpi=dpi_n, format='png')
-if disp_flag: nest.voltage_trace.show()
+if disp_flag:
+    nest.voltage_trace.show()
 pl.close()
 
 pl.axis(axis)
 nest.voltage_trace.from_device(mm2)
 pl.axis(axis)
 pl.savefig(f_name_gen('vta da0', True), dpi=dpi_n, format='png')
-if disp_flag: nest.voltage_trace.show()
+if disp_flag:
+    nest.voltage_trace.show()
 pl.close()
 
 nest.raster_plot.from_device((spikedetector[0],), hist=True)
 pl.savefig(f_name_gen('spikes_cortex', is_image=True), format='png')
-if disp_flag: nest.raster_plot.show()
+if disp_flag:
+    nest.raster_plot.show()
 pl.close()
 
-nest.raster_plot.from_device((spikedetector[0],), hist=True)
+nest.raster_plot.from_device((spikedetector[1],), hist=True)
 pl.savefig(f_name_gen('spikes_vta_da0', is_image=True), format='png')
-if disp_flag: nest.raster_plot.show()
+if disp_flag:
+    nest.raster_plot.show()
 pl.close()
 
 # another type of visual representation

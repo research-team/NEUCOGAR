@@ -28,7 +28,7 @@ syn_inhibitory = "inhibitory"
 dopa_model_ex = "dopa_ex"
 dopa_model_in = "dopa_in"
 
-sd_folder_name = "output/"
+sd_folder_name = "result/"
 sd_filename = "spikes-172-0.gdf"
 
 device_static_synapse = "static_device"

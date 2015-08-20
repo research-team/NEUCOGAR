@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 '''
 It contains:
-    Prefrontal Cortex                       = 200 neurons, iaf_psc_exp (100 на каждую)
-    NAc: Nucleus Accumbens                  = 30  neurons, iaf_psc_exp (10 на каждую)
-    VTA: Ventral Tegmental Area             = 50  neurons, iaf_psc_exp (10 на каждую)
-    TPP: Tegmental Pedunculopontine nucleus = 30  neurons, iaf_psc_exp (10 на каждую)
+    Prefrontal Cortex                       = 100 neurons, iaf_psc_exp (10 for each + 80 cortex)
+    NAc: Nucleus Accumbens                  = 30  neurons, iaf_psc_exp (10 for each)
+    VTA: Ventral Tegmental Area             = 50  neurons, iaf_psc_exp (10 for each)
+    TPP: Tegmental Pedunculopontine nucleus = 30  neurons, iaf_psc_exp (10 for each)
 
     glutamatergic
     GABAergic
@@ -222,12 +222,3 @@ mm_param = {"to_memory": True, "to_file": False, 'withtime': True, 'interval': 0
 detector_param = {"label": "spikes", "withtime": True, "withgid": True, "to_file": False, "to_memory": True,
                   'scientific': True}
 axis = [0, T, -72, -48]
-
-'''
-==========================|
-Medium spiny neurons (MSN) is GABA inhibitory cell. They have dopamine receptors. Dopamine has a dual action on MSNs.
-It inhibits the (D2-type) MSNs in the indirect pathway and
-excites (D1-type) MSNs in the direct pathway.
-Consequently, when dopamine is lost from the striatum, the indirect pathway becomes overactive
-and the direct pathway becomes underactive.
-'''
