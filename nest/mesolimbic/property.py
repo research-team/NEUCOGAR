@@ -33,13 +33,18 @@ sd_filename = "spikes-172-0.gdf"
 
 device_static_synapse = "static_device"
 gen_static_syn = "noise_conn"
+
 # dopamine modulation flag
-vt_flag = True
+dopa_flag = True
+
 # poisson generator with rate set up flag
-pg_flag = True
+poison_generator = True
+
 # True - testing mode | False - real number neurons
 test_flag = True
+
 # display graphic
 disp_flag = False
+
 # save weight change when vt_flag is True (a graphic and dat file of weigh change of one synapse)
 save_weight_flag = False

@@ -11,13 +11,12 @@ It contains:
     dopaminergic
     acetylholinergic ???
 '''
-# Configure logger
 import logging
 from property import *
-import os
 from matplotlib import collections
 from matplotlib.colors import colorConverter
 import pylab as pl
+import os
 
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -28,17 +27,17 @@ dt = 10.
 
 # neurons number for spike detector
 N_rec = 100
-
 k_ids = 'ids'
 k_name = 'name'
 
-
+"""Set up parameters of brain parts (VTA, NAc...).
+If you need new brain part just write name = {k_name: 'name'} and add to all_part variable (dict{'name': neurons_list}).
+"""
 def generate_neurons_MP(nest):
     logger = logging.getLogger("parameters")
     iaf_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -67., 'C_m': 2., 't_ref': 2., 'V_m': -60.,
                         'tau_syn_ex': 1.,
                         'tau_syn_in': 1.33}
-    # neuron set
     # k - prefix means key
     k_NN = 'NN'
     k_model = 'model'
@@ -52,6 +51,7 @@ def generate_neurons_MP(nest):
     tpp = ({k_name: 'GABA'}, {k_name: 'Ach'}, {k_name: 'Glu'})
     parts_no_dopa = prefrontal_cortex + nac + tpp + (vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2])
     parts_with_dopa = (vta[vta_DA0], vta[vta_DA1])
+
     # ========
     # NEURONS
     # ========
@@ -61,7 +61,6 @@ def generate_neurons_MP(nest):
     # with dopamine
     for mp_part in parts_with_dopa:
         mp_part[k_model] = 'iaf_psc_alpha'
-
     all_parts = parts_no_dopa + parts_with_dopa
 
     if test_flag:
@@ -82,27 +81,54 @@ def generate_neurons_MP(nest):
         tpp[tpp_GABA][k_NN] = 10
         tpp[tpp_Ach][k_NN] = 10
         tpp[tpp_Glu][k_NN] = 10
+
+        # test coeficient
+        test_coef = 1
+        prefrontal_cortex[cortex][k_NN] *= test_coef
+        prefrontal_cortex[cortex_Glu0][k_NN] *= test_coef
+        prefrontal_cortex[cortex_Glu1][k_NN] *= test_coef
+        nac[nac_Ach][k_NN] *= test_coef
+        nac[nac_GABA0][k_NN] *= test_coef
+        nac[nac_GABA1][k_NN] *= test_coef
+        vta[vta_GABA0][k_NN] *= test_coef
+        vta[vta_DA0][k_NN] *= test_coef
+        vta[vta_GABA1][k_NN] *= test_coef
+        vta[vta_DA1][k_NN] *= test_coef
+        vta[vta_GABA2][k_NN] *= test_coef
+        tpp[tpp_GABA][k_NN] *= test_coef
+        tpp[tpp_Ach][k_NN] *= test_coef
+        tpp[tpp_Glu][k_NN] *= test_coef
     else:
         # ===========
         # REAL NUMBER
         # ===========
-        print "IN PROGRESS"
+        # ToDo add real number
+        prefrontal_cortex[cortex][k_NN] = 0
+        prefrontal_cortex[cortex_Glu0][k_NN] = 0
+        prefrontal_cortex[cortex_Glu1][k_NN] = 0
+        nac[nac_Ach][k_NN] = 0
+        nac[nac_GABA0][k_NN] = 0
+        nac[nac_GABA1][k_NN] = 0
+        vta[vta_GABA0][k_NN] = 0
+        vta[vta_DA0][k_NN] = 0
+        vta[vta_GABA1][k_NN] = 0
+        vta[vta_DA1][k_NN] = 0
+        vta[vta_GABA2][k_NN] = 0
+        tpp[tpp_GABA][k_NN] = 0
+        tpp[tpp_Ach][k_NN] = 0
+        tpp[tpp_Glu][k_NN] = 0
 
     logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))
     # assign neuron params to every part of MP
     nest.SetDefaults('iaf_psc_exp', iaf_neuronparams)
     nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
-    # creating all parts
+
     for mp_part in all_parts:
         mp_part[k_ids] = nest.Create(mp_part[k_model], mp_part[k_NN])
 
     return all_parts
 
-'''
-help method to get neurons_list from iter_BG{'name':neurons_list}
-'''
-
-
+"""Help method to get neurons_list from iter_MP{'name': neurons_list}"""
 def get_ids(name, iter_MP=None):
     if iter_MP is not None:
         get_ids.iter_MP = iter_MP
@@ -151,51 +177,35 @@ DOPA_synparams = {"delay": 1.}
 DOPA_synparams_ex = dict({"weight": stdp_dopamine_synapse_w_ex, 'Wmax': 100., 'Wmin': 85.}, **DOPA_synparams)
 DOPA_synparams_in = dict({"weight": stdp_dopamine_synapse_w_in, 'Wmax': -100., 'Wmin': -85.}, **DOPA_synparams)
 
-'''
-===========
- In SNr neurons according to recent experimental findings [http://www.biomedcentral.com/1471-2202/12/S1/P145#B2]
- has been found short term facilitation in MSN synapses onto SNr neurons from SNc.
-'''
 # ============
 # CONNECTIONS
 # ============
-conn_dict = {'rule': 'all_to_all', 'multapses': True}
-# conn_dict = {'rule': 'fixed_outdegree', 'outdegree': 100}
+conn_dict = {'rule': 'all_to_all', 'multapses': True} # or another scheme 'fixed_outdegree', 'outdegree': 100
+
 # =========
 # USEFUL FUNCTIONS
 # =========
-'''
-Generates string full name (subfolders with respect to flags defined in properties) of an image
-'''
-
-
+"""Generates string full name (subfolders with respect to flags defined in properties) of an image"""
 def f_name_gen(name, is_image=False):
-    sub_folder = os.path.join(sd_folder_name, 'noise/' if pg_flag else 'static/')
+    sub_folder = os.path.join(sd_folder_name, 'noise/' if poison_generator else 'static/')
     if not os.path.exists(sub_folder):
         os.makedirs(sub_folder)
 
     return sub_folder + \
            (name + '_' if len(name) > 0 else '') + \
-           ('yes' if vt_flag else 'no') + '_dopa_generator_' + \
-           ('noise' if pg_flag else 'static') + \
+           ('yes' if dopa_flag else 'no') + '_dopa_generator_' + \
+           ('noise' if poison_generator else 'static') + \
            ('.png' if is_image else '_')
 
-'''
-if save_weight_flag if True then do plotting of weight change in a synapse
-'''
 
-
-def plot_weights(weights_list, title="Neurons weights progress", y_lim=None):
-    # Plot
+"""If save_weight_flag is True then do plotting of weight change in a synapse"""
+def plot_weights(weights_list, title="Neurons weights progress"):
     # Make a list of colors cycling through the rgbcmyk series.
     colors = [colorConverter.to_rgba(c) for c in ('k', 'r', 'g', 'b', 'c', 'y', 'm')]
-
     axes = pl.axes()
     ax4 = axes  # unpack the axes
-
     ncurves = 1
     offs = (0.0, 0.0)
-
     segs = []
     for i in range(ncurves):
         curve = weights_list
