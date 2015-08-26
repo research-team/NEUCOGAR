@@ -105,13 +105,11 @@ logger.debug('Making neuromodulating connections...')
 if dopa_flag:
     # Volume transmission: init dopa_model
     vt_ex = nest.Create("volume_transmitter")
-    # for inhibitory: vt_in = nest.Create("volume_transmitter")
     DOPA_synparams_ex['vt'] = vt_ex[0]
-    # for inhibitory:  DOPA_synparams_in['vt'] = vt_in[0]
     nest.Connect(vta[vta_DA0], vt_ex)
     nest.Connect(vta[vta_DA1], vt_ex)
     nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
-    # for inhibitory: nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
+
     nest.Connect(vta[vta_DA0], prefrontal_cortex[cortex], conn_dict, syn_spec=dopa_model_ex)
     log_conn(vta[vta_DA0], prefrontal_cortex[cortex], dopa_model_ex)
     nest.Connect(vta[vta_DA1], nac[nac_GABA1], conn_dict, syn_spec=dopa_model_ex)
@@ -164,14 +162,13 @@ logger.debug("spike detecor is attached to VTA[DA0]: tracing %d neurons" % N_rec
 # ============
 # MULTIMETER
 # ============
-# ToDo find mistake in scheme, invalid values in cortex.. maybe in vta[DA0]
 mm_param["label"] = 'prefrontal cortex'
 mm1 = nest.Create('multimeter', params=mm_param)
-nest.Connect(mm1, prefrontal_cortex[cortex])
+nest.Connect(mm1, (prefrontal_cortex[cortex][0],))
 logger.debug("%s - %d", mm_param["label"], prefrontal_cortex[cortex][0])
 mm_param["label"] = 'vta[DA0]'
 mm2 = nest.Create('multimeter', params=mm_param)
-nest.Connect(mm2, vta[vta_DA0])
+nest.Connect(mm2, (vta[vta_DA0][0],))
 logger.debug("%s - %d", mm_param["label"], vta[vta_DA0][0])
 
 # ==========

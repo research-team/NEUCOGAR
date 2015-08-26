@@ -67,20 +67,20 @@ def generate_neurons_MP(nest):
         # ===========
         # TEST NUMBER
         # ===========
-        prefrontal_cortex[cortex][k_NN] = 80
-        prefrontal_cortex[cortex_Glu0][k_NN] = 10
-        prefrontal_cortex[cortex_Glu1][k_NN] = 10
-        nac[nac_Ach][k_NN] = 10
-        nac[nac_GABA0][k_NN] = 10
-        nac[nac_GABA1][k_NN] = 10
-        vta[vta_GABA0][k_NN] = 10
-        vta[vta_DA0][k_NN] = 10
-        vta[vta_GABA1][k_NN] = 10
-        vta[vta_DA1][k_NN] = 10
-        vta[vta_GABA2][k_NN] = 10
-        tpp[tpp_GABA][k_NN] = 10
-        tpp[tpp_Ach][k_NN] = 10
-        tpp[tpp_Glu][k_NN] = 10
+        prefrontal_cortex[cortex][k_NN] = 800
+        prefrontal_cortex[cortex_Glu0][k_NN] = 100
+        prefrontal_cortex[cortex_Glu1][k_NN] = 100
+        nac[nac_Ach][k_NN] = 100
+        nac[nac_GABA0][k_NN] = 100
+        nac[nac_GABA1][k_NN] = 100
+        vta[vta_GABA0][k_NN] = 100
+        vta[vta_DA0][k_NN] = 100
+        vta[vta_GABA1][k_NN] = 100
+        vta[vta_DA1][k_NN] = 100
+        vta[vta_GABA2][k_NN] = 100
+        tpp[tpp_GABA][k_NN] = 100
+        tpp[tpp_Ach][k_NN] = 100
+        tpp[tpp_Glu][k_NN] = 100
 
         # test coeficient
         test_coef = 1
