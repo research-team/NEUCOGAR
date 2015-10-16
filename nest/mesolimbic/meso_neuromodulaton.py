@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
-# ToDo add generator to every part!!!
+# ToDo add generator's to every part!!!
+# TODO check num_threads (line 28) before testing / 8 for Cisco Server
 
 # math and randomise package
 import numpy as np
@@ -12,7 +13,7 @@ from time import clock
 import os
 
 '''
-This is the implementation of experiment of mesolimbic pathway based on
+This is the implementation of experiment of mesocorticolimbic pathway based on
 https://https://github.com/research-team/NEUCOGAR/blob/master/mesolimbic_dopamine_pathway.png
 
 !!!Neurotools is used for representing and analyzing nonscientific data!!!
@@ -24,7 +25,7 @@ startbuild = clock()
 
 if not os.path.exists(sd_folder_name):
     os.mkdir(sd_folder_name)
-nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 1, "resolution": 0.1})
+nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 4, "resolution": 0.1})
 
 # ============
 # Creating parts

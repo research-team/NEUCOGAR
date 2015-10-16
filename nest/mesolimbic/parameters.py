@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 '''
 It contains:
-    Prefrontal Cortex                       = 100 neurons, iaf_psc_exp (10 for each + 80 cortex)
-    NAc: Nucleus Accumbens                  = 30  neurons, iaf_psc_exp (10 for each)
-    VTA: Ventral Tegmental Area             = 50  neurons, iaf_psc_exp (10 for each)
-    TPP: Tegmental Pedunculopontine nucleus = 30  neurons, iaf_psc_exp (10 for each)
+    Prefrontal Cortex                       = 800 neurons, iaf_psc_exp (100 for each + 800 cortex)
+    NAc: Nucleus Accumbens                  = 300  neurons, iaf_psc_exp (100 for each)
+    VTA: Ventral Tegmental Area             = 500  neurons, iaf_psc_exp (100 for each)
+    TPP: Tegmental Pedunculopontine nucleus = 300  neurons, iaf_psc_exp (100 for each)
 
     glutamatergic
     GABAergic
     dopaminergic
-    acetylholinergic ???
+    acetylholinergic
 '''
 import logging
 from property import *
@@ -41,6 +41,7 @@ def generate_neurons_MP(nest):
     # k - prefix means key
     k_NN = 'NN'
     k_model = 'model'
+    k_coef = 'coefficient'
 
     # ===================
     # MESOLIMBIC PATHWAY PARTS
@@ -67,56 +68,61 @@ def generate_neurons_MP(nest):
         # ===========
         # TEST NUMBER
         # ===========
-        prefrontal_cortex[cortex][k_NN] = 800
-        prefrontal_cortex[cortex_Glu0][k_NN] = 100
-        prefrontal_cortex[cortex_Glu1][k_NN] = 100
-        nac[nac_Ach][k_NN] = 100
-        nac[nac_GABA0][k_NN] = 100
-        nac[nac_GABA1][k_NN] = 100
-        vta[vta_GABA0][k_NN] = 100
-        vta[vta_DA0][k_NN] = 100
-        vta[vta_GABA1][k_NN] = 100
-        vta[vta_DA1][k_NN] = 100
-        vta[vta_GABA2][k_NN] = 100
-        tpp[tpp_GABA][k_NN] = 100
-        tpp[tpp_Ach][k_NN] = 100
-        tpp[tpp_Glu][k_NN] = 100
-
-        # test coeficient
-        test_coef = 1
-        prefrontal_cortex[cortex][k_NN] *= test_coef
-        prefrontal_cortex[cortex_Glu0][k_NN] *= test_coef
-        prefrontal_cortex[cortex_Glu1][k_NN] *= test_coef
-        nac[nac_Ach][k_NN] *= test_coef
-        nac[nac_GABA0][k_NN] *= test_coef
-        nac[nac_GABA1][k_NN] *= test_coef
-        vta[vta_GABA0][k_NN] *= test_coef
-        vta[vta_DA0][k_NN] *= test_coef
-        vta[vta_GABA1][k_NN] *= test_coef
-        vta[vta_DA1][k_NN] *= test_coef
-        vta[vta_GABA2][k_NN] *= test_coef
-        tpp[tpp_GABA][k_NN] *= test_coef
-        tpp[tpp_Ach][k_NN] *= test_coef
-        tpp[tpp_Glu][k_NN] *= test_coef
+        prefrontal_cortex[cortex][k_NN] = 3600
+        prefrontal_cortex[cortex_Glu0][k_NN] = 30
+        prefrontal_cortex[cortex_Glu1][k_NN] = 30
+        nac[nac_Ach][k_NN] = 15
+        nac[nac_GABA0][k_NN] = 142
+        nac[nac_GABA1][k_NN] = 142
+        vta[vta_GABA0][k_NN] = 70
+        vta[vta_DA0][k_NN] = 200
+        vta[vta_GABA1][k_NN] = 70
+        vta[vta_DA1][k_NN] = 200
+        vta[vta_GABA2][k_NN] = 70
+        tpp[tpp_GABA][k_NN] = 20
+        tpp[tpp_Ach][k_NN] = 14
+        tpp[tpp_Glu][k_NN] = 23
     else:
         # ===========
         # REAL NUMBER
         # ===========
-        # ToDo add real number
-        prefrontal_cortex[cortex][k_NN] = 0
-        prefrontal_cortex[cortex_Glu0][k_NN] = 0
-        prefrontal_cortex[cortex_Glu1][k_NN] = 0
-        nac[nac_Ach][k_NN] = 0
-        nac[nac_GABA0][k_NN] = 0
-        nac[nac_GABA1][k_NN] = 0
-        vta[vta_GABA0][k_NN] = 0
-        vta[vta_DA0][k_NN] = 0
-        vta[vta_GABA1][k_NN] = 0
-        vta[vta_DA1][k_NN] = 0
-        vta[vta_GABA2][k_NN] = 0
-        tpp[tpp_GABA][k_NN] = 0
-        tpp[tpp_Ach][k_NN] = 0
-        tpp[tpp_Glu][k_NN] = 0
+        # ToDo check and add real number
+        prefrontal_cortex[cortex][k_NN] = 360000
+        prefrontal_cortex[cortex_Glu0][k_NN] = 3000
+        prefrontal_cortex[cortex_Glu1][k_NN] = 3000
+        nac[nac_Ach][k_NN] = 1500
+        nac[nac_GABA0][k_NN] = 14250
+        nac[nac_GABA1][k_NN] = 14250
+        vta[vta_GABA0][k_NN] = 7000
+        vta[vta_DA0][k_NN] = 20000
+        vta[vta_GABA1][k_NN] = 7000
+        vta[vta_DA1][k_NN] = 20000
+        vta[vta_GABA2][k_NN] = 7000
+        tpp[tpp_GABA][k_NN] = 2000
+        tpp[tpp_Ach][k_NN] = 1400
+        tpp[tpp_Glu][k_NN] = 2300
+
+        # =================
+        # COEFFICIENT COUNT
+        # =================
+        # possible different coefficients
+        # k = 0.12 # 55524 neurons
+        k = 0.12
+        prefrontal_cortex[cortex][k_coef] = k
+        prefrontal_cortex[cortex_Glu0][k_coef] = k
+        prefrontal_cortex[cortex_Glu1][k_coef] = k
+        nac[nac_Ach][k_coef] = k
+        nac[nac_GABA0][k_coef] = k
+        nac[nac_GABA1][k_coef] = k
+        vta[vta_GABA0][k_coef] = k
+        vta[vta_DA0][k_coef] = k
+        vta[vta_GABA1][k_coef] = k
+        vta[vta_DA1][k_coef] = k
+        vta[vta_GABA2][k_coef] = k
+        tpp[tpp_GABA][k_coef] = k
+        tpp[tpp_Ach][k_coef] = k
+        tpp[tpp_Glu][k_coef] = k
+        for part in all_parts: part[k_NN] = int(part[k_NN] * part[k_coef])
 
     logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))
     # assign neuron params to every part of MP

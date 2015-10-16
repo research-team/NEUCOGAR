@@ -41,7 +41,7 @@ dopa_flag = True
 poison_generator = True
 
 # True - testing mode | False - real number neurons
-test_flag = True
+test_flag = False
 
 # display graphic
 disp_flag = False
