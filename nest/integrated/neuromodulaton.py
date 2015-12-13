@@ -20,7 +20,6 @@ Prefix description:
 	inh_ - inhibitory
 	d_   - Direct
 	ind_ - indirect
-
 Neurotools is used for representing and analyzing nonscientific data.
 '''
 
@@ -28,9 +27,12 @@ logger = logging.getLogger("dopamine")
 nest.ResetKernel()
 startbuild = clock()
 
+
+sd_folder_name += "-text/" if withoutGUI else  "-image/"
 if not os.path.exists(sd_folder_name):
     os.mkdir(sd_folder_name)
-nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 1, "resolution": 0.1})
+
+nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 4, "resolution": 0.1})
 
 # ============
 # Creating BS
@@ -337,7 +339,7 @@ logger.debug("%s - %d", mm_param["label"], thalamus[0])
 mm_param["label"] = 'snc'
 mm2 = nest.Create('multimeter', params=mm_param)
 nest.Connect(mm2, (snc[snc_DA][0],))
-logger.debug("%s - %d", mm_param["label"], snc[0])
+logger.debug("%s - %d", mm_param["label"], snc[snc_DA][0])
 
 mm_param["label"] = 'prefrontal_cortex'
 mm3 = nest.Create('multimeter', params=mm_param)
@@ -368,10 +370,10 @@ else:
         fname = open(filename, 'w')
 
         for t in np.arange(0, T + dt, dt):
-            if nest.GetStatus(snc)[0]['local']:
+            if nest.GetStatus(snc[snc_DA])[0]['local']:
                 # TODO use both DOPA if save_weight_flag will be True
                 #weight = nest.GetStatus(nest.GetConnections(vta[vta_DA0], synapse_model=dopa_model_ex))[0]['weight']
-                weight = nest.GetStatus(nest.GetConnections(snc, synapse_model=dopa_model_ex))[0]['weight']
+                weight = nest.GetStatus(nest.GetConnections(snc[snc_DA], synapse_model=dopa_model_ex))[0]['weight']
                 print(weight)
                 weight_list.append((t, weight))
                 weightstr = str(weight)
@@ -395,71 +397,67 @@ rate_vta = nest.GetStatus(spikedetector, "n_events")[3] / sim_time * 1000.0 / N_
 # logger.info("Number of synapses: {0}".format(num_synapses))
 logger.info("Building time     : %.2f s" % build_time)
 logger.info("Simulation time   : %.2f s" % sim_time)
-logger.info("Thalamus rate   : %.2f Hz" % rate_th)
-logger.info("VTA[DA0] rate   : %.2f Hz" % rate_vta)
+logger.info("Thalamus rate     : %.2f Hz" % rate_th)
+logger.info("VTA[DA0] rate     : %.2f Hz" % rate_vta)
 logger.info('Dopamine: ' + ('YES' if dopa_flag else 'NO'))
 logger.info('Noise: ' + ('YES' if poison_generator_flag else 'NO'))
 
 # =====
-# Draw
+# BUILDING DIAGRAM'S
 # =====
-if save_weight_flag: plot_weights(weight_list, "Neurons weights progress neuron 1")
+if withoutGUI:
+    from write_from_sensors import *
+    save_voltage(mm1, name="thalamus")
+    save_voltage(mm2, name="snc[da0]")
+    save_voltage(mm3, name="prefrontal_cortex")
+    save_voltage(mm4, name="vta[da0]")
 
-nest.voltage_trace.from_device(mm1)
-pl.axis(axis)
-pl.savefig(f_name_gen('thalamus', True), dpi=dpi_n, format='png')
-if disp_flag: nest.voltage_trace.show()
-pl.close()
+    save_spikes((spikedetector[0],), name="thalamus")           #, hist=True)
+    save_spikes((spikedetector[1],), name="motor_cortex")       #, hist=True)
+    save_spikes((spikedetector[2],), name="prefrontal_cortex")  #, hist=True)
+    save_spikes((spikedetector[3],), name="vta[da0]")           #, hist=True)
+else:
+    import nest.raster_plot
+    import nest.voltage_trace
+    import pylab as pl
 
-pl.axis(axis)
-nest.voltage_trace.from_device(mm2)
-pl.axis(axis)
-pl.savefig(f_name_gen('snc', True), dpi=dpi_n, format='png')
-if disp_flag: nest.voltage_trace.show()
-pl.close()
+    if not os.path.exists(sd_folder_name):
+        os.mkdir(sd_folder_name)
 
-nest.voltage_trace.from_device(mm3)
-pl.axis(axis)
-pl.savefig(f_name_gen('prefrontal_cortex', True), dpi=dpi_n, format='png')
-if disp_flag:
-    nest.voltage_trace.show()
-pl.close()
+    nest.voltage_trace.from_device(mm1)
+    pl.axis(axis)
+    pl.savefig(f_name_gen('thalamus', True), dpi=dpi_n, format='png')
+    pl.close()
 
-pl.axis(axis)
-nest.voltage_trace.from_device(mm4)
-pl.axis(axis)
-pl.savefig(f_name_gen('vta[da0]', True), dpi=dpi_n, format='png')
-if disp_flag:
-    nest.voltage_trace.show()
-pl.close()
+    pl.axis(axis)
+    nest.voltage_trace.from_device(mm2)
+    pl.savefig(f_name_gen('snc[da0]', True), dpi=dpi_n, format='png')
+    pl.close()
+
+    nest.voltage_trace.from_device(mm3)
+    pl.axis(axis)
+    pl.savefig(f_name_gen('prefrontal_cortex', True), dpi=dpi_n, format='png')
+    pl.close()
+
+    pl.axis(axis)
+    nest.voltage_trace.from_device(mm4)
+    pl.axis(axis)
+    pl.savefig(f_name_gen('vta[da0]', True), dpi=dpi_n, format='png')
+    pl.close()
 
 
-nest.raster_plot.from_device((spikedetector[0],), hist=True)
-pl.savefig(f_name_gen('spikes_thalamus', is_image=True), format='png')
-if disp_flag: nest.raster_plot.show()
-pl.close()
+    nest.raster_plot.from_device((spikedetector[0],), hist=True)
+    pl.savefig(f_name_gen('spikes_thalamus', is_image=True), format='png')
+    pl.close()
 
-nest.raster_plot.from_device((spikedetector[1],), hist=True)
-pl.savefig(f_name_gen('spikes_motorcortex', is_image=True), format='png')
-if disp_flag: nest.raster_plot.show()
-pl.close()
+    nest.raster_plot.from_device((spikedetector[1],), hist=True)
+    pl.savefig(f_name_gen('spikes_motorcortex', is_image=True), format='png')
+    pl.close()
 
-nest.raster_plot.from_device((spikedetector[2],), hist=True)
-pl.savefig(f_name_gen('spikes_prefrontal_cortex', is_image=True), format='png')
-if disp_flag:
-    nest.raster_plot.show()
-pl.close()
+    nest.raster_plot.from_device((spikedetector[2],), hist=True)
+    pl.savefig(f_name_gen('spikes_prefrontal_cortex', is_image=True), format='png')
+    pl.close()
 
-nest.raster_plot.from_device((spikedetector[3],), hist=True)
-pl.savefig(f_name_gen('spikes_vta[da0]', is_image=True), format='png')
-if disp_flag:
-    nest.raster_plot.show()
-pl.close()
-
-# another type of visual representation
-# setattr(io,'HAVE_TABLEIO', False)
-# data_file = signals.NestFile(sd_folder_name + sd_filename, with_time=True)
-# # dims - dimension, it is 1 because there is no topology in connection.
-# spikes = signals.load_spikelist(data_file, dims=1, id_list=list(motor_cortex))
-# spikes.raster_plot()  # read help spikes.raster_plot
-# spikes.mean_rates()
+    nest.raster_plot.from_device((spikedetector[3],), hist=True)
+    pl.savefig(f_name_gen('spikes_vta[da0]', is_image=True), format='png')
+    pl.close()

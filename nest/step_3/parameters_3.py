@@ -22,9 +22,7 @@ Prefix description:
 import logging
 from property_3 import *
 import os
-from matplotlib import collections
-from matplotlib.colors import colorConverter
-import pylab as pl
+
 
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -91,7 +89,7 @@ def generate_neurons_BG(nest):
         thalamus[k_NN] = 90
 
         # increase numbers by k
-        k = 5
+        k = 1
         motor_cortex[motivation][k_NN] *= k
         motor_cortex[action][k_NN] *= k
         striatum[D1][k_NN] *= k
@@ -127,7 +125,7 @@ def generate_neurons_BG(nest):
         # possible different coefficients
         # k = 0.25
         # k = 0.0015 # 54640 neurons
-        k = 0.0015 # 54640 neurons
+        k = 0.0001 # 54640 neurons
         motor_cortex[motivation][k_coef] = k
         motor_cortex[action][k_coef] = k
         striatum[D1][k_coef] = k
@@ -227,38 +225,6 @@ def f_name_gen(name, is_image=False):
            ('yes' if vt_flag else 'no') + '_dopa_generator_' + \
            ('noise' if pg_flag else 'static') + \
            ('.png' if is_image else '_')
-
-'''
-if save_weight_flag if True then do plotting of weight change in a synapse
-'''
-def plot_weights(weights_list, title="Neurons weights progress", y_lim=None):
-    # Plot
-    # Make a list of colors cycling through the rgbcmyk series.
-    colors = [colorConverter.to_rgba(c) for c in ('k', 'r', 'g', 'b', 'c', 'y', 'm')]
-
-    axes = pl.axes()
-    ax4 = axes  # unpack the axes
-
-    ncurves = 1
-    offs = (0.0, 0.0)
-
-    segs = []
-    for i in range(ncurves):
-        curve = weights_list
-        segs.append(curve)
-
-    col = collections.LineCollection(segs, offsets=offs)
-    ax4.add_collection(col, autolim=True)
-    col.set_color(colors)
-    ax4.autoscale_view()
-    ax4.set_title(title)
-    ax4.set_xlabel('Time ms')
-    ax4.set_ylabel('Weight pA')
-    y_lim = 105.
-    if y_lim:
-        ax4.set_ylim(-5, y_lim)
-    pl.savefig(f_name_gen('dopa-weights', is_image=True), format='png')
-    # pl.show()
 
 # =======
 # DEVICES

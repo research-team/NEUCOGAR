@@ -17,7 +17,7 @@ syn_inhibitory = "inhibitory"
 dopa_model_ex = "dopa_ex"
 dopa_model_in = "dopa_in"
 
-sd_folder_name = "output/"
+sd_folder_name = "output"
 sd_filename = "spikes-172-0.gdf"
 
 device_static_synapse = "static_device"
@@ -28,7 +28,7 @@ vt_flag = True
 pg_flag = True
 # testing mode or real number neurons
 test_flag = True
-#display graphic
-disp_flag = False
+#info about GUI
+withoutGUI = True
 #save weight change when vt_flag is True (a graphic and dat file of weigh change of one synapse)
 save_weight_flag = False

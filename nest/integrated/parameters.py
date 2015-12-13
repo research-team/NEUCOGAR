@@ -10,25 +10,20 @@ It contains:
     SNr: substantia nigra reticulata
     SNc: substantia nigra compacta
     Thalamus
-
     Prefrontal cortex
     NAc: Nucleus Accumbens
     VTA: Ventral Tegmental Area
     TPP: Tegmental Pedunculopontine nucleus
-
     Amy: Amygdala
-
 Prefix description:
     MSN_ - Medium Spiny Neurons
     ex_  -  excitory
     inh_ - inhibitory
     STP_ - Short Term Plasticity
-
     GABA - GABA
     Glu - glutamate
     ACh - acetylcholine
     DA  - dopamine
-
 '''
 # Configure logger
 import logging
@@ -89,10 +84,10 @@ def generate_neurons(nest):
     # ===================
     amygdala = ({k_name: 'Glu'})
 
-    parts_no_dopa = (gpe, gpi, stn, snr, thalamus, amygdala, vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2]) + \
+    parts_no_dopa = (gpe, gpi, stn, snr, thalamus, amygdala, vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2], snc[snc_GABA]) + \
                     striatum + motor_cortex + prefrontal_cortex + nac + tpp
 
-    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1]) + snc
+    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], snc[snc_DA])
 
     # ========
     # NEURONS
@@ -115,8 +110,8 @@ def generate_neurons(nest):
         gpe[k_NN] = 30
         gpi[k_NN] = 10
         stn[k_NN] = 15
-        snc[snc_GABA][k_NN] = 40   #TODO check number of neurons
-        snc[snc_DA][k_NN] = 100     #TODO check number of neurons
+        snc[snc_GABA][k_NN] = 40
+        snc[snc_DA][k_NN] = 100
         snr[k_NN] = 21
         thalamus[k_NN] = 90
 
@@ -149,8 +144,8 @@ def generate_neurons(nest):
         gpe[k_NN] = 84100
         gpi[k_NN] = 12600
         stn[k_NN] = 22700
-        snc[snc_GABA][k_NN] = 3000    #TODO check number of neurons
-        snc[snc_DA][k_NN] = 12700     #TODO check number of neurons
+        snc[snc_GABA][k_NN] = 3000      #TODO check number of neurons
+        snc[snc_DA][k_NN] = 12700       #TODO check number of neurons
         snr[k_NN] = 47200
         thalamus[k_NN] = 5000000
 
@@ -173,8 +168,7 @@ def generate_neurons(nest):
         # COEFFICIENT COUNT
         # =================
         # possible different coefficients
-        # k = 0.0015
-        k = 0.0001 # 0000 neurons
+        k = 0.0001 # ~ neurons
         motor_cortex[motivation][k_coef] = k
         motor_cortex[action][k_coef] = k
         striatum[D1][k_coef] = k
@@ -203,7 +197,7 @@ def generate_neurons(nest):
         tpp[tpp_Glu][k_coef] = k
 
         amygdala[k_coef] = k
-        for part in all_parts: part[k_NN] = int(part[k_NN] * part[k_coef])
+       # for part in all_parts: part[k_NN] = int(part[k_NN] * part[k_coef])
 
     logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))
     # assign neuron params to every part
@@ -295,33 +289,6 @@ def f_name_gen(name, is_image=False):
            ('yes' if dopa_flag else 'no') + '_dopa_generator_' + \
            ('noise' if poison_generator_flag else 'static') + \
            ('.png' if is_image else '_')
-
-'''If save_weight_flag is True then do plotting of weight change in a synapse'''
-#deleted "y_lim=None" from param, because declared in body and not used
-
-def plot_weights(weights_list, title="Neurons weights progress"):
-    # Make a list of colors cycling through the rgbcmyk series
-    colors = [colorConverter.to_rgba(c) for c in ('k', 'r', 'g', 'b', 'c', 'y', 'm')]
-    axes = pl.axes()
-    ax4 = axes  # unpack the axes
-    ncurves = 1
-    offs = (0.0, 0.0)
-    segs = []
-    for i in range(ncurves):
-        curve = weights_list
-        segs.append(curve)
-    col = collections.LineCollection(segs, offsets=offs)
-    ax4.add_collection(col, autolim=True)
-    col.set_color(colors)
-    ax4.autoscale_view()
-    ax4.set_title(title)
-    ax4.set_xlabel('Time ms')
-    ax4.set_ylabel('Weight pA')
-    y_lim = 105.
-    if y_lim:
-        ax4.set_ylim(-5, y_lim)
-    pl.savefig(f_name_gen('dopa-weights', is_image=True), format='png')
-    # pl.show()
 
 # =======
 # DEVICES

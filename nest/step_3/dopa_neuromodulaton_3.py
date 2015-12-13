@@ -1,21 +1,11 @@
 # -*- coding: utf-8 -*-
 
 # ToDo add generator to every part
-
-# math and randomise package
 import numpy as np
-# neuron packages
-# visualise spikes
-# from NeuroTools import signals, io
-# import matplotlib
-# Force matplotlib to not use any Xwindows backend.
-# matplotlib.use('Agg')
-import nest.raster_plot
-import nest.voltage_trace
-# local project parameters
-from parameters_3 import *
-import os
 from time import clock
+
+import nest
+from parameters_3 import *
 
 logger = logging.getLogger("dopa")
 '''
@@ -39,9 +29,11 @@ Neurotools is used for representing and analyzing nonscientific data.
 nest.ResetKernel()
 startbuild = clock()
 
+sd_folder_name += "-text/" if withoutGUI else  "-image/"
 if not os.path.exists(sd_folder_name):
     os.mkdir(sd_folder_name)
-nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 1, "resolution": 0.1})
+
+nest.SetKernelStatus({'overwrite_files': True, 'data_path': sd_folder_name, "local_num_threads": 4, "resolution": 0.1})
 
 # ============
 # Creating BS
@@ -155,7 +147,7 @@ if vt_flag:
     log_conn(snc, gpe, dopa_model_in)
     nest.Connect(snc, stn, conn_dict, syn_spec=dopa_model_ex)
     log_conn(snc, stn, dopa_model_in)
-del (connect)
+del connect
 
 logger.debug('Starting spike generators')
 
@@ -256,42 +248,37 @@ rate_th = events_th / sim_time * 1000.0 / N_rec
 # logger.info("Number of synapses: {0}".format(num_synapses))
 logger.info("Building time     : %.2f s" % build_time)
 logger.info("Simulation time   : %.2f s" % sim_time)
-logger.info("Thalamus rate   : %.2f Hz" % rate_th)
+logger.info("Thalamus rate     : %.2f Hz" % rate_th)
 logger.info('Dopamine: ' + ('YES' if vt_flag else 'NO'))
 logger.info('Noise: ' + ('YES' if pg_flag else 'NO'))
 
 # =====
 # Draw
 # =====
-if save_weight_flag: plot_weights(weight_list, "Neurons weights progress neuron 1")
+if withoutGUI:
+    from write_from_sensors import *
+    save_voltage(mm1, name="thalamus")
+    save_voltage(mm2, name="snc")
+    save_spikes((spikedetector[0],), name="thalamus")       #, hist=True)
+    save_spikes((spikedetector[1],), name="motor_cortex")   #, hist=True)
+else:
+    import nest.raster_plot
+    import nest.voltage_trace
+    import pylab as pl
+    pl.axis(axis)
+    nest.voltage_trace.from_device(mm1)
+    pl.savefig(f_name_gen('thalamus', True), dpi=dpi_n, format='png')
+    pl.close()
 
-nest.voltage_trace.from_device(mm1)
-pl.axis(axis)
-pl.savefig(f_name_gen('thalamus', True), dpi=dpi_n, format='png')
-if disp_flag: nest.voltage_trace.show()
-pl.close()
+    pl.axis(axis)
+    nest.voltage_trace.from_device(mm2)
+    pl.savefig(f_name_gen('snc', True), dpi=dpi_n, format='png')
+    pl.close()
 
-pl.axis(axis)
-nest.voltage_trace.from_device(mm2)
-pl.axis(axis)
-pl.savefig(f_name_gen('snc', True), dpi=dpi_n, format='png')
-if disp_flag: nest.voltage_trace.show()
-pl.close()
+    nest.raster_plot.from_device((spikedetector[0],), hist=True)
+    pl.savefig(f_name_gen('spikes_thalamus', is_image=True), format='png')
+    pl.close()
 
-nest.raster_plot.from_device((spikedetector[0],), hist=True)
-pl.savefig(f_name_gen('spikes_thalamus', is_image=True), format='png')
-if disp_flag: nest.raster_plot.show()
-pl.close()
-
-nest.raster_plot.from_device((spikedetector[1],), hist=True)
-pl.savefig(f_name_gen('spikes_motorcortex', is_image=True), format='png')
-if disp_flag: nest.raster_plot.show()
-pl.close()
-
-# another type of visual representation
-# setattr(io,'HAVE_TABLEIO', False)
-# data_file = signals.NestFile(sd_folder_name + sd_filename, with_time=True)
-# # dims - dimension, it is 1 because there is no topology in connection.
-# spikes = signals.load_spikelist(data_file, dims=1, id_list=list(cortex))
-# spikes.raster_plot()  # read help spikes.raster_plot
-# spikes.mean_rates()
+    nest.raster_plot.from_device((spikedetector[1],), hist=True)
+    pl.savefig(f_name_gen('spikes_motorcortex', is_image=True), format='png')
+    pl.close()

@@ -48,10 +48,8 @@ dpi_n = 120
 dopa_model_ex = "dopa_ex"
 dopa_model_in = "dopa_in"
 
-sd_folder_name = "output/"
-sd_filename = "spikes-172-0.gdf"
+sd_folder_name = "output"
 
-device_static_synapse = "static_device"
 gen_static_syn = "noise_conn"
 
 # dopamine modulation flag
@@ -63,8 +61,8 @@ poison_generator_flag = True
 # True - testing mode | False - real number neurons
 test_flag = True
 
-#display graphic
-disp_flag = False
+#info about GUI
+withoutGUI = True
 
 #save weight change when vt_flag is True (a graphic and dat file of weight change of one synapse)
 save_weight_flag = False
