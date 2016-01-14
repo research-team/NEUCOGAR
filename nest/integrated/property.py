@@ -62,7 +62,7 @@ poison_generator_flag = True
 test_flag = True
 
 #info about GUI
-withoutGUI = True
+withoutGUI = False
 
 #save weight change when vt_flag is True (a graphic and dat file of weight change of one synapse)
-save_weight_flag = False
+save_weight_flag = True

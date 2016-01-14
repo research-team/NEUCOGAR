@@ -168,36 +168,8 @@ def generate_neurons(nest):
         # COEFFICIENT COUNT
         # =================
         # possible different coefficients
-        k = 0.0001 # ~ neurons
-        motor_cortex[motivation][k_coef] = k
-        motor_cortex[action][k_coef] = k
-        striatum[D1][k_coef] = k
-        striatum[D2][k_coef] = k
-        striatum[tan][k_coef] = k
-        gpe[k_coef] = k
-        gpi[k_coef] = k
-        stn[k_coef] = k
-        snc[snc_GABA][k_coef] = k
-        snc[snc_DA][k_coef] = k
-        snr[k_coef] = k
-        thalamus[k_coef] = k
-
-        prefrontal_cortex[pfc_Glu0][k_NN] = k
-        prefrontal_cortex[pfc_Glu1][k_NN] = k
-        nac[nac_ACh][k_coef] = k
-        nac[nac_GABA0][k_coef] = k
-        nac[nac_GABA1][k_coef] = k
-        vta[vta_GABA0][k_coef] = k
-        vta[vta_DA0][k_coef] = k
-        vta[vta_GABA1][k_coef] = k
-        vta[vta_DA1][k_coef] = k
-        vta[vta_GABA2][k_coef] = k
-        tpp[tpp_GABA][k_coef] = k
-        tpp[tpp_ACh][k_coef] = k
-        tpp[tpp_Glu][k_coef] = k
-
-        amygdala[k_coef] = k
-       # for part in all_parts: part[k_NN] = int(part[k_NN] * part[k_coef])
+        k = 0.00015 # ~ neurons
+        for part in all_parts: part[k_NN] = int(part[k_NN] * k)
 
     logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))
     # assign neuron params to every part
@@ -281,7 +253,7 @@ conn_dict = {'rule': 'all_to_all', 'multapses': True} # or another scheme 'fixed
 # =========
 '''Generates string full name (subfolders with respect to flags defined in properties) of an image'''
 def f_name_gen(name, is_image=False):
-    sub_folder = os.path.join(sd_folder_name, 'noise/' if poison_generator_flag else 'static/')
+    sub_folder = os.path.join(sd_folder_name + '-image', 'noise/' if poison_generator_flag else 'static/')
     if not os.path.exists(sub_folder):
         os.makedirs(sub_folder)
     return sub_folder + \

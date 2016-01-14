@@ -2,6 +2,7 @@
 # ToDo add generator to every part
 # TODO check num_threads before testing / 8 for Cisco Server
 # TODO ATTTENTION! Maybe there ara some mistakes in neuron parameters! Write @alexpanzer in Trello.
+from time import clock
 # math and randomise package
 import numpy as np
 # visualise spikes
@@ -9,8 +10,6 @@ import nest.raster_plot
 import nest.voltage_trace
 # local project parameters
 from parameters import *
-from time import clock
-import os
 
 '''
 This is the implementation of experiment of dopamine neuromodulation based on
@@ -261,35 +260,39 @@ del connect
 
 logger.debug('Starting spike generators')
 
+'''Help method for creating spikeGenerator'''
+def spikeGenerator(typeGenerator, part, startTime, stopTime, weightParam=w_Glu):
+    if typeGenerator == 'fast':
+        generator_fast = nest.Create("poisson_generator", 1, {"rate": K_fast, 'start': startTime, 'stop': stopTime})
+        parts_dict_log[generator_fast[0]] = 'Poisson Generator(fast)'
+        nest.Connect(generator_fast, part, syn_spec=gen_static_syn,
+                     conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(part) / 4})
+        log_conn(generator_fast, part)
+    else:
+        generator_slow = nest.Create("poisson_generator", 1, {"rate": K_slow})
+        parts_dict_log[generator_slow[0]] = 'Poisson Generator(slow)'
+        nest.CopyModel("static_synapse", gen_static_syn, {'weight': weightParam, 'delay': pg_delay})
+        nest.Connect(generator_slow, part, syn_spec=gen_static_syn,
+                 conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(part) / 4})
+        log_conn(generator_slow, part)
+
 # ===============
 # Spike Generator
 # ===============
 if poison_generator_flag:
-    pg_slow = nest.Create("poisson_generator", 1, {"rate": K_slow})
-    parts_dict_log[pg_slow[0]] = 'Poisson Generator(slow)'
-    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_Glu, 'delay': pg_delay})
-    nest.Connect(pg_slow, motor_cortex[action], syn_spec=gen_static_syn,
-                 conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(motor_cortex[action]) / 4})
-    log_conn(pg_slow, motor_cortex[action])
+    spikeGenerator('slow', motor_cortex[action], 400., 600.)
     if dopa_flag:
         # NIGROSTRIATAL (motor_cortex)
-        pg_fast = nest.Create("poisson_generator", 1, {"rate": K_fast, 'start': 400., 'stop': 600.})
-        parts_dict_log[pg_fast[0]] = 'Poisson Generator(fast)'
-        nest.Connect(pg_fast, motor_cortex[motivation], syn_spec=gen_static_syn,
-                     conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(motor_cortex[motivation]) / 4})
-        log_conn(pg_fast, motor_cortex[motivation])
-        # MESOCORTICOLIMBIC (VTA)
-        pg_fast = nest.Create("poisson_generator", 1, {"rate": K_fast, 'start': 400., 'stop': 600.})
-        parts_dict_log[pg_fast[0]] = 'Poisson Generator(fast)'
-        nest.Connect(pg_fast, vta[vta_DA0], syn_spec=gen_static_syn,
-                     conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(vta[vta_DA0]) / 4})
-        log_conn(pg_fast, vta[vta_DA0])
+        spikeGenerator('fast', motor_cortex[motivation], 400., 600.)
+        # MESOCORTICOLIMBIC (PFC and PPTg)
+        spikeGenerator('fast', prefrontal_cortex[pfc_Glu0], 400., 600.)
+        spikeGenerator('fast', prefrontal_cortex[pfc_Glu1], 400., 600.)
+        spikeGenerator('fast', tpp[tpp_GABA], 400., 600.)
+        spikeGenerator('fast', tpp[tpp_Glu], 400., 600.)
+        spikeGenerator('fast', tpp[tpp_ACh], 400., 600.)
         # ADDITIONAL (Amygdala)
-        pg_fast = nest.Create("poisson_generator", 1, {"rate": K_fast, 'start': 400., 'stop': 600.})
-        parts_dict_log[pg_fast[0]] = 'Poisson Generator(fast)'
-        nest.Connect(pg_fast, amygdala, syn_spec=gen_static_syn,
-                     conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(amygdala) / 4})
-        log_conn(pg_fast, amygdala)
+        spikeGenerator('fast', amygdala, 400., 600.)
+'''
 else:
     sg_slow = nest.Create('spike_generator', params={'spike_times': np.arange(1, T, 20.)})
     parts_dict_log[sg_slow[0]] = 'Periodic Generator(slow)'
@@ -310,12 +313,13 @@ else:
         nest.Connect(sg_fast, vta[vta_DA0], syn_spec=gen_static_syn, )
         # conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(vta[vta_DA0]) / 4})
         log_conn(sg_fast, vta[vta_DA0])
-
+'''
 # =============
 # SPIKEDETECTOR
 # =============
+#TODO add function to build spikedetectors
 logger.debug('Attaching spikes detector')
-spikedetector = nest.Create("spike_detector", 4, params=detector_param)
+spikedetector = nest.Create("spike_detector", 6, params=detector_param)
 
 # NIGROSTRIATAL
 nest.Connect(thalamus[:N_rec], (spikedetector[0],))
@@ -328,6 +332,10 @@ nest.Connect(prefrontal_cortex[pfc_Glu0][:N_rec], (spikedetector[2],))
 logger.debug("spike detecor is attached to prefrontal cortex Glu0: tracing %d neurons" % N_rec)
 nest.Connect(vta[vta_DA0][:N_rec], (spikedetector[3],))
 logger.debug("spike detecor is attached to VTA[DA0]: tracing %d neurons" % N_rec)
+nest.Connect(vta[vta_DA1][:N_rec], (spikedetector[4],))
+logger.debug("spike detecor is attached to VTA[DA1]: tracing %d neurons" % N_rec)
+nest.Connect(snc[snc_DA][:N_rec], (spikedetector[5],))
+logger.debug("spike detecor is attached to SNC[DA]: tracing %d neurons" % N_rec)
 
 # ============
 # MULTIMETER
@@ -353,9 +361,36 @@ logger.debug("%s - %d", mm_param["label"], vta[vta_DA0][0])
 # ==========
 # SIMULATING
 # ==========
-nest.PrintNetwork()
 endbuild = clock()
+startsimulate = clock()
+nest.PrintNetwork()
 logger.debug("Simulating")
+MEGA = 10 ** 6
+
+timerFlag = True
+
+
+
+times = []
+resources = []
+
+'''
+import psutil
+
+import time
+from threading import Thread
+
+class writeRes(Thread):
+    def run(self):
+        resources.append(str('%5d MB %7.1f MHz ' % (psutil.virtual_memory()[3] / MEGA, psutil.cpu_times()[0] ) + str(datetime.datetime.now().time())) + '\n')
+
+class timer(Thread):
+    def run(self):
+        while timerFlag:
+            writeRes().start()
+            sleep
+'''
+import datetime
 if not dopa_flag:
     # TYPE_1
     nest.Simulate(T)
@@ -363,26 +398,24 @@ else:
     if not save_weight_flag:
         nest.Simulate(T)
     else:
-        # TYPE_2
-        weight = None
-        weight_list = [(0, 1)]
-        filename = 'weight_dopa.gdf'
-        fname = open(filename, 'w')
-
+        iterA = 0
+        begin = 0
         for t in np.arange(0, T + dt, dt):
-            if nest.GetStatus(snc[snc_DA])[0]['local']:
-                # TODO use both DOPA if save_weight_flag will be True
-                #weight = nest.GetStatus(nest.GetConnections(vta[vta_DA0], synapse_model=dopa_model_ex))[0]['weight']
-                weight = nest.GetStatus(nest.GetConnections(snc[snc_DA], synapse_model=dopa_model_ex))[0]['weight']
-                print(weight)
-                weight_list.append((t, weight))
-                weightstr = str(weight)
-                timestr = str(t)
-                data = timestr + ' ' + weightstr + '\n'
-                fname.write(data)
+            nest.Simulate(dt)
+            end = clock()
+            times.append(str('%.1f %.1f %.1f %4d ' % (begin, end - begin, end, t)) + str(datetime.datetime.now().time()) + '\n')
+            iterA+=1
+            begin = end
+        timerFlag = False
 
-                nest.Simulate(dt)
-        fname.close()
+        tRes = open('timeResources.txt', 'w')
+        tSim = open('timeSimulation.txt', 'w')
+        for item in resources:
+            tRes.write(item)
+        for item in times:
+            tSim.write(item)
+        tSim.close()
+        tRes.close()
 
 # ===============
 # LOG information
@@ -402,6 +435,21 @@ logger.info("VTA[DA0] rate     : %.2f Hz" % rate_vta)
 logger.info('Dopamine: ' + ('YES' if dopa_flag else 'NO'))
 logger.info('Noise: ' + ('YES' if poison_generator_flag else 'NO'))
 
+'''
+import matplotlib.pyplot as plt
+import numpy as np
+
+ev = nest.GetStatus((spikedetector[3],), "events")[0]
+ts = ev["times"]
+gids = ev["senders"]
+
+hist, bins = np.histogram(gids, bins=len(ts))
+width = 0.7 * (bins[1] - bins[0])
+center = (bins[:-1] + bins[1:]) / 2
+plt.bar(center, hist, align='center', width=width)
+plt.show()
+'''
+
 # =====
 # BUILDING DIAGRAM'S
 # =====
@@ -416,13 +464,12 @@ if withoutGUI:
     save_spikes((spikedetector[1],), name="motor_cortex")       #, hist=True)
     save_spikes((spikedetector[2],), name="prefrontal_cortex")  #, hist=True)
     save_spikes((spikedetector[3],), name="vta[da0]")           #, hist=True)
+    save_spikes((spikedetector[4],), name="vta[da1]")           #, hist=True)
+    save_spikes((spikedetector[5],), name="snc[da]")            #, hist=True)
 else:
     import nest.raster_plot
     import nest.voltage_trace
     import pylab as pl
-
-    if not os.path.exists(sd_folder_name):
-        os.mkdir(sd_folder_name)
 
     nest.voltage_trace.from_device(mm1)
     pl.axis(axis)
@@ -460,4 +507,12 @@ else:
 
     nest.raster_plot.from_device((spikedetector[3],), hist=True)
     pl.savefig(f_name_gen('spikes_vta[da0]', is_image=True), format='png')
+    pl.close()
+
+    nest.raster_plot.from_device((spikedetector[4],), hist=True)
+    pl.savefig(f_name_gen('spikes_vta[da1]', is_image=True), format='png')
+    pl.close()
+
+    nest.raster_plot.from_device((spikedetector[5],), hist=True)
+    pl.savefig(f_name_gen('spikes_snc[da]', is_image=True), format='png')
     pl.close()
