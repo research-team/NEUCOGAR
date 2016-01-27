@@ -5,7 +5,7 @@ import os
 #TODO change directory
 path = "/home/panzer/Desktop/"
 
-def spike_make_diagram(ts, gids, hist, title, xlabel, name):
+def spike_make_diagram(ts, gids, hist, title, name):
     dpi_n = 120
     ts1 = ts
     neurons = gids
@@ -36,12 +36,12 @@ def spike_make_diagram(ts, gids, hist, title, xlabel, name):
         pylab.bar(t_bins, heights, width=hist_binwidth, color=color_bar, edgecolor=color_edge)
         pylab.yticks([int(a) for a in numpy.linspace(0.0, int(max(heights) * 1.1) + 5, 4)])
         pylab.ylabel("Rate (Hz)")
-        pylab.xlabel(xlabel)
+        pylab.xlabel("Time (ms)")
         pylab.xlim(xlim)
         pylab.axes(ax1)
     else:
         pylab.plot(ts1, gids, color_marker)
-        pylab.xlabel(xlabel)
+        pylab.xlabel("Time (ms)")
         pylab.ylabel(ylabel)
 
     pylab.title(title)
@@ -49,14 +49,14 @@ def spike_make_diagram(ts, gids, hist, title, xlabel, name):
     pylab.savefig(path + name + ".png", dpi=dpi_n, format='png')
     pylab.close()
 
-def voltage_make_diagram(times, voltages, name):
+def voltage_make_diagram(times, voltages, neuron_title, name):
     title = "Membrane potential"
     dpi_n = 120
     timeunit="ms"
     line_style = ""
     if not len(times):
         raise nest.NESTError("No events recorded! Make sure that withtime and withgid are set to True.")
-    pylab.plot(times, voltages, line_style, label="Neuron %s" % "test(null)")
+    pylab.plot(times, voltages, line_style, label=neuron_title)
     pylab.ylabel("Membrane potential (mV)")
     pylab.xlabel("Time (%s)" % timeunit)
     pylab.legend(loc="best")
@@ -70,7 +70,7 @@ def voltage_make_diagram(times, voltages, name):
 block = [filename for filename in os.listdir(path) if filename[0] == "@"]
 
 for filename in block:
-    if filename.find("spikes") != -1:
+    if filename.startswith('@spikes'):           #find("spikes") != -1:
         inFile = open(path + filename, 'rb')
         mas = inFile.read().split("@@@")
         inFile.close()
@@ -79,7 +79,7 @@ for filename in block:
         y_vals = [int(y) for y in mas[1].split()]
         clearName = filename[1:filename.find(".txt")]
         #make_diagram(ts, gids, hist, title, xlabel, name):
-        spike_make_diagram(x_vals, y_vals, mas[4], mas[2], mas[3], clearName)
+        spike_make_diagram(x_vals, y_vals, mas[4], mas[2], clearName)
     else:
         inFile = open(path + filename, 'rb')
         mas = inFile.read().split("@@@")
@@ -88,5 +88,5 @@ for filename in block:
         x_vals = [float(x) for x in mas[0].split()]
         y_vals = [float(y) for y in mas[1].split()]
         clearName = filename[1:filename.find(".txt")]
-        voltage_make_diagram(x_vals, y_vals, clearName)
+        voltage_make_diagram(x_vals, y_vals, mas[2], clearName)
     print filename + " diagram created"

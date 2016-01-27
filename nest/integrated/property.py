@@ -1,68 +1,49 @@
-# -*- coding: utf-8 -*-
-GABA = 0
+GABA = 0            # keys for connection type
 Glu = 1
 ACh = 2
 
-# keys for cerebral_cortex
-motivation = 0
+motivation = 0      # keys for motor cortex
 action = 1
 
-pfc_Glu0 = 0
+pfc_Glu0 = 0        # keys for prefrontal cortex
 pfc_Glu1 = 1
 
-# keys for striatum
-D1 = 0
+D1 = 0              # keys for striatum
 D2 = 1
-tan = 2  # Tonically active neurons
+tan = 2             # Tonically active neurons
 
-snc_GABA = 0
+snc_GABA = 0        # keys for SNc
 snc_DA = 1
 
-gpe_Glu = 0
-gpi_GABA = 0
-stn_Glu = 0
-snr_GABA = 0
-thalamus_Glu = 0
+gpe_GABA = 0        # key for GPe
+gpi_GABA = 0        # key for GPi
+snr_GABA = 0        # key for SNr
+stn_Glu = 0         # key for STN
+thalamus_Glu = 0    # key for thalamus
+amygdala_Glu = 0    # key for amygdala
 
-# keys for NAc
-nac_ACh = 0
+nac_ACh = 0         # keys for NAc
 nac_GABA0 = 1
 nac_GABA1 = 2
 
-# keys for VTA
-vta_GABA0 = 0
+vta_GABA0 = 0       # keys for VTA
 vta_DA0 = 1
 vta_GABA1 = 2
 vta_DA1 = 3
 vta_GABA2 = 4
 
-# keys for TPP
-tpp_GABA = 0
+tpp_GABA = 0        # keys for TPP
 tpp_ACh = 1
 tpp_Glu = 2
 
-# Quality of graphics
-dpi_n = 120
+dpi_n = 120         # Quality of graphics
 
 # dopamine model key
 dopa_model_ex = "dopa_ex"
 dopa_model_in = "dopa_in"
-
-sd_folder_name = "output"
-
 gen_static_syn = "noise_conn"
 
-# dopamine modulation flag
-dopa_flag = True
-
-# poisson generator with rate set up flag
-poison_generator_flag = True
-
-# True - testing mode | False - real number neurons
-test_flag = True
-
-#info about GUI
-withoutGUI = False
-
-#save weight change when vt_flag is True (a graphic and dat file of weight change of one synapse)
-save_weight_flag = True
+dopa_flag = True                # dopamine modulation flag
+poison_generator_flag = True    # poisson generator with rate set up flag
+test_flag = True                # True - testing mode | False - real number neurons
+statusGUI = True                # True - GUI is on | False - is off

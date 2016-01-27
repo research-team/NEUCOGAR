@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-#TODO motor or cerebral cortex
 '''
 It contains:
     Motor Cortex
@@ -25,13 +23,8 @@ Prefix description:
     ACh - acetylcholine
     DA  - dopamine
 '''
-# Configure logger
 import logging
 from property import *
-import os
-from matplotlib import collections
-from matplotlib.colors import colorConverter
-import pylab as pl
 
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
@@ -48,6 +41,7 @@ k_name = 'name'
 '''
 If you need new brain part just write name = {k_name: 'name'} and add to all_part variable (dict{'name': neurons_list}).
 '''
+
 def generate_neurons(nest):
     logger = logging.getLogger("parameters")
     iaf_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -67., 'C_m': 2., 't_ref': 2., 'V_m': -60.,
@@ -59,43 +53,37 @@ def generate_neurons(nest):
     k_model = 'model'
     k_coef = 'coefficient'
 
-    # ===================
     # NIGROSTRIATAL PATHWAY PARTS
-    # ===================
     motor_cortex = ({k_name: 'motivation'}, {k_name: 'action'})
     striatum = ({k_name: 'D1'}, {k_name: 'D2'}, {k_name: 'tan'})
-    gpe = ({k_name: 'Glu'})
-    gpi = ({k_name: 'GABA'})
-    stn = ({k_name: 'Glu'})
-    snr = ({k_name: 'GABA'})
-    thalamus = ({k_name: 'Glu'})
-    snc = ({k_name: 'GABA'}, {k_name: 'DA'})
+    gpe = ({k_name: 'gpe_Glu'}, )
+    gpi = ({k_name: 'gpi_GABA'}, )
+    stn = ({k_name: 'stn_Glu'}, )
+    snr = ({k_name: 'snr_GABA'}, )
+    thalamus = ({k_name: 'thalamus_Glu'}, )
+    snc = ({k_name: 'snc_GABA'}, {k_name: 'snc_DA'})
 
-    # ===================
     # MESOCORTICOLIMBIC PATHWAY PARTS
-    # ===================
-    prefrontal_cortex = ({k_name: 'Glu0'}, {k_name: 'Glu1'})
-    nac = ({k_name: 'ACh'}, {k_name: 'GABA0'}, {k_name: 'GABA1'})
-    vta = ({k_name: 'GABA0'}, {k_name: 'DA0'}, {k_name: 'GABA1'}, {k_name: 'DA1'}, {k_name: 'GABA2'})
-    tpp = ({k_name: 'GABA'}, {k_name: 'ACh'}, {k_name: 'Glu'})
+    prefrontal_cortex = ({k_name: 'pfc_Glu0'}, {k_name: 'pfc_Glu1'})
+    nac = ({k_name: 'nac_ACh'}, {k_name: 'nac_GABA0'}, {k_name: 'nac_GABA1'})
+    vta = ({k_name: 'vta_GABA0'}, {k_name: 'vta_DA0'}, {k_name: 'vta_GABA1'}, {k_name: 'vta_DA1'}, {k_name: 'vta_GABA2'})
+    tpp = ({k_name: 'tpp_GABA'}, {k_name: 'tpp_ACh'}, {k_name: 'tpp_Glu'})
 
-    # ===================
     # ADDITIONAL PARTS
-    # ===================
-    amygdala = ({k_name: 'Glu'})
+    amygdala = ({k_name: 'amygdala_Glu'}, )
 
-    parts_no_dopa = (gpe, gpi, stn, snr, thalamus, amygdala, vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2], snc[snc_GABA]) + \
-                    striatum + motor_cortex + prefrontal_cortex + nac + tpp
+    parts_no_dopa = gpe + gpi + stn + snr + amygdala + (vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2], snc[snc_GABA]) + \
+                    striatum + motor_cortex + prefrontal_cortex + nac + tpp + thalamus
 
     parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], snc[snc_DA])
 
     # ========
     # NEURONS
     # ========
-    # without dopamine
-    for part in parts_no_dopa: part[k_model] = 'iaf_psc_exp'
-    # with dopamine
-    for part in parts_with_dopa: part[k_model] = 'iaf_psc_alpha'
+    for part in parts_no_dopa:                  # without dopamine
+        part[k_model] = 'iaf_psc_exp'
+    for part in parts_with_dopa:                # with dopamine
+        part[k_model] = 'iaf_psc_alpha'
     all_parts = parts_no_dopa + parts_with_dopa
 
     if test_flag:
@@ -107,13 +95,13 @@ def generate_neurons(nest):
         striatum[D1][k_NN] = 30
         striatum[D2][k_NN] = 30
         striatum[tan][k_NN] = 8
-        gpe[k_NN] = 30
-        gpi[k_NN] = 10
-        stn[k_NN] = 15
+        gpe[gpe_GABA][k_NN] = 30
+        gpi[gpi_GABA][k_NN] = 10
+        stn[stn_Glu][k_NN] = 15
         snc[snc_GABA][k_NN] = 40
         snc[snc_DA][k_NN] = 100
-        snr[k_NN] = 21
-        thalamus[k_NN] = 90
+        snr[snr_GABA][k_NN] = 21
+        thalamus[thalamus_Glu][k_NN] = 90
 
         prefrontal_cortex[pfc_Glu0][k_NN] = 150
         prefrontal_cortex[pfc_Glu1][k_NN] = 150
@@ -129,7 +117,7 @@ def generate_neurons(nest):
         tpp[tpp_ACh][k_NN] = 14
         tpp[tpp_Glu][k_NN] = 23
 
-        amygdala[k_NN] = 40
+        amygdala[amygdala_Glu][k_NN] = 40
     else:
         # ===========
         # REAL NUMBER
@@ -141,13 +129,13 @@ def generate_neurons(nest):
         striatum[D1][k_NN] = int(striatum_NN * 0.425)
         striatum[D2][k_NN] = int(striatum_NN * 0.425)
         striatum[tan][k_NN] = int(striatum_NN * 0.05)
-        gpe[k_NN] = 84100
-        gpi[k_NN] = 12600
-        stn[k_NN] = 22700
+        gpe[gpe_GABA][k_NN] = 84100
+        gpi[gpi_GABA][k_NN] = 12600
+        stn[stn_Glu][k_NN] = 22700
         snc[snc_GABA][k_NN] = 3000      #TODO check number of neurons
         snc[snc_DA][k_NN] = 12700       #TODO check number of neurons
-        snr[k_NN] = 47200
-        thalamus[k_NN] = 5000000
+        snr[snr_GABA][k_NN] = 47200
+        thalamus[thalamus_Glu][k_NN] = 5000000
 
         prefrontal_cortex[pfc_Glu0][k_NN] = 183000
         prefrontal_cortex[pfc_Glu1][k_NN] = 183000
@@ -163,10 +151,8 @@ def generate_neurons(nest):
         tpp[tpp_ACh][k_NN] = 1400
         tpp[tpp_Glu][k_NN] = 2300
 
-        amygdala[k_NN] = 30000          #TODO not real!!!
-        # =================
-        # COEFFICIENT COUNT
-        # =================
+        amygdala[amygdala_Glu][k_NN] = 30000          #TODO not real!!!
+
         # possible different coefficients
         k = 0.00015 # ~ neurons
         for part in all_parts: part[k_NN] = int(part[k_NN] * k)
@@ -179,14 +165,6 @@ def generate_neurons(nest):
     for part in all_parts:
         part[k_ids] = nest.Create(part[k_model], part[k_NN])
     return all_parts
-
-'''Help method to get neurons_list from iter_all{'name':neurons_list}'''
-def get_ids(name, iter_all=None):
-    if iter_all is not None: get_ids.iter_all = iter_all
-    for part in get_ids.iter_all:
-        if part[k_name] == name:
-            return part[k_ids]
-    raise KeyError
 
 
 # =========
@@ -205,12 +183,9 @@ stdp_dopamine_synapse_w_in = -stdp_dopamine_synapse_w_ex
 # generator delay
 pg_delay = 20.
 
-# Glutamate
-w_Glu = 45.  # excitatory weights
-# GABA
-w_GABA = 1.5 * w_Glu  # inhibitory weight
-#Acetylcholine
-w_ACh = 78.     #TODO paste information about ACh WEIGHT
+w_Glu = 45.             # excitatory weights
+w_GABA = 1.5 * w_Glu    # inhibitory weight
+w_ACh = 58.             #TODO paste information about ACh WEIGHT
 
 
 STDP_synapseparams = {
@@ -248,19 +223,6 @@ DOPA_synparams_in = dict({"weight": stdp_dopamine_synapse_w_in, 'Wmax': -100., '
 # ============
 conn_dict = {'rule': 'all_to_all', 'multapses': True} # or another scheme 'fixed_outdegree', 'outdegree': 100
 
-# =========
-# USEFUL FUNCTIONS
-# =========
-'''Generates string full name (subfolders with respect to flags defined in properties) of an image'''
-def f_name_gen(name, is_image=False):
-    sub_folder = os.path.join(sd_folder_name + '-image', 'noise/' if poison_generator_flag else 'static/')
-    if not os.path.exists(sub_folder):
-        os.makedirs(sub_folder)
-    return sub_folder + \
-           (name + '_' if len(name) > 0 else '') + \
-           ('yes' if dopa_flag else 'no') + '_dopa_generator_' + \
-           ('noise' if poison_generator_flag else 'static') + \
-           ('.png' if is_image else '_')
 
 # =======
 # DEVICES
