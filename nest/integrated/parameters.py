@@ -27,7 +27,8 @@ import logging
 from property import *
 
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
-logging.basicConfig(format=FORMAT, level=logging.DEBUG)
+logging.basicConfig(filename='param.log', format=FORMAT, level=logging.DEBUG)
+
 
 # general settings
 T = 1000.
@@ -43,20 +44,23 @@ If you need new brain part just write name = {k_name: 'name'} and add to all_par
 '''
 
 def generate_neurons(nest):
-    logger = logging.getLogger("parameters")
-    iaf_neuronparams = {'E_L': -70., 'V_th': -50., 'V_reset': -67., 'C_m': 2., 't_ref': 2., 'V_m': -60.,
+    logger = logging.getLogger('parameters')
+    iaf_neuronparams = {'E_L': -70.,
+                        'V_th': -50.,
+                        'V_reset': -67.,
+                        'C_m': 2.,
+                        't_ref': 2.,
+                        'V_m': -60.,
                         'tau_syn_ex': 1.,
-                        'tau_syn_in': 1.33} #TODO Check this code (for Acetylcholine)
-    # neuron set
+                        'tau_syn_in': 1.33}
     # k - prefix means key
     k_NN = 'NN'
     k_model = 'model'
-    k_coef = 'coefficient'
 
     # NIGROSTRIATAL PATHWAY PARTS
     motor_cortex = ({k_name: 'motivation'}, {k_name: 'action'})
     striatum = ({k_name: 'D1'}, {k_name: 'D2'}, {k_name: 'tan'})
-    gpe = ({k_name: 'gpe_Glu'}, )
+    gpe = ({k_name: 'gpe_GABA'}, )
     gpi = ({k_name: 'gpi_GABA'}, )
     stn = ({k_name: 'stn_Glu'}, )
     snr = ({k_name: 'snr_GABA'}, )
@@ -123,8 +127,8 @@ def generate_neurons(nest):
         # REAL NUMBER
         # ===========
         cerebral_cortex_NN = 29000000
-        motor_cortex[motivation][k_NN] = int(cerebral_cortex_NN * 0.2)
-        motor_cortex[action][k_NN] = int(cerebral_cortex_NN * 0.8)
+        motor_cortex[motivation][k_NN] = int(cerebral_cortex_NN * 0.8 / 6)
+        motor_cortex[action][k_NN] = int(cerebral_cortex_NN * 0.2 / 6)
         striatum_NN = 2500000
         striatum[D1][k_NN] = int(striatum_NN * 0.425)
         striatum[D2][k_NN] = int(striatum_NN * 0.425)
@@ -135,7 +139,7 @@ def generate_neurons(nest):
         snc[snc_GABA][k_NN] = 3000      #TODO check number of neurons
         snc[snc_DA][k_NN] = 12700       #TODO check number of neurons
         snr[snr_GABA][k_NN] = 47200
-        thalamus[thalamus_Glu][k_NN] = 5000000
+        thalamus[thalamus_Glu][k_NN] = int(5000000 / 6) #!!!!
 
         prefrontal_cortex[pfc_Glu0][k_NN] = 183000
         prefrontal_cortex[pfc_Glu1][k_NN] = 183000
@@ -154,11 +158,12 @@ def generate_neurons(nest):
         amygdala[amygdala_Glu][k_NN] = 30000          #TODO not real!!!
 
         # possible different coefficients
-        k = 0.00015 # ~ neurons
-        for part in all_parts: part[k_NN] = int(part[k_NN] * k)
+        k = 0.0013
+        for part in all_parts: part[k_NN] = 10 if int(part[k_NN] * k) < 10 else int(part[k_NN] * k)
 
     logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))
     # assign neuron params to every part
+
     nest.SetDefaults('iaf_psc_exp', iaf_neuronparams)
     nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
 
@@ -177,17 +182,17 @@ K_fast = f_part * K
 K_slow = (1.0 - f_part) * K
 
 # Volume transmission
-stdp_dopamine_synapse_w_ex = 85.
-stdp_dopamine_synapse_w_in = -stdp_dopamine_synapse_w_ex
+w_DA_ex = 13.
+w_DA_in = -w_DA_ex
 
 # generator delay
-pg_delay = 20.
+pg_delay = 10.
 
-w_Glu = 45.             # excitatory weights
-w_GABA = 1.5 * w_Glu    # inhibitory weight
-w_ACh = 58.             #TODO paste information about ACh WEIGHT
+w_Glu = 3.
+w_GABA = -w_Glu * 2
+w_ACh = 8.
 
-
+#FixMe A params from NEST docs, find real numbers
 STDP_synapseparams = {
     'model': 'stdp_synapse',
     'tau_m': {'distribution': 'uniform', 'low': 15., 'high': 25.},
@@ -196,22 +201,32 @@ STDP_synapseparams = {
     'lambda': 0.5
 }
 
-# TODO CHECK THIC CODE !!!!!!!!!!!
 STDP_synparams_Glu = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
-                            'weight': w_Glu,
-                            'Wmax': 70.}, **STDP_synapseparams)
+                           'weight': w_Glu,
+                           'Wmax': 70.}, **STDP_synapseparams)
 
 STDP_synparams_GABA = dict({'delay': {'distribution': 'uniform', 'low': 1., 'high': 1.9},
                             'weight': w_GABA,
                             'Wmax': -60.}, **STDP_synapseparams)
 
-STDP_synparams_ACh = dict({'delay': {'distribution': 'uniform', 'low': 0.9, 'high': 1.6}, #TODO CHEEEEECK!!!!
-                            'weight': w_ACh,
-                            'Wmax': 80.}, **STDP_synapseparams)
+STDP_synparams_ACh = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
+                           'weight': w_ACh,
+                           'Wmax': 70.}, **STDP_synapseparams)
 
-DOPA_synparams = {"delay": 1.}
-DOPA_synparams_ex = dict({"weight": stdp_dopamine_synapse_w_ex, 'Wmax': 100., 'Wmin': 85.}, **DOPA_synparams)
-DOPA_synparams_in = dict({"weight": stdp_dopamine_synapse_w_in, 'Wmax': -100., 'Wmin': -85.}, **DOPA_synparams)
+DOPA_synparams = {'delay': 1.}
+DOPA_synparams_ex = dict({'weight': w_DA_ex,
+                          'Wmax': 100.,
+                          'Wmin': 85.}, **DOPA_synparams)
+
+DOPA_synparams_in = dict({'weight': w_DA_in,
+                          'Wmax': -100.,
+                          'Wmin': -85.}, **DOPA_synparams)
+
+types = {GABA: (STDP_synparams_GABA, w_GABA, 'GABA'),
+         ACh: (STDP_synparams_ACh, w_ACh, 'Ach'),
+         Glu: (STDP_synparams_Glu, w_Glu, 'Glu'),
+         DA_ex: (DOPA_synparams_ex, w_DA_ex, 'DA_ex', dopa_model_ex),
+         DA_in: (DOPA_synparams_in, w_DA_in, 'DA_in', dopa_model_in)}
 
 '''
 ===========
@@ -221,17 +236,18 @@ DOPA_synparams_in = dict({"weight": stdp_dopamine_synapse_w_in, 'Wmax': -100., '
 # ============
 # CONNECTIONS
 # ============
-conn_dict = {'rule': 'all_to_all', 'multapses': True} # or another scheme 'fixed_outdegree', 'outdegree': 100
+conn_dict = {'rule': 'all_to_all', 'multapses': True}
 
 
 # =======
 # DEVICES
 # =======
-mm_param = {"to_memory": True, "to_file": False, 'withtime': True, 'interval': 0.1,
+mm_param = {'to_memory': True, 'to_file': False, 'withtime': True, 'interval': 0.1,
             'record_from': ['V_m'], 'withgid': True}
-detector_param = {"label": "spikes", "withtime": True, "withgid": True, "to_file": False, "to_memory": True,
+detector_param = {'label': 'spikes', 'withtime': True, 'withgid': True, 'to_file': False, 'to_memory': True,
                   'scientific': True}
 axis = [0, T, -72, -48]
+
 
 '''
 ==========================|

@@ -3,13 +3,12 @@ import pylab
 import os
 
 #TODO change directory
-path = "/home/panzer/Desktop/"
+path = "/home/alex/Desktop/test/"
+dpi_n = 120
 
-def spike_make_diagram(ts, gids, hist, title, name):
-    dpi_n = 120
-    ts1 = ts
-    neurons = gids
-    hist_binwidth = 5.0
+
+
+def spike_make_diagram(ts, gids, name, title, hist):
     pylab.figure()
     color_marker = "."
     color_bar = "blue"
@@ -18,6 +17,10 @@ def spike_make_diagram(ts, gids, hist, title, name):
 
     if hist == "True":
         #TODO this part doesn't work! Trying to fix
+        hist_binwidth = 5.0
+        ts1 = ts
+        neurons = gids
+
         ax1 = pylab.axes([0.1, 0.3, 0.85, 0.6])
         pylab.plot(ts1, gids, color_marker)
         pylab.ylabel(ylabel)
@@ -40,7 +43,7 @@ def spike_make_diagram(ts, gids, hist, title, name):
         pylab.xlim(xlim)
         pylab.axes(ax1)
     else:
-        pylab.plot(ts1, gids, color_marker)
+        pylab.plot(ts, gids, color_marker)
         pylab.xlabel("Time (ms)")
         pylab.ylabel(ylabel)
 
@@ -49,14 +52,14 @@ def spike_make_diagram(ts, gids, hist, title, name):
     pylab.savefig(path + name + ".png", dpi=dpi_n, format='png')
     pylab.close()
 
-def voltage_make_diagram(times, voltages, neuron_title, name):
-    title = "Membrane potential"
-    dpi_n = 120
+
+
+def voltage_make_diagram(times, voltages, name, title):
     timeunit="ms"
     line_style = ""
     if not len(times):
         raise nest.NESTError("No events recorded! Make sure that withtime and withgid are set to True.")
-    pylab.plot(times, voltages, line_style, label=neuron_title)
+    pylab.plot(times, voltages, line_style, label=title)
     pylab.ylabel("Membrane potential (mV)")
     pylab.xlabel("Time (%s)" % timeunit)
     pylab.legend(loc="best")
@@ -69,24 +72,59 @@ def voltage_make_diagram(times, voltages, neuron_title, name):
 
 block = [filename for filename in os.listdir(path) if filename[0] == "@"]
 
+listing = []
+
+
+def plotting():
+    from pyqtgraph.Qt import QtGui, QtCore
+    import pyqtgraph as pg
+
+    ts = listing[0]
+    gids = listing[1]
+
+    #QtGui.QApplication.setGraphicsSystem('raster')
+    app = QtGui.QApplication([])
+    #mw = QtGui.QMainWindow()
+    #mw.resize(800,800)
+    # Enable antialiasing for prettier plots
+    pg.setConfigOptions(antialias=True)
+
+    win = pg.GraphicsWindow(title="Basic plotting examples")
+    win.resize(1000,600)
+    win.setWindowTitle('pyqtgraph example: Plotting')
+
+    p4 = win.addPlot(title="Parametric, grid enabled")
+    p4.plot(ts, gids)
+    p4.showGrid(x=True, y=True)
+
+    ## Start Qt event loop unless running in interactive mode or using pyside.
+    if __name__ == '__main__':
+        import sys
+        if (sys.flags.interactive != 1) or not hasattr(QtCore, 'PYQT_VERSION'):
+            QtGui.QApplication.instance().exec_()
+
+
 for filename in block:
-    if filename.startswith('@spikes'):           #find("spikes") != -1:
-        inFile = open(path + filename, 'rb')
-        mas = inFile.read().split("@@@")
-        inFile.close()
+    x_vals = []
+    y_vals = []
 
-        x_vals = [float(x) for x in mas[0].split()]
-        y_vals = [int(y) for y in mas[1].split()]
-        clearName = filename[1:filename.find(".txt")]
-        #make_diagram(ts, gids, hist, title, xlabel, name):
-        spike_make_diagram(x_vals, y_vals, mas[4], mas[2], clearName)
+    if filename.startswith('@spikes'):
+        with open(path + filename, 'r') as f:
+            header = f.readline()
+            log = list( v.strip() for k, v in (item.split(':') for item in header.split(',')) )
+            for line in f:
+                x, y = line.split()
+                x_vals.append(x)
+                y_vals.append(y)
+        spike_make_diagram(x_vals, y_vals, log[0], log[1], log[2])
     else:
-        inFile = open(path + filename, 'rb')
-        mas = inFile.read().split("@@@")
-        inFile.close()
+        with open(path + filename, 'r') as f:
+            header = f.readline()
+            log = list( v.strip() for k, v in (item.split(':') for item in header.split(',')) )
+            for line in f:
+                x, y = line.split()
+                x_vals.append(x)
+                y_vals.append(y)
+        voltage_make_diagram(x_vals, y_vals, log[0], log[1])
 
-        x_vals = [float(x) for x in mas[0].split()]
-        y_vals = [float(y) for y in mas[1].split()]
-        clearName = filename[1:filename.find(".txt")]
-        voltage_make_diagram(x_vals, y_vals, mas[2], clearName)
     print filename + " diagram created"

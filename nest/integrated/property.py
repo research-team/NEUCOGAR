@@ -1,6 +1,8 @@
 GABA = 0            # keys for connection type
 Glu = 1
 ACh = 2
+DA_ex = 3
+DA_in = 4
 
 motivation = 0      # keys for motor cortex
 action = 1
@@ -39,11 +41,11 @@ tpp_Glu = 2
 dpi_n = 120         # Quality of graphics
 
 # dopamine model key
-dopa_model_ex = "dopa_ex"
-dopa_model_in = "dopa_in"
-gen_static_syn = "noise_conn"
+dopa_model_ex = 'dopa_ex'
+dopa_model_in = 'dopa_in'
+gen_static_syn = 'noise_conn'
 
 dopa_flag = True                # dopamine modulation flag
-poison_generator_flag = True    # poisson generator with rate set up flag
-test_flag = True                # True - testing mode | False - real number neurons
+generator_flag = True    # poisson generator with rate set up flag
+test_flag = False                # True - testing mode | False - real number neurons
 statusGUI = True                # True - GUI is on | False - is off

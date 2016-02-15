@@ -1,16 +1,18 @@
 # TODO check num_threads before testing / 8 for Cisco Server
-# TODO ATTTENTION! Maybe there ara some mistakes in neuron parameters! Write to @alexpanzer in Trello.
+# TODO ATTTENTION! Maybe there are some mistakes in neuron parameters! Write to @alexpanzer in Trello.
 
 from func import *
+
 '''
 This is the implementation of experiment of dopamine neuromodulation based on
 https://github.com/research-team/NEUCOGAR/blob/master/IntegratedCircuits.png
 Neurotools is used for representing and analyzing nonscientific data.
 '''
 nest.ResetKernel()
-startbuild = clock()
-logger = logging.getLogger("neuromodulation")
-nest.SetKernelStatus({'overwrite_files': True,  "local_num_threads": 4, "resolution": 0.1}) #'data_path':sd_folder_name
+
+startbuild = datetime.datetime.now()
+logger = logging.getLogger('neuromodulation')
+nest.SetKernelStatus({'overwrite_files': True,  'local_num_threads': 4, 'resolution': 0.1})
 
 # ==============
 # Creating parts
@@ -72,47 +74,47 @@ f_register(amygdala[amygdala_Glu], 'Amygdala[Glu]')
 # =========================
 # Connection Initialisation
 # =========================
-logger.debug('Start connection initialisation')
+logger.debug("* * * Start connection initialisation")
 
 # * * * NIGROSTRIATAL * * *
-connect(motor_cortex[motivation], striatum[D1], syn_type=Glu)
-connect(motor_cortex[motivation], snc[snc_DA], syn_type=Glu)
-connect(motor_cortex[motivation], striatum[D2], syn_type=Glu)
-connect(motor_cortex[motivation], thalamus[thalamus_Glu], syn_type=Glu)
-connect(motor_cortex[motivation], stn[stn_Glu], syn_type=Glu)
-connect(motor_cortex[action], striatum[D1], syn_type=Glu)
-connect(motor_cortex[action], striatum[D2], syn_type=Glu)
-connect(motor_cortex[action], thalamus[thalamus_Glu], syn_type=Glu)
-connect(motor_cortex[action], stn[stn_Glu], syn_type=Glu)
-connect(motor_cortex[action], nac[nac_GABA0])
+#connect(motor_cortex[motivation], striatum[D1], syn_type=Glu, weight_coef=0.005)
+#connect(motor_cortex[motivation], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
+connect(motor_cortex[motivation], striatum[D2], syn_type=Glu, weight_coef=0.05)
+connect(motor_cortex[motivation], thalamus[thalamus_Glu], syn_type=Glu, weight_coef=0.008)
+connect(motor_cortex[motivation], stn[stn_Glu], syn_type=Glu, weight_coef=7)
+#connect(motor_cortex[action], striatum[D1], syn_type=Glu)
+#connect(motor_cortex[action], striatum[D2], syn_type=Glu)
+#connect(motor_cortex[action], thalamus[thalamus_Glu], syn_type=Glu)
+#connect(motor_cortex[action], stn[stn_Glu], syn_type=Glu)
+#connect(motor_cortex[action], nac[nac_GABA0])
 
-connect(striatum[tan], striatum[D1], syn_type=ACh)
-connect(striatum[tan], striatum[D2], syn_type=ACh)
-connect(striatum[D1], snr[snr_GABA])
-connect(striatum[D1], gpi[gpi_GABA])
-connect(striatum[D1], gpe[gpe_GABA])
-connect(striatum[D2], gpe[gpe_GABA])
+connect(striatum[tan], striatum[D1])
+connect(striatum[tan], striatum[D2], syn_type=Glu)
 
-connect(gpe[gpe_GABA], stn[stn_Glu])
-connect(gpe[gpe_GABA], striatum[D1])
-connect(gpe[gpe_GABA], striatum[D2])
-connect(gpe[gpe_GABA], gpi[gpi_GABA])
-connect(gpe[gpe_GABA], snr[snr_GABA])
+connect(striatum[D1], snr[snr_GABA], weight_coef=0.00005)
+connect(striatum[D1], gpi[gpi_GABA], weight_coef=0.00005)
+#connect(striatum[D1], gpe[gpe_GABA], weight_coef=0.000005)
+connect(striatum[D2], gpe[gpe_GABA], weight_coef=1)
 
-connect(stn[stn_Glu], snr[snr_GABA], syn_type=Glu)
-connect(stn[stn_Glu], gpi[gpi_GABA], syn_type=Glu)
-connect(stn[stn_Glu], gpe[gpe_GABA], syn_type=Glu)
-connect(stn[stn_Glu], amygdala[amygdala_Glu], syn_type=Glu)
-connect(stn[stn_Glu], snc[snc_DA], syn_type=Glu)
+connect(gpe[gpe_GABA], stn[stn_Glu], weight_coef=0.0001)
+connect(gpe[gpe_GABA], striatum[D1], weight_coef=0.001)
+connect(gpe[gpe_GABA], striatum[D2], weight_coef=0.3)
+connect(gpe[gpe_GABA], gpi[gpi_GABA], weight_coef=0.0001)
+connect(gpe[gpe_GABA], snr[snr_GABA], weight_coef=0.0001)
 
-connect(gpi[gpi_GABA], thalamus[thalamus_Glu])
-connect(snr[snr_GABA], thalamus[thalamus_Glu])
+connect(stn[stn_Glu], snr[snr_GABA], syn_type=Glu, weight_coef=20)
+connect(stn[stn_Glu], gpi[gpi_GABA], syn_type=Glu, weight_coef=20)
+connect(stn[stn_Glu], gpe[gpe_GABA], syn_type=Glu, weight_coef=0.3)
+#connect(stn[stn_Glu], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
+
+connect(gpi[gpi_GABA], thalamus[thalamus_Glu], weight_coef=3)
+connect(snr[snr_GABA], thalamus[thalamus_Glu], weight_coef=3)
 
 connect(thalamus[thalamus_Glu], motor_cortex[action], syn_type=Glu)
-connect(thalamus[thalamus_Glu], stn[stn_Glu], syn_type=Glu)
-connect(thalamus[thalamus_Glu], striatum[D1], syn_type=Glu)
-connect(thalamus[thalamus_Glu], striatum[D2], syn_type=Glu)
-connect(thalamus[thalamus_Glu], striatum[tan], syn_type=Glu)
+connect(thalamus[thalamus_Glu], stn[stn_Glu], syn_type=Glu, weight_coef=1) #005
+connect(thalamus[thalamus_Glu], striatum[D1], syn_type=Glu, weight_coef=0.005)
+connect(thalamus[thalamus_Glu], striatum[D2], syn_type=Glu, weight_coef=0.005)
+connect(thalamus[thalamus_Glu], striatum[tan], syn_type=Glu, weight_coef=0.005)
 connect(thalamus[thalamus_Glu], nac[nac_GABA0], syn_type=Glu)
 connect(thalamus[thalamus_Glu], nac[nac_GABA1], syn_type=Glu)
 connect(thalamus[thalamus_Glu], nac[nac_ACh], syn_type=Glu)
@@ -130,14 +132,14 @@ connect(vta[vta_GABA1], vta[vta_DA1])
 connect(vta[vta_GABA2], nac[nac_GABA1])
 
 connect(tpp[tpp_GABA], vta[vta_GABA0])
-connect(tpp[tpp_GABA], snc[snc_GABA])
+#connect(tpp[tpp_GABA], snc[snc_GABA], weight_coef=0.000005)
 connect(tpp[tpp_ACh], vta[vta_GABA0], syn_type=ACh)
 connect(tpp[tpp_ACh], vta[vta_DA1], syn_type=ACh)
 connect(tpp[tpp_Glu], vta[vta_GABA0], syn_type=Glu)
 connect(tpp[tpp_Glu], vta[vta_DA1], syn_type=Glu)
-connect(tpp[tpp_ACh], striatum[D1], syn_type=ACh)
-connect(tpp[tpp_ACh], snc[snc_GABA], syn_type=ACh)
-connect(tpp[tpp_Glu], snc[snc_DA], syn_type=Glu)
+connect(tpp[tpp_ACh], striatum[D1], syn_type=ACh, weight_coef=0.3)
+#connect(tpp[tpp_ACh], snc[snc_GABA], syn_type=ACh, weight_coef=0.000005)
+#connect(tpp[tpp_Glu], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
 
 # * * * INTEGRATED * * *
 connect(prefrontal_cortex[pfc_Glu0], vta[vta_DA0], syn_type=Glu)
@@ -148,120 +150,107 @@ connect(prefrontal_cortex[pfc_Glu1], nac[nac_GABA1], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_GABA0], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_GABA1], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_ACh], syn_type=Glu)
-connect(amygdala[amygdala_Glu], striatum[D1], syn_type=Glu)
-connect(amygdala[amygdala_Glu], striatum[D2], syn_type=Glu)
-connect(amygdala[amygdala_Glu], striatum[tan], syn_type=Glu)
+connect(amygdala[amygdala_Glu], striatum[D1], syn_type=Glu, weight_coef=0.3)
+connect(amygdala[amygdala_Glu], striatum[D2], syn_type=Glu, weight_coef=0.3)
+connect(amygdala[amygdala_Glu], striatum[tan], syn_type=Glu, weight_coef=0.3)
 
 
 # ==================
 # Dopamine modulator
 # ==================
-logger.debug('Making neuromodulating connections...')
+logger.debug("* * * Making neuromodulating connections...")
 
 if dopa_flag:
     # Volume transmission: init dopa_model
-    #vt_in = nest.Create("volume_transmitter") #TODO inhibitory???
-    #DOPA_synparams_in['vt'] = vt_in[0]
-    #nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
-    #nest.Connect(snc[snc_DA], striatum[tan], conn_dict, syn_spec=dopa_model_in)
-    vt_ex = nest.Create("volume_transmitter")
+    vt_ex = nest.Create('volume_transmitter')
+    vt_in = nest.Create('volume_transmitter')
     DOPA_synparams_ex['vt'] = vt_ex[0]
-    nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
-
-    # NIGROSTRIATAL
+    DOPA_synparams_in['vt'] = vt_in[0]
     nest.Connect(snc[snc_DA], vt_ex)
-    connectDA_ex(snc[snc_DA], striatum[D1])
-    connectDA_ex(snc[snc_DA], gpe[gpe_GABA])
-    connectDA_ex(snc[snc_DA], stn[stn_Glu])
-    connectDA_ex(snc[snc_DA], nac[nac_GABA0])
-    connectDA_ex(snc[snc_DA], nac[nac_GABA1])
-
-    # MESOCORTICOLIMBIC
+    nest.Connect(snc[snc_DA], vt_in)
     nest.Connect(vta[vta_DA0], vt_ex)
     nest.Connect(vta[vta_DA1], vt_ex)
-    connectDA_ex(vta[vta_DA0], striatum[D1])
-    connectDA_ex(vta[vta_DA0], striatum[D2])
-    connectDA_ex(vta[vta_DA0], prefrontal_cortex[pfc_Glu0])
-    connectDA_ex(vta[vta_DA0], prefrontal_cortex[pfc_Glu1])
-    connectDA_ex(vta[vta_DA1], nac[nac_GABA0])
-    connectDA_ex(vta[vta_DA1], nac[nac_GABA1])
+    nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
+    nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
+
+    # NIGROSTRIATAL
+    connect(snc[snc_DA], striatum[D1], syn_type=DA_ex)
+    connect(snc[snc_DA], gpe[gpe_GABA], syn_type=DA_ex)
+    connect(snc[snc_DA], stn[stn_Glu], syn_type=DA_ex)
+    connect(snc[snc_DA], nac[nac_GABA0], syn_type=DA_ex)
+    connect(snc[snc_DA], nac[nac_GABA1], syn_type=DA_ex)
+    connect(snc[snc_DA], striatum[D2], syn_type=DA_in)
+    connect(snc[snc_DA], striatum[tan], syn_type=DA_in)
+
+    # MESOCORTICOLIMBIC
+    connect(vta[vta_DA0], striatum[D1], syn_type=DA_ex)
+    connect(vta[vta_DA0], striatum[D2], syn_type=DA_in)
+    connect(vta[vta_DA0], prefrontal_cortex[pfc_Glu0], syn_type=DA_ex)
+    connect(vta[vta_DA0], prefrontal_cortex[pfc_Glu1], syn_type=DA_ex)
+    connect(vta[vta_DA1], nac[nac_GABA0], syn_type=DA_ex)
+    connect(vta[vta_DA1], nac[nac_GABA1], syn_type=DA_ex)
 
 
 # ===============
 # Spike Generator
 # ===============
-logger.debug('Creating spike generators...')
+logger.debug("* * * Creating spike generators...")
+if generator_flag:
+    #Generator synapse
+    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_Glu * 5})
+    connect_generator(motor_cortex[motivation], rate=300, coef_part=1)
+    connect_generator(tpp[tpp_GABA], 400., 600., rate=250, coef_part=1)
+    connect_generator(tpp[tpp_Glu], 400., 600., rate=250, coef_part=1)
+    connect_generator(tpp[tpp_ACh], 400., 600., rate=250, coef_part=1)
+    connect_generator(amygdala[amygdala_Glu], 400., 600., rate=250, coef_part=1)
+    connect_generator(snc[snc_DA], 400., 600., rate=250, coef_part=1)
+    connect_generator(vta[vta_DA0], 400., 600., rate=250, coef_part=1)
 
-if poison_generator_flag:
-    connect_spikegenerator('slow', motor_cortex[action], 400., 600.)
-    if dopa_flag:
-        connect_spikegenerator('fast', motor_cortex[motivation], 400., 600.)
-        connect_spikegenerator('fast', prefrontal_cortex[pfc_Glu0], 400., 600.)
-        connect_spikegenerator('fast', prefrontal_cortex[pfc_Glu1], 400., 600.)
-        connect_spikegenerator('fast', tpp[tpp_GABA], 400., 600.)
-        connect_spikegenerator('fast', tpp[tpp_Glu], 400., 600.)
-        connect_spikegenerator('fast', tpp[tpp_ACh], 400., 600.)
-        connect_spikegenerator('fast', amygdala[amygdala_Glu], 400., 600.)
-'''
-else:
-    sg_slow = nest.Create('spike_generator', params={'spike_times': np.arange(1, T, 20.)})
-    parts_dict_log[sg_slow[0]] = 'Periodic Generator(slow)'
-    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_Glu})
-    nest.Connect(sg_slow, motor_cortex[action], syn_spec=gen_static_syn,
-                 conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(motor_cortex[action]) / 4})
-    log_conn(sg_slow, motor_cortex[action])
-    if dopa_flag:
-        # NIGROSTRIATAL (motor_cortex)
-        sg_fast = nest.Create('spike_generator', params={'spike_times': np.arange(400, 600, 15.)})
-        parts_dict_log[sg_fast[0]] = 'Periodic Generator(fast)'
-        nest.Connect(sg_fast, motor_cortex[motivation], syn_spec=gen_static_syn, )
-        # conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(motor_cortex[motivation]) / 4})
-        log_conn(sg_fast, motor_cortex[motivation])
-        # MESOCORTICOLIMBIC (VTA)
-        sg_fast = nest.Create('spike_generator', params={'spike_times': np.arange(400, 600, 15.)})
-        parts_dict_log[sg_fast[0]] = 'Periodic Generator(fast)'
-        nest.Connect(sg_fast, vta[vta_DA0], syn_spec=gen_static_syn, )
-        # conn_spec={'rule': 'fixed_outdegree', 'outdegree': len(vta[vta_DA0]) / 4})
-        log_conn(sg_fast, vta[vta_DA0])
-'''
 
 # =============
 # SPIKEDETECTOR
 # =============
-logger.debug('Attaching spikes detector')
-
-connect_spikedetector(thalamus[thalamus_Glu])
-connect_spikedetector(motor_cortex[action])
-connect_spikedetector(prefrontal_cortex[pfc_Glu0])
-connect_spikedetector(vta[vta_DA0])
-connect_spikedetector(vta[vta_DA1])
-connect_spikedetector(snc[snc_DA])
+logger.debug("* * * Attaching spikes detector")
+connect_detector(gpi[gpi_GABA])
+connect_detector(snr[snr_GABA])
+connect_detector(gpe[gpe_GABA])
+connect_detector(stn[stn_Glu])
+connect_detector(snc[snc_DA])
+connect_detector(thalamus[thalamus_Glu])
+connect_detector(striatum[tan])
+connect_detector(striatum[D1])
+connect_detector(striatum[D2])
+connect_detector(motor_cortex[action])
+connect_detector(motor_cortex[motivation])
+connect_detector(prefrontal_cortex[pfc_Glu0])
+connect_detector(vta[vta_DA0])
+connect_detector(vta[vta_DA1])
+connect_detector(snc[snc_DA])
 
 # ==========
 # MULTIMETER
 # ==========
-logger.debug('Attaching multimeters')
-
-connect_multimeter(thalamus[thalamus_Glu])
+logger.debug("* * * Attaching multimeters")
+connect_multimeter(gpi[gpi_GABA])
+connect_multimeter(snr[snr_GABA])
+connect_multimeter(gpe[gpe_GABA])
+connect_multimeter(stn[stn_Glu])
 connect_multimeter(snc[snc_DA])
+connect_multimeter(thalamus[thalamus_Glu])
+connect_multimeter(striatum[tan])
+connect_multimeter(striatum[D1])
+connect_multimeter(striatum[D2])
+connect_multimeter(motor_cortex[action])
+connect_multimeter(motor_cortex[motivation])
 connect_multimeter(prefrontal_cortex[pfc_Glu0])
 connect_multimeter(vta[vta_DA0])
+connect_multimeter(vta[vta_DA1])
+connect_multimeter(snc[snc_DA])
 
-endbuild = clock()
+endbuild = datetime.datetime.now()
 
-del parts, get_ids, generate_neurons, connect, connectDA_ex, \
-    connect_spikegenerator, connect_spikedetector, connect_multimeter
+del parts, get_ids, generate_neurons, connect, connect_generator, connect_detector, connect_multimeter
 
-# ==========
-# SIMULATING
-# ==========
-logger.debug("Simulating")
-
-start_simulation()
-
-# ==========
-# SAVING
-# ==========
-get_information(startbuild, endbuild)
-
-save_results(GUI=statusGUI)
+simulate()
+get_log(startbuild, endbuild)
+save(GUI=statusGUI)
