@@ -10,7 +10,27 @@
 text text text
 
 
+
+[one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
+[all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
+[fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
+[fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
+[receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
+
 ### Connection of neurons
+
+Connection rules are specified using the conn_spec parameter, which can be a string naming a connection rule or a dictionary containing a rule specification. Only connection rules requiring no parameters can be given as strings, for all other rules, a dictionary specifying the rule and its parameters, such as in- or out-degrees, is required.
+
+Type 				|  Example 				|  Description 											
+--------------------|-----------------------|-------------------------------------------------------
+one-to-one 			|![1][one-to-one]		|The ith node in pre is connected to the ith node in post. The node lists pre and post have to be of the same length.
+all-to-all			|![2][all-to-all]		|Each node in *pre* is connected to every node in *post*. 
+fixed-indegree		|![3][fixed-indegree]	|The nodes in *pre* are randomly connected with the nodes in *post* such that each node in *post* has a fixed indegree.
+fixed-outdegree		|![4][fixed-outdegree]	|The nodes in *pre* are randomly connected with the nodes in *post* such that each node in *pre* has a fixed outdegree.	
+receptor-type		|![5][receptor-type] 	|Each connection in NEST targets a specific receptor type on the post-synaptic node. The meaning of the receptor type depends on the model.	
+fixed-total-number  |						|The nodes in *pre* are randomly connected with the nodes in *post* such that the total number of connections equals N
+pairwise-bernoulli	|						|For each possible pair of nodes from *pre* and *post*, a connection is created with probability p.
+
 ```python
 # standard connection is GABA and weight coefficient is 1
 def connect(part_from, part_to, syn_type=GABA, weight_coef=1):
@@ -24,7 +44,7 @@ def connect(part_from, part_to, syn_type=GABA, weight_coef=1):
 	# logging actions (from, to, type, weight)
 	log_conn(part_from, part_to, types[syn_type][2], types[syn_type][0]['weight'])  
 ```
-Dict of synapses
+**Dict of synapses**
 ```python
 #		 key	 synapse parameters   weight    name
 types = {GABA:  (STDP_synparams_GABA, w_GABA,  'GABA'),
@@ -33,7 +53,8 @@ types = {GABA:  (STDP_synparams_GABA, w_GABA,  'GABA'),
 		 DA_ex: (DOPA_synparams_ex,   w_DA_ex, 'DA_ex', dopa_model_ex),
 		 DA_in: (DOPA_synparams_in,   w_DA_in, 'DA_in', dopa_model_in)}
 ```
-Keys of synapse types
+**Keys of synapse types**  
+(using for make code easier for reading and lighter)
 ```
 GABA = 0
 Glu = 1
@@ -41,6 +62,89 @@ ACh = 2
 DA_ex = 3
 DA_in = 4
 ```
+
+**Synapse Specification**
+
+The synapse properties can be given as a string or a dictionary. The string can be the name of a pre-defined synapse which can be found in the synapsedict (see [Synapse Types](http://www.nest-simulator.org/connection_management/#Synapse_Types)) or a manually defined synapse via CopyModel().
+
+**Parameters of synapses**
+
+static_synapse	| stdp_synapse	| stdp_dopamine_synapse	|	Description
+----------------|---------------|-----------------------|--------------
+weight			|weight			|weight					|Weight (power) of synapse
+receptor_type	|receptor_type	|receptor_type			|Type of receptor
+delay			|delay			|delay					|Distribution of delay values for connections.
+				|tau_plus		|tau_plus				|STDP time constant for facilitation in ms
+				|Wmax			|Wmax					|Maximum allowed synaptic weight
+				|mu_plus		|						|Weight dependence exponent, potentiation
+				|mu_minus		|						|Weight dependence exponent, depression
+				|alpha			|						|Asymmetry parameter (scales depressing increments as alpha*lambda)
+				|lambda			|						|Step size
+				|				|Wmin					|Minimal synaptic weight
+				|				|tau_n					|Time constant of dopaminergic trace in ms
+				|				|b						|Dopaminergic baseline concentration
+				|				|c						|eligibility trace
+				|				|A_plus					|Amplitude of weight change for facilitation
+				|				|A_minus				|Amplitude of weight change for depression
+				|				|tau_c					|Time constant of eligibility trace in ms
+				|				|n						|neuromodulator concentration
+
+Standard weight of synapses:  
+```python
+w_Glu = 3.  
+w_GABA = -w_Glu * 2  
+w_ACh = 8.  
+w_DA_ex = 13.  
+w_DA_in = -w_DA_ex
+```
+
+* static_synapse  
+This type os synapse uses in **spike generators**
+```python
+nest.CopyModel('static_synapse',    	# origin model
+            	gen_static_syn,     	# new model
+                {'weight': w_Glu * 5,
+                'delay': 10.}) 
+```
+* stdp_synapse  
+This type os synapse uses in **non dopaminergic** connections
+```python
+# Common parameters for 'stdp_synapse'
+STDP_synapseparams = {
+    'model': 'stdp_synapse',
+    'tau_m': {'distribution': 'uniform', 'low': 15., 'high': 25.},
+    'alpha': {'distribution': 'normal_clipped', 'low': 0.5, 'mu': 5.0, 'sigma': 1.0},
+    'delay': {'distribution': 'uniform', 'low': 0.8, 'high': 2.5},
+    'lambda': 0.5
+}
+# Unique parameters for GLUTAMATE
+STDP_synparams_Glu = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
+                           'weight': w_Glu,
+                           'Wmax': 70.}, **STDP_synapseparams)
+#Unique parameters for GABA
+STDP_synparams_GABA = dict({'delay': {'distribution': 'uniform', 'low': 1., 'high': 1.9},
+                            'weight': w_GABA,
+                            'Wmax': -60.}, **STDP_synapseparams)
+#Unique parameters for ACETYLCHOLINE
+STDP_synparams_ACh = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
+                           'weight': w_ACh,
+                           'Wmax': 70.}, **STDP_synapseparams)
+                           
+```
+
+* stdp_dopamine_synapse  
+This type os synapse uses in **dopaminergic** connections
+```python
+DOPA_synparams = {'delay': 1.}
+DOPA_synparams_ex = dict({'weight': w_DA_ex,
+                          'Wmax': 100.,
+                          'Wmin': 85.}, **DOPA_synparams)
+
+DOPA_synparams_in = dict({'weight': w_DA_in,
+                          'Wmax': -100.,
+                          'Wmin': -85.}, **DOPA_synparams)
+```
+
 ---
 
 ### Connection of devices
@@ -91,15 +195,14 @@ mm_param = {'to_memory': True,			# save to memory
 ```
 ---
 #### 3. Generator
+
+
+For the creation of custom synapse types from already existing synapse types, the command CopyModel is used. It has an optional argument params to directly customize it during the copy operation.
+
 ```python
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
     # took name of this part
     name = parts_dict[part]
-    # copy to the 'gen_static_syn' standard parameters of 'static_synapse' and add new property
-    nest.CopyModel('static_synapse',    # origin model
-                    gen_static_syn,     # new model
-                    {'weight': weight,	# weight of the synapse
-                    'delay': pg_delay})	# delay of transmiting a signal
     # append new generator to the dict (Name:Device) with parameters
     # in this experiment was used 'poisson_generator'
     spikegenerators[name] = nest.Create('poisson_generator', 		  # type of generator
