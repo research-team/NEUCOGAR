@@ -158,7 +158,7 @@ def generate_neurons(nest):
         amygdala[amygdala_Glu][k_NN] = 30000          #TODO not real!!!
 
         # possible different coefficients
-        k = 0.0013
+        k = 0.0004
         for part in all_parts: part[k_NN] = 10 if int(part[k_NN] * k) < 10 else int(part[k_NN] * k)
 
     logger.debug('Initialised: %d neurons' % sum(item[k_NN] for item in all_parts))

@@ -197,7 +197,7 @@ if dopa_flag:
 logger.debug("* * * Creating spike generators...")
 if generator_flag:
     #Generator synapse
-    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_Glu * 5})
+    nest.CopyModel("static_synapse", gen_static_syn, {'weight': w_Glu * 5, 'delay': pg_delay})
     connect_generator(motor_cortex[motivation], rate=300, coef_part=1)
     connect_generator(tpp[tpp_GABA], 400., 600., rate=250, coef_part=1)
     connect_generator(tpp[tpp_Glu], 400., 600., rate=250, coef_part=1)

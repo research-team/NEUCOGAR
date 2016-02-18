@@ -17,11 +17,11 @@ NEURONS = 0
 logger = logging.getLogger('function')
 
 
-def log_conn (a, b, syn_type, weight):
+def log_conn (pre, post, syn_type, weight):
     global SYNAPSES
-    SYNAPSES += len(a)*len(b)
-    logger.debug("{0} -> {1} ({2}) w[{3}] // {4} synapses".format(parts_dict[a], parts_dict[b],
-                                                                  syn_type, weight, len(a) * len(b)))
+    SYNAPSES += len(pre) * len(post)
+    logger.debug("{0} -> {1} ({2}) w[{3}] // {4} synapses".format(parts_dict[pre], parts_dict[post],
+                                                                  syn_type, weight, len(pre) * len(post)))
 
 
 def f_register(item, name):
@@ -41,25 +41,28 @@ def get_ids(name, iter_all=None):
     raise KeyError
 
 
-def connect(part_from, part_to, syn_type=GABA, weight_coef=1):
+def connect(pre, post, syn_type=GABA, weight_coef=1):
     types[syn_type][0]['weight'] = weight_coef * types[syn_type][1]                 # edit weight in syn_param
     syn = types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0]  # help variable
-    nest.Connect(part_from, part_to, conn_spec=conn_dict, syn_spec=syn)
-    log_conn(part_from, part_to, types[syn_type][2], types[syn_type][0]['weight'])
+    nest.Connect(pre, post, conn_spec=conn_dict, syn_spec=syn)
+    log_conn(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
 
 
-def connect_generator(part, startTime=1., stopTime=T, rate=250, weight=w_Glu, coef_part=1):
+def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
     name = parts_dict[part]
-
-    spikegenerators[name] = nest.Create('poisson_generator', 1, {'rate': float(rate), 'start': startTime, 'stop': stopTime})
-    nest.Connect(spikegenerators[name], part, syn_spec=gen_static_syn, conn_spec={'rule': 'fixed_outdegree',
-                                                                                       'outdegree': int(len(part) * coef_part)})
+    spikegenerators[name] = nest.Create('poisson_generator', 1, {'rate': float(rate),
+                                                                 'start': float(startTime),
+                                                                 'stop': float(stopTime)})
+    nest.Connect(spikegenerators[name], part,
+                 syn_spec=gen_static_syn,
+                 conn_spec={'rule': 'fixed_outdegree',
+                            'outdegree': int(len(part) * coef_part)})
     logger.debug("Generator => {0}. Element #{1}".format(name, spikegenerators[name][0]))
 
 
 def connect_detector(part):
     name = parts_dict[part]
-    number = len(part) if len(part) < N_rec else N_rec                              # if neuron number is too small
+    number = len(part) if len(part) < N_rec else N_rec
     spikedetectors[name] = nest.Create('spike_detector', params=detector_param)
     nest.Connect(part[:number], spikedetectors[name])
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
@@ -88,7 +91,8 @@ def simulate():
         print "SIMULATING [{0}, {1}]".format(t, t + dt)
         nest.Simulate(dt)
         end = clock()
-        times.append("{0:10.1f} {1:8.1f} {2:10.1f} {3:4.1f} {4}\n".format(begin, end - begin, end, t, datetime.datetime.now().time()))
+        times.append("{0:10.1f} {1:8.1f} {2:10.1f} {3:4.1f} {4}\n".format(begin, end - begin, end,
+                                                                          t, datetime.datetime.now().time()))
         begin = end
         print "COMPLETED {0}%\n".format(t/dt)
     endsimulate = datetime.datetime.now()
