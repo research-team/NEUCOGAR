@@ -1,3 +1,9 @@
+[one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
+[all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
+[fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
+[fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
+[receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
+
 
 #### 1. Initializing neurons
 #### 2. Connection of neurons
@@ -11,17 +17,11 @@ text text text
 
 
 
-[one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
-[all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
-[fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
-[fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
-[receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
-
 ### Connection of neurons
 
 Connection rules are specified using the conn_spec parameter, which can be a string naming a connection rule or a dictionary containing a rule specification. Only connection rules requiring no parameters can be given as strings, for all other rules, a dictionary specifying the rule and its parameters, such as in- or out-degrees, is required.
 
-Type 				|  Example 				|  Description 											
+Type 				|  Example 				|  Description 										
 --------------------|-----------------------|-------------------------------------------------------
 one-to-one 			|![1][one-to-one]		|The ith node in pre is connected to the ith node in post. The node lists pre and post have to be of the same length.
 all-to-all			|![2][all-to-all]		|Each node in *pre* is connected to every node in *post*. 
@@ -63,11 +63,8 @@ DA_ex = 3
 DA_in = 4
 ```
 
-**Synapse Specification**
-
+**Synapse Specification**  
 The synapse properties can be given as a string or a dictionary. The string can be the name of a pre-defined synapse which can be found in the synapsedict (see [Synapse Types](http://www.nest-simulator.org/connection_management/#Synapse_Types)) or a manually defined synapse via CopyModel().
-
-**Parameters of synapses**
 
 static_synapse	| stdp_synapse	| stdp_dopamine_synapse	|	Description
 ----------------|---------------|-----------------------|--------------
@@ -88,7 +85,7 @@ delay			|delay			|delay					|Distribution of delay values for connections.
 				|				|A_minus				|Amplitude of weight change for depression
 				|				|tau_c					|Time constant of eligibility trace in ms
 				|				|n						|neuromodulator concentration
-
+				
 Standard weight of synapses:  
 ```python
 w_Glu = 3.  
@@ -98,51 +95,92 @@ w_DA_ex = 13.
 w_DA_in = -w_DA_ex
 ```
 
-* static_synapse  
-This type os synapse uses in **spike generators**
-```python
-nest.CopyModel('static_synapse',    	# origin model
-            	gen_static_syn,     	# new model
-                {'weight': w_Glu * 5,
-                'delay': 10.}) 
-```
-* stdp_synapse  
-This type os synapse uses in **non dopaminergic** connections
-```python
-# Common parameters for 'stdp_synapse'
-STDP_synapseparams = {
-    'model': 'stdp_synapse',
-    'tau_m': {'distribution': 'uniform', 'low': 15., 'high': 25.},
-    'alpha': {'distribution': 'normal_clipped', 'low': 0.5, 'mu': 5.0, 'sigma': 1.0},
-    'delay': {'distribution': 'uniform', 'low': 0.8, 'high': 2.5},
-    'lambda': 0.5
-}
-# Unique parameters for GLUTAMATE
-STDP_synparams_Glu = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
-                           'weight': w_Glu,
-                           'Wmax': 70.}, **STDP_synapseparams)
-#Unique parameters for GABA
-STDP_synparams_GABA = dict({'delay': {'distribution': 'uniform', 'low': 1., 'high': 1.9},
-                            'weight': w_GABA,
-                            'Wmax': -60.}, **STDP_synapseparams)
-#Unique parameters for ACETYLCHOLINE
-STDP_synparams_ACh = dict({'delay': {'distribution': 'uniform', 'low': 0.7, 'high': 1.3},
-                           'weight': w_ACh,
-                           'Wmax': 70.}, **STDP_synapseparams)
-                           
-```
 
-* stdp_dopamine_synapse  
-This type os synapse uses in **dopaminergic** connections
-```python
-DOPA_synparams = {'delay': 1.}
-DOPA_synparams_ex = dict({'weight': w_DA_ex,
-                          'Wmax': 100.,
-                          'Wmin': 85.}, **DOPA_synparams)
+**Distributing synapse parameters**  
+The synapse parameters are specified in the synapse dictionary which is passed to the Connect-function. If the parameter is set to a scalar all connections will be drawn using the same parameter. Parameters can be randomly distributed by assigning a dictionary to the parameter. The dictionary has to contain the key distribution setting the target distribution of the parameters (for example normal). Optionally parameters associated with the distribution can be set (for example mu).
 
-DOPA_synparams_in = dict({'weight': w_DA_in,
-                          'Wmax': -100.,
-                          'Wmin': -85.}, **DOPA_synparams)
+<table>
+	<tr align="center">
+		<td width=10%>
+			<b>Distributions
+		<td width=60%>
+			<b>Keys
+		<td width=30%>
+			<b>Formula
+	<tr>
+		<td>
+			normal
+		<td>
+			 <li>mu  - mean of the underlying normal distribution 
+			 <li>sigma - standard deviation of the underlying normal distribution 
+		<td>
+			<img src="https://upload.wikimedia.org/math/5/6/4/564914214ead956aceccd30b78d2f6ee.png"/>
+	<tr>
+		<td>
+			lognormal
+		<td>
+			<li>mu  - mean
+			<li>sigma - standard deviation
+		<td>
+			<img src="https://upload.wikimedia.org/math/9/e/2/9e2b928f871663bc2ab9e7478735f4e2.png"/>
+	<tr>
+		<td>
+			uniform
+		<td>
+			<li>low  - lower interval boundary, included
+  			<li>high - upper interval boudnary, excluded
+		<td>
+			- - -
+  	<tr>
+  		<td>
+  			uniform_int
+  		<td>
+  			<li>low - smallest allowed random number 
+  			<li> high - largest allowed random number
+  		<td>
+  			p(n) = 1 / (high - low + 1),   n = low, low+1, ..., high
+  	<tr>
+  		<td>
+  			binomial
+  		<td>
+  			<li>p - probability of success in a single trial (double)
+			<li>n - number of trials (positive integer)
+  		<td>
+  			<img src="https://upload.wikimedia.org/math/f/1/d/f1d6646783a852d50c363c1928e8a99e.png"/>
+			, where
+			<img src="https://upload.wikimedia.org/math/3/7/4/3747421657b1dea010fdb4fc09de8319.png"/>
+  	<tr>
+  		<td>
+  			exponential
+  		<td>
+  			lambda - rate parameter
+  		<td>
+  			<img src="https://upload.wikimedia.org/math/a/a/4/aa4903b858058a7ceba1271512a86e08.png"/>
+  	<tr>
+  		<td>
+  			gamma
+  		<td>
+  			<li>k - order of the gamma distribution
+   			<li>θ - scale parameter
+  		<td>
+			<img src="https://upload.wikimedia.org/math/9/a/2/9a277651cacd3a06158a9d7800415972.png"/>
+			, where
+			<img src="https://upload.wikimedia.org/math/e/5/9/e59fe250c57082f60e35fa96379afd2f.png"/>
+  	<tr>
+  		<td>
+  			poisson
+  		<td>
+  			lambda - distribution parameter, lambda
+  		<td>
+  			<img src="https://upload.wikimedia.org/math/7/9/d/79de1417e943a2f4e25868afbc9dc783.png"/>
+</table>
+
+Example:
+```python
+syn_dict = {"model": "stdp_synapse", 
+            "alpha": {"distribution": "uniform", "low": Min_alpha, "high": Max_alpha},
+            "weight": {"distribution": "uniform", "low": Wmin, "high": Wmax},
+            "delay": 1.0 }
 ```
 
 ---
