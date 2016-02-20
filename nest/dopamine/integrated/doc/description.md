@@ -1,18 +1,14 @@
-<<<<<<< 58f33498b151e8ab636ef59e37f8aa68d4f0672c
 [one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
 [all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
 [fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
 [fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
 [receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
 
-=======
 [fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
 [fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
 [receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
 [one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
 [all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
->>>>>>> 2596e7d0791224ac464d07587de66e88de2cd288
-
 
 [neuromodulation]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/neuromodulation.py
 [parameters]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/parameters.py
@@ -69,7 +65,6 @@ t_spike      	| 				|			|Point in time of last spike in ms.
 ### Connection of neurons
 
 Connection rules are specified using the conn_spec parameter, which can be a string naming a connection rule or a dictionary containing a rule specification. Only connection rules requiring no parameters can be given as strings, for all other rules, a dictionary specifying the rule and its parameters, such as in- or out-degrees, is required. In our model we use rule *'all-to-all'* (**must be explored**)
-
 
 Type 				|  Example 				|  Description 	
 --------------------|-----------------------|---------------
@@ -145,7 +140,6 @@ w_ACh = 8.
 w_DA_ex = 13.  
 w_DA_in = -w_DA_ex
 ```
-
 
 **Distributing synapse parameters**  
 The synapse parameters are specified in the synapse dictionary which is passed to the Connect-function. If the parameter is set to a scalar all connections will be drawn using the same parameter. Parameters can be randomly distributed by assigning a dictionary to the parameter. The dictionary has to contain the key distribution setting the target distribution of the parameters (for example normal). Optionally parameters associated with the distribution can be set (for example mu).
