@@ -1,28 +1,78 @@
+<<<<<<< 58f33498b151e8ab636ef59e37f8aa68d4f0672c
 [one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
 [all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
 [fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
 [fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
 [receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
 
+=======
+[fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
+[fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
+[receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
+[one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
+[all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
+>>>>>>> 2596e7d0791224ac464d07587de66e88de2cd288
 
-#### 1. Initializing neurons
-#### 2. Connection of neurons
-#### 3. Connection of devices
-#### 4. Simulating
+
+[neuromodulation]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/neuromodulation.py
+[parameters]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/parameters.py
+[property]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/property.py
+[func]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/func.py
+[data]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/data.py
+
+
+#### 1. [Structure](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#structure)
+#### 2. [Initializing neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#initializing-neurons)
+#### 3. [Connection of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-neurons)
+#### 4. [Connection of devices](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-devices)
+#### 5. [Simulation](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#simulation)
+
+### 1. Structure
+
+![13](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/structure.png)
+
+Dopamine project has this hierarchy of files.
+* [property.py][property] contains main settings and definition of keys for readability;
+* [data.py][data] is responsible for initial dicts of the parts and keys for them. It makes the code more readable and light;
+* [parameters.py][parameters] provides sets of settings for various types of neurons, synapses and generators;
+* [func.py][func] keeps functions which doing routine work and doesn't return anything;
+* [neuromodulation.py][neuromodulation] is using for logical job such as assembly process.
 
 
 ### Initializing neurons
+In our model 'iaf_neuron_exp' uses in non-dopaminergic neurons. 'iaf_psc_alpha' for dopaminergic neurons and 'izhikevich' for thalamo-cortical circuit.
 
-text text text
+iaf_neuron_exp	|iaf_psc_alpha	|izhikevich	| Description
+----------------|---------------|-----------|------------------------
+V_m          	|V_m			|V_m		|Membrane potential in mV
+V_th         	|V_th 			|V_th		|Spike threshold in mV.
+I_e          	|I_e 			|I_e		|Constant input current in pA.
+E_L          	|E_L			|			|Resting membrane potential in mV.
+C_m          	|C_m 			|			|Capacity of the membrane in pF
+tau_m        	|tau_m 			|			|Membrane time constant in ms.
+t_ref        	|t_ref			|			|Duration of refractory period (V_m = V_reset) in ms.
+V_reset      	|V_reset 		|			|Reset membrane potential after a spike in mV.
+				|V_min			|V_min		|Absolute lower value for the membrane potential.
+tau_syn_ex   	| 				|			|Time constant of postsynaptic excitatory currents in ms
+tau_syn_in   	| 				|			|Time constant of postsynaptic inhibitory currents in ms
+t_spike      	| 				|			|Point in time of last spike in ms.
+				|tau_syn_ex		|			|Rise time of the excitatory synaptic alpha function in ms.
+				|tau_syn_in		|			|Rise time of the inhibitory synaptic alpha function in ms.
+				|				|U_m		|Membrane potential recovery variable
+         		|				|a			|describes time scale of recovery variable
+         		|				|b			|sensitivity of recovery variable
+         		|				|c			|after-spike reset value of V_m
+         		|				|d			|after-spike reset value of U_m
 
-
+---
 
 ### Connection of neurons
 
-Connection rules are specified using the conn_spec parameter, which can be a string naming a connection rule or a dictionary containing a rule specification. Only connection rules requiring no parameters can be given as strings, for all other rules, a dictionary specifying the rule and its parameters, such as in- or out-degrees, is required.
+Connection rules are specified using the conn_spec parameter, which can be a string naming a connection rule or a dictionary containing a rule specification. Only connection rules requiring no parameters can be given as strings, for all other rules, a dictionary specifying the rule and its parameters, such as in- or out-degrees, is required. In our model we use rule *'all-to-all'* (**must be explored**)
 
-Type 				|  Example 				|  Description 										
---------------------|-----------------------|-------------------------------------------------------
+
+Type 				|  Example 				|  Description 	
+--------------------|-----------------------|---------------
 one-to-one 			|![1][one-to-one]		|The ith node in pre is connected to the ith node in post. The node lists pre and post have to be of the same length.
 all-to-all			|![2][all-to-all]		|Each node in *pre* is connected to every node in *post*. 
 fixed-indegree		|![3][fixed-indegree]	|The nodes in *pre* are randomly connected with the nodes in *post* such that each node in *post* has a fixed indegree.
@@ -31,8 +81,8 @@ receptor-type		|![5][receptor-type] 	|Each connection in NEST targets a specific
 fixed-total-number  |						|The nodes in *pre* are randomly connected with the nodes in *post* such that the total number of connections equals N
 pairwise-bernoulli	|						|For each possible pair of nodes from *pre* and *post*, a connection is created with probability p.
 
+Implemented help function for connecting parts with each other (see in [func.py](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/func.py))
 ```python
-# standard connection is GABA and weight coefficient is 1
 def connect(part_from, part_to, syn_type=GABA, weight_coef=1):
 	# from synases dict handle to 'syn_type' tuple, then to 'synparams' and 'weight' 
 	# include result of multiplying standard synapse weight and coefficient
@@ -44,7 +94,8 @@ def connect(part_from, part_to, syn_type=GABA, weight_coef=1):
 	# logging actions (from, to, type, weight)
 	log_conn(part_from, part_to, types[syn_type][2], types[syn_type][0]['weight'])  
 ```
-**Dict of synapses**
+
+**Dict of synapses** (help structure)
 ```python
 #		 key	 synapse parameters   weight    name
 types = {GABA:  (STDP_synparams_GABA, w_GABA,  'GABA'),
@@ -53,8 +104,8 @@ types = {GABA:  (STDP_synparams_GABA, w_GABA,  'GABA'),
 		 DA_ex: (DOPA_synparams_ex,   w_DA_ex, 'DA_ex', dopa_model_ex),
 		 DA_in: (DOPA_synparams_in,   w_DA_in, 'DA_in', dopa_model_in)}
 ```
-**Keys of synapse types**  
-(using for make code easier for reading and lighter)
+**Keys of synapse types**  (see [property.py](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/property.py))
+(using for make code lighter and easier for reading)
 ```
 GABA = 0
 Glu = 1
@@ -72,14 +123,14 @@ weight			|weight			|weight					|Weight (power) of synapse
 receptor_type	|receptor_type	|receptor_type			|Type of receptor
 delay			|delay			|delay					|Distribution of delay values for connections.
 				|tau_plus		|tau_plus				|STDP time constant for facilitation in ms
-				|Wmax			|Wmax					|Maximum allowed synaptic weight
+				|Wmax			|Wmax					|Maximum allowed weight
 				|mu_plus		|						|Weight dependence exponent, potentiation
 				|mu_minus		|						|Weight dependence exponent, depression
 				|alpha			|						|Asymmetry parameter (scales depressing increments as alpha*lambda)
 				|lambda			|						|Step size
 				|				|Wmin					|Minimal synaptic weight
 				|				|tau_n					|Time constant of dopaminergic trace in ms
-				|				|b						|Dopaminergic baseline concentration
+				|				|b					 	|Dopaminergic baseline concentration
 				|				|c						|eligibility trace
 				|				|A_plus					|Amplitude of weight change for facilitation
 				|				|A_minus				|Amplitude of weight change for depression
@@ -187,6 +238,8 @@ syn_dict = {"model": "stdp_synapse",
 
 ### Connection of devices
 #### 1. Spike detector
+
+Define a help function with one parameter 'part' — list of neuron ID's
 ```python
 def connect_detector(part):
 	# took name of this part
@@ -281,3 +334,9 @@ The poisson_generator simulates a neuron that is firing with Poisson statistics,
 > Generate sequence of Gaussian pulse packets.
 
 ---
+
+### Simulation
+
+
+---
+
