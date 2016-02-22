@@ -1,51 +1,46 @@
-GABA = 0            # keys for connection type
+# keys for connection type
+GABA = 0
 Glu = 1
 ACh = 2
 DA_ex = 3
 DA_in = 4
 
-motivation = 0      # keys for motor cortex
-action = 1
+# Quality of graphics
+dpi_n = 120
 
-pfc_Glu0 = 0        # keys for prefrontal cortex
-pfc_Glu1 = 1
+k_IDs = 'IDs'
+k_name = 'Name'
+k_NN = 'NN'
+k_model = 'Model'
 
-D1 = 0              # keys for striatum
-D2 = 1
-tan = 2             # Tonically active neurons
+# general settings
+T = 1000.
+dt = 10.
 
-snc_GABA = 0        # keys for SNc
-snc_DA = 1
+# neurons number for spike detector
+N_rec = 100
 
-gpe_GABA = 0        # key for GPe
-gpi_GABA = 0        # key for GPi
-snr_GABA = 0        # key for SNr
-stn_Glu = 0         # key for STN
-thalamus_Glu = 0    # key for thalamus
-amygdala_Glu = 0    # key for amygdala
+# generator delay
+pg_delay = 10.
 
-nac_ACh = 0         # keys for NAc
-nac_GABA0 = 1
-nac_GABA1 = 2
+w_Glu = 3.
+w_GABA = -w_Glu * 2
+w_ACh = 8.
 
-vta_GABA0 = 0       # keys for VTA
-vta_DA0 = 1
-vta_GABA1 = 2
-vta_DA1 = 3
-vta_GABA2 = 4
+# Volume transmission
+w_DA_ex = 13.
+w_DA_in = -w_DA_ex
 
-tpp_GABA = 0        # keys for TPP
-tpp_ACh = 1
-tpp_Glu = 2
+NN_minimal = 10
 
-dpi_n = 120         # Quality of graphics
+NN_coef = 0.0004
 
 # dopamine model key
 dopa_model_ex = 'dopa_ex'
 dopa_model_in = 'dopa_in'
 gen_static_syn = 'noise_conn'
 
-dopa_flag = True                # dopamine modulation flag
-generator_flag = True    # poisson generator with rate set up flag
-test_flag = False                # True - testing mode | False - real number neurons
-statusGUI = True                # True - GUI is on | False - is off
+dopa_flag = True        # dopamine modulation flag
+generator_flag = True   # poisson generator with rate set up flag
+test_flag = True       # True - testing mode | False - real number neurons
+statusGUI = True        # True - GUI is on | False - is off

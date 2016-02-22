@@ -1,9 +1,3 @@
-[one-to-one]: http://www.nest-simulator.org/wp-content/uploads/2014/12/One_to_one.png
-[all-to-all]: http://www.nest-simulator.org/wp-content/uploads/2014/12/All_to_all.png
-[fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
-[fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
-[receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
-
 [fixed-outdegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_outdegree.png
 [fixed-indegree]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Fixed_indegree.png
 [receptor-type]: http://www.nest-simulator.org/wp-content/uploads/2014/12/Receptor_types.png
@@ -17,17 +11,17 @@
 [data]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/data.py
 
 
-#### 1. [Structure](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#structure)
-#### 2. [Initializing neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#initializing-neurons)
-#### 3. [Connection of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-neurons)
-#### 4. [Connection of devices](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-devices)
-#### 5. [Simulation](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#simulation)
+1. [Structure](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#structure)
+2. [Initialization of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#Initialization-of-neurons)
+3. [Connection of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-neurons)
+4. [Connection of devices](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-devices)
+5. [Simulation](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#simulation)
+6. [Save results](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#save-results)
 
-### 1. Structure
+
+## 1. Structure
 
 ![13](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/structure.png)
-
-Dopamine project has this hierarchy of files.
 * [property.py][property] contains main settings and definition of keys for readability;
 * [data.py][data] is responsible for initial dicts of the parts and keys for them. It makes the code more readable and light;
 * [parameters.py][parameters] provides sets of settings for various types of neurons, synapses and generators;
@@ -35,8 +29,28 @@ Dopamine project has this hierarchy of files.
 * [neuromodulation.py][neuromodulation] is using for logical job such as assembly process.
 
 
-### Initializing neurons
-In our model 'iaf_neuron_exp' uses in non-dopaminergic neurons. 'iaf_psc_alpha' for dopaminergic neurons and 'izhikevich' for thalamo-cortical circuit.
+============================
+
+
+## 2. Initialization of neurons
+
+#### 2.1 Main dictionary 
+*data.py* include the primal dictionary of parts and the keys for them. Later this dictionary will grow.
+```python
+# write name of the parts
+motor = ({k_name: 'Motor cortex [Glu0]'},
+         {k_name: 'Motor cortex [Glu1]'})
+# and add keys to refer to this parts by using np.arrange()
+# in output we get motor_Glu0 = 0 and motor_Glu1 = 1
+motor_Glu0, motor_Glu1 = np.arange(2)		
+. . . . . .
+. . . . . .
+thalamus = ({k_name: 'Thalamus [Glu]'}, )
+thalamus_Glu = 0
+```
+
+#### 2.2 Table of neuron parameters
+In our model, the *iaf_neuron_exp* uses in non-dopaminergic neurons. The *iaf_psc_alpha* for dopaminergic neurons and the *izhikevich* for thalamo-cortical circuit.
 
 iaf_neuron_exp	|iaf_psc_alpha	|izhikevich	| Description
 ----------------|---------------|-----------|------------------------
@@ -60,11 +74,82 @@ t_spike      	| 				|			|Point in time of last spike in ms.
          		|				|c			|after-spike reset value of V_m
          		|				|d			|after-spike reset value of U_m
 
----
+#### 2.3 Generating neurons
+Function ```generate_neurons()``` assemble parameters into the main dictionary.  
+At first we group neurons by type of their future model.
+```python
+# group without dopamine neurons (tuple)
+parts_no_dopa = gpe + gpi + ... + thalamus +  snr
+# with dopamine neurons (tuple)
+parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], snc[snc_DA])
+# also create group of all parts, sort them (for readability) and convert to the tuple
+all_parts = tuple(sorted(parts_no_dopa + parts_with_dopa))
+```
 
-### Connection of neurons
+Then specify the neuron number.
+```python
+#object[part][key of neuron number]
+gpe[gpe_GABA][k_NN] = 84100
+gpi[gpi_GABA][k_NN] = 12600
+. . . . . . . . .
+pptg[pptg_Glu][k_NN] = 2300
+
+# multiply number value with NN_coef, also check neuron number with NN_minimal
+for part in all_parts:
+    part[k_NN] = NN_minimal if int(part[k_NN] * NN_coef) < NN_minimal else int(part[k_NN] * NN_coef)
+
+# variable which contains information about global neuron number
+NEURONS = sum(item[k_NN] for item in all_parts)
+```
+
+Define neuron parameters.
+```python
+iaf_neuronparams = {'E_L': -70.,
+                    'V_th': -50.,
+                    'V_reset': -67.,
+                    'C_m': 2.,
+                    't_ref': 2.,
+                    'V_m': -60.,
+                    'tau_syn_ex': 1.,
+                    'tau_syn_in': 1.33}
+```
+
+Write neuron models into the dictionary.
+```python
+# default values of a synapse type can be modified with SetDefaults(), 
+# which takes the name of the synapse type and a parameter dictionary as arguments
+nest.SetDefaults('iaf_psc_exp', iaf_neuronparams)
+nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
+
+# write to the dictionary parts without dopamine the 'iaf_psc_exp' model 
+for part in parts_no_dopa:
+    part[k_model] = 'iaf_psc_exp'
+# write to the dictionary parts with dopamine the 'iaf_psc_alpha' model 
+for part in parts_with_dopa:
+    part[k_model] = 'iaf_psc_alpha'
+# create neurons and write their ID into dictionary with key k_IDs
+for part in all_parts:
+    part[k_IDs] = nest.Create(part[k_model], part[k_NN])
+```
+
+In result we get tuple of all parts with necessary parameters:
+```python
+# example
+({'Model': 'iaf_psc_exp', 'Name': 'Amygdala [Glu]', 'NN': 40, 'IDs': (1, ... , 40)},
+ {'Model': 'iaf_psc_exp', 'Name': 'GPe [GABA]', 'NN': 30, 'IDs': (41, ... , 70)},
+	. . . . . .
+ {'Model': 'iaf_psc_alpha', 'Name': 'VTA [DA1]', 'NN': 20, 'IDs': (1157, ... , 1176)})
+```
+
+
+========================
+
+
+### 3. Connection of neurons
 
 Connection rules are specified using the conn_spec parameter, which can be a string naming a connection rule or a dictionary containing a rule specification. Only connection rules requiring no parameters can be given as strings, for all other rules, a dictionary specifying the rule and its parameters, such as in- or out-degrees, is required. In our model we use rule *'all-to-all'* (**must be explored**)
+
+#### 3.1 Table of connections
 
 Type 				|  Example 				|  Description 	
 --------------------|-----------------------|---------------
@@ -76,40 +161,53 @@ receptor-type		|![5][receptor-type] 	|Each connection in NEST targets a specific
 fixed-total-number  |						|The nodes in *pre* are randomly connected with the nodes in *post* such that the total number of connections equals N
 pairwise-bernoulli	|						|For each possible pair of nodes from *pre* and *post*, a connection is created with probability p.
 
-Implemented help function for connecting parts with each other (see in [func.py](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/func.py))
+
+Implemented help function for connecting parts with each other (see [func.py](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/func.py))
 ```python
-def connect(part_from, part_to, syn_type=GABA, weight_coef=1):
-	# from synases dict handle to 'syn_type' tuple, then to 'synparams' and 'weight' 
+def connect(pre, post, syn_type=GABA, weight_coef=1):
 	# include result of multiplying standard synapse weight and coefficient
+	# into weight parameter of the synapse
 	types[syn_type][0]['weight'] = weight_coef * types[syn_type][1]
-	# variable with parameters of synapse (another for dopamine)
-	syn = types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0]
-	# connect two parts, include rules of connections and parameters of synapse
-	nest.Connect(part_from, part_to, conn_spec=conn_dict, syn_spec=syn)
-	# logging actions (from, to, type, weight)
-	log_conn(part_from, part_to, types[syn_type][2], types[syn_type][0]['weight'])  
+	# connect two parts, include rules of connections
+	# in syn_spec include synapse parameters (another type for dopamine)
+    nest.Connect(pre[k_IDs], 
+                 post[k_IDs], 
+                 conn_spec=conn_dict, 
+                 syn_spec=types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0])
+	# logging action (from, to, type, weight)
+	log_conn(pre, post, types[syn_type][2], types[syn_type][0]['weight'])  
+```
+Where
+```python
+conn_dict = {'rule': 'all_to_all',
+             'multapses': True}
+```
+and
+```python
+def log_connection(pre, post, syn_type, weight):
+	# global variable of synapse number
+    global SYNAPSES
+    # this formula is working if we use rule 'all-to-all'
+    SYNAPSES += pre[k_NN] * post[k_NN]
+    # logging action
+    logger.debug("{0} -> {1} ({2}) w[{3}] // {4} synapses".format(pre[k_name], post[k_name],
+                                                                  syn_type, weight, 
+                                                                  pre[k_NN]*post[k_NN]))
 ```
 
-**Dict of synapses** (help structure)
+'Another part' is implemented bacause nest.Connect doesn't support the direct specification of the volume transmitter of stdp_dopamine_synapse in syn_spec. So need use SetDefaults() or CopyModel().
 ```python
-#		 key	 synapse parameters   weight    name
+# dictionary of synapses (help structure)
+#		 key	 synapse parameters   weight    name 	 another type
 types = {GABA:  (STDP_synparams_GABA, w_GABA,  'GABA'),
 		 ACh:   (STDP_synparams_ACh,  w_ACh,   'Ach'),
 		 Glu:   (STDP_synparams_Glu,  w_Glu,   'Glu'),
 		 DA_ex: (DOPA_synparams_ex,   w_DA_ex, 'DA_ex', dopa_model_ex),
 		 DA_in: (DOPA_synparams_in,   w_DA_in, 'DA_in', dopa_model_in)}
 ```
-**Keys of synapse types**  (see [property.py](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/property.py))
-(using for make code lighter and easier for reading)
-```
-GABA = 0
-Glu = 1
-ACh = 2
-DA_ex = 3
-DA_in = 4
-```
 
-**Synapse Specification**  
+
+#### 3.2 Synapse Specification
 The synapse properties can be given as a string or a dictionary. The string can be the name of a pre-defined synapse which can be found in the synapsedict (see [Synapse Types](http://www.nest-simulator.org/connection_management/#Synapse_Types)) or a manually defined synapse via CopyModel().
 
 static_synapse	| stdp_synapse	| stdp_dopamine_synapse	|	Description
@@ -131,8 +229,8 @@ delay			|delay			|delay					|Distribution of delay values for connections.
 				|				|A_minus				|Amplitude of weight change for depression
 				|				|tau_c					|Time constant of eligibility trace in ms
 				|				|n						|neuromodulator concentration
-				
-Standard weight of synapses:  
+	
+**Standard weight of synapses:**  (must be explored)
 ```python
 w_Glu = 3.  
 w_GABA = -w_Glu * 2  
@@ -141,7 +239,17 @@ w_DA_ex = 13.
 w_DA_in = -w_DA_ex
 ```
 
-**Distributing synapse parameters**  
+**Keys of synapse types** (using for make code lighter and easier for reading)
+```
+GABA = 0
+Glu = 1
+ACh = 2
+DA_ex = 3
+DA_in = 4
+```
+
+
+#### 3.3 Distributing synapse parameters
 The synapse parameters are specified in the synapse dictionary which is passed to the Connect-function. If the parameter is set to a scalar all connections will be drawn using the same parameter. Parameters can be randomly distributed by assigning a dictionary to the parameter. The dictionary has to contain the key distribution setting the target distribution of the parameters (for example normal). Optionally parameters associated with the distribution can be set (for example mu).
 
 <table>
@@ -156,40 +264,50 @@ The synapse parameters are specified in the synapse dictionary which is passed t
 		<td>
 			normal
 		<td>
-			 <li>mu  - mean of the underlying normal distribution 
-			 <li>sigma - standard deviation of the underlying normal distribution 
+			<ul>
+				<li>mu  - mean of the underlying normal distribution 
+				<li>sigma - standard deviation of the underlying normal distribution 
+			</ul>
 		<td>
 			<img src="https://upload.wikimedia.org/math/5/6/4/564914214ead956aceccd30b78d2f6ee.png"/>
 	<tr>
 		<td>
 			lognormal
 		<td>
-			<li>mu  - mean
-			<li>sigma - standard deviation
+			<ul>
+				<li>mu  - mean
+				<li>sigma - standard deviation
+			</ul>
 		<td>
 			<img src="https://upload.wikimedia.org/math/9/e/2/9e2b928f871663bc2ab9e7478735f4e2.png"/>
 	<tr>
 		<td>
 			uniform
 		<td>
-			<li>low  - lower interval boundary, included
-  			<li>high - upper interval boudnary, excluded
+			<ul>
+				<li>low  - lower interval boundary, included
+  				<li>high - upper interval boudnary, excluded
+  			</ul>
 		<td>
 			- - -
   	<tr>
   		<td>
   			uniform_int
   		<td>
-  			<li>low - smallest allowed random number 
-  			<li> high - largest allowed random number
+  			<ul>
+  				<li>low - smallest allowed random number 
+  				<li> high - largest allowed random number
+  			</ul>
   		<td>
   			p(n) = 1 / (high - low + 1),   n = low, low+1, ..., high
   	<tr>
   		<td>
   			binomial
   		<td>
-  			<li>p - probability of success in a single trial (double)
-			<li>n - number of trials (positive integer)
+  			<ul>
+  				<li>p - probability of success in a single trial (double)
+				<li>n - number of trials (positive integer)
+			</ul>
   		<td>
   			<img src="https://upload.wikimedia.org/math/f/1/d/f1d6646783a852d50c363c1928e8a99e.png"/>
 			, where
@@ -198,15 +316,19 @@ The synapse parameters are specified in the synapse dictionary which is passed t
   		<td>
   			exponential
   		<td>
-  			lambda - rate parameter
+  			<ul>
+  				<li>lambda - rate parameter
+  			</ul>
   		<td>
   			<img src="https://upload.wikimedia.org/math/a/a/4/aa4903b858058a7ceba1271512a86e08.png"/>
   	<tr>
   		<td>
   			gamma
   		<td>
-  			<li>k - order of the gamma distribution
-   			<li>θ - scale parameter
+  			<ul>
+  				<li>k - order of the gamma distribution
+   				<li>θ - scale parameter
+   			</ul>
   		<td>
 			<img src="https://upload.wikimedia.org/math/9/a/2/9a277651cacd3a06158a9d7800415972.png"/>
 			, where
@@ -215,7 +337,9 @@ The synapse parameters are specified in the synapse dictionary which is passed t
   		<td>
   			poisson
   		<td>
-  			lambda - distribution parameter, lambda
+  			<ul>
+  				<li>lambda - distribution parameter, lambda
+  			</ul>
   		<td>
   			<img src="https://upload.wikimedia.org/math/7/9/d/79de1417e943a2f4e25868afbc9dc783.png"/>
 </table>
@@ -228,10 +352,31 @@ syn_dict = {"model": "stdp_synapse",
             "delay": 1.0 }
 ```
 
----
 
-### Connection of devices
-#### 1. Spike detector
+#### 3.4 Neuromodulating connections
+
+```python
+# Volume transmission: init dopa_model
+vt_ex = nest.Create('volume_transmitter')
+vt_in = nest.Create('volume_transmitter')
+DOPA_synparams_ex['vt'] = vt_ex[0]
+DOPA_synparams_in['vt'] = vt_in[0]
+nest.Connect(snc[snc_DA][k_IDs], vt_ex)
+nest.Connect(snc[snc_DA][k_IDs], vt_in)
+nest.Connect(vta[vta_DA0][k_IDs], vt_ex)
+nest.Connect(vta[vta_DA1][k_IDs], vt_ex)
+nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
+nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
+```
+
+
+===============
+
+
+## 4. Connection of devices
+
+#### 4.1 Spike detector
+The spike_detector device is a recording device. It is used to record spikes from a single neuron, or from multiple neurons at once. Data is recorded in memory or to file as for all RecordingDevices. By default, GID and time of each spike is recorded
 
 Define a help function with one parameter 'part' — list of neuron ID's
 ```python
@@ -257,8 +402,10 @@ detector_param = {'label': 'spikes', 		# add label name
 				  'to_memory': True,		# write to memory
 				  'scientific': True}		# ???
 ```
----
-#### 2. Multimeter
+
+
+#### 4.2 Multimeter
+A multimeter records a user-defined set of state variables from connected nodes to memory, file or stdout. The multimeter must be configured with the list of variables to record from, otherwise it will not record anything.
 ```python
 def connect_multimeter(part):
 	# took name of this part
@@ -272,15 +419,15 @@ def connect_multimeter(part):
 Multimeter parameters
 ```python
 mm_param = {'to_memory': True,			# save to memory
-			'to_file': False, 			# save not to file
+			'to_file': False, 			# don't save to file
             'withtime': True, 			# add time
             'interval': 0.1,			# use interval 0.1ms
             'record_from': ['V_m'], 	# record voltage [mV]
             'withgid': True}			# add gid
 ```
----
-#### 3. Generator
 
+
+#### 4.3 Generator
 
 For the creation of custom synapse types from already existing synapse types, the command CopyModel is used. It has an optional argument params to directly customize it during the copy operation.
 
@@ -298,39 +445,90 @@ def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
     # attaching generator to the every neuron in  part
     nest.Connect(spikegenerators[name],                               # generator
                  part,                                                # part to connect
-                 syn_spec=gener_static_syn,                           # synapse parameters
+                 syn_spec=static_syn,                           	  # synapse parameters
                  conn_spec={'rule': 'fixed_outdegree',                # connection rules
                             'outdegree': int(len(part) * coef_part)}) # number of connections
     logger.debug("Generator => {0}. Element #{1}".format(name, spikegenerators[name][0]))
 ```
+Where
+```python
+static_syn = {
+    'model': 'static_synapse',
+    'weight': w_Glu * 5,
+    'delay': pg_delay
+}
+```
 The following devices generate sequences of spikes which can be send to a neuron. These devices act like populations of neurons and connected to their targets like a neuron.
-##### 3.1 poisson_generator 
-> Simulate neuron firing with Poisson processes statistics.
-
-The poisson_generator simulates a neuron that is firing with Poisson statistics, i.e. exponentially distributed interspike intervals. It will generate a *unique* spike train for each of it's targets |Generates spike-events from an array.|Device to produce Gaussian spike-trains.
-*Parameters*
-
-| parameter | type 		| description 											|
-|-----------|-----------|-------------------------------------------------------|
-|rate 		|(double)	|mean firing rate in Hz  								|
-|origin		|(double)	|Time origin for device timer in ms						|
-|star		|(double)	|begin of device application with resp. to origin in ms |
-|stop		|(double)	|end of device application with resp. to origin in ms	|
-
- 
-##### 3.2 spike_generator
-> A device which generates spikes from an array with spike-times.
-
-##### 3.3 noise_generator
-> Device to generate Gaussian white noise current.
-
-##### 3.3 pulsepacket_generator
-> Generate sequence of Gaussian pulse packets.
-
----
-
-### Simulation
 
 
----
+#### Table of type generators
+<table>
+	<tr align="center">
+		<td width=33%>
+			<b>poisson_generator</b>
+		<td width=33%>
+			<b>spike_generator</b>
+		<td width=33%>
+			<b>noise_generator</b>
+	<tr>
+		<td>
+			The poisson_generator simulates a neuron that is firing with Poisson statistics, 
+			i.e. exponentially distributed interspike intervals. It will generate a <i>unique</i>
+			spike train for each of it's targets 
+		<td>
+			This device can be used to inject a Gaussian "white" noise current into a node.
+			The current is not really white, but a piecewise constant current with Gaussian
+			distributed amplitude. The current changes at intervals of dt. dt must be a
+			multiple of the simulation step size, the default is 1.0ms,
+			corresponding to a 1kHz cut-off.
+		<td>
+	<tr>
+		<td>
+			<ul>
+				<li><b>rate		</b> -	mean firing rate in Hz 
+				<li><b>origin 	</b> -	Time origin for device timer in ms	
+				<li><b>start 	</b> -	begin of device application with resp. to origin in ms 
+				<li><b>stop 	</b> -	end of device application with resp. to origin in ms
+			</ul>
+		<td>
+			<ul>
+				<li><b>origin         		</b> - Time origin for device timer in ms
+       			<li><b>start          		</b> - earliest possible time stamp of a spike to be emitted in ms
+       			<li><b>stop           		</b> - earliest time stamp of a potential spike event that is not emitted in ms
+       			<li><b>spike_times    		</b> - array of spike-times in ms
+       			<li><b>spike_weights  		</b> - array corrsponding spike-weights, the unit depends on the receiver
+       			<li><b>precise_times        </b> - see above
+       			<li><b>allow_offgrid_spikes </b> - see above
+       			<li><b>shift_now_spikes     </b> - see above
+			</ul>
+		<td>
+			<ul>
+				<li><b>mean    </b> - mean value of the noise current in pA
+				<li><b>td      </b> - standard deviation of noise current in pA
+				<li><b>t       </b> - interval between changes in current in ms, default 1.0ms
+				<li><b>td_mod  </b> - modulated standard deviation of noise current in pA
+				<li><b>hase    </b> - Phase of sine modulation (0-360 deg)
+				<li><b>requency</b> - Frequency of sine modulation in Hz
+			</ul>
+	<tr>
+		<td>
+			<img src="" />
+		<td>
+			<img src="" />
+		<td>
+			<img src="" />
+</table>
+Also see infromation in NEST folder opt/nest/share/doc/nest/help/cc/
 
+
+
+=========================
+
+
+## 5. Simulation
+
+
+=========================
+
+
+## 6. Save results

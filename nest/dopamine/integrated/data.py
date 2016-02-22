@@ -1,5 +1,5 @@
 '''
-Primal/initial dicts of parts
+Primal/initial dictionary of parts
 
 It contains:
     Motor Cortex
@@ -22,18 +22,16 @@ Prefix description:
     DA  - dopamine
 '''
 from property import *
+import numpy as np
 
 motor = ({k_name: 'Motor cortex [Glu0]'},
          {k_name: 'Motor cortex [Glu1]'})
-motor_Glu0 = 0
-motor_Glu1 = 1
+motor_Glu0, motor_Glu1 = np.arange(2)
 
 striatum = ({k_name: 'Striatum [D1]'},
             {k_name: 'Striatum [D2]'},
             {k_name: 'Striatum [tan]'})
-D1 = 0
-D2 = 1
-tan = 2
+D1, D2, tan = np.arange(3)
 
 gpe = ({k_name: 'GPe [GABA]'}, )
 gpe_GABA = 0
@@ -49,41 +47,31 @@ snr_GABA = 0
 
 snc = ({k_name: 'SNc [GABA]'},
        {k_name: 'SNc [DA]'})
-snc_GABA = 0
-snc_DA = 1
+snc_GABA, snc_DA = np.arange(2)
 
 thalamus = ({k_name: 'Thalamus [Glu]'}, )
 thalamus_Glu = 0
 
 prefrontal = ({k_name: 'Prefrontal cortex [Glu0]'},
               {k_name: 'Prefrontal cortex [Glu1]'})
-pfc_Glu0 = 0
-pfc_Glu1 = 1
+pfc_Glu0, pfc_Glu1 = np.arange(2)
 
 nac = ({k_name: 'NAc [ACh]'},
        {k_name: 'NAc [GABA0]'},
        {k_name: 'NAc [GABA1]'})
-nac_ACh = 0
-nac_GABA0 = 1
-nac_GABA1 = 2
+nac_ACh, nac_GABA0, nac_GABA1  = np.arange(3)
 
 vta = ({k_name: 'VTA [GABA0]'},
        {k_name: 'VTA [DA0]'},
        {k_name: 'VTA [GABA1]'},
        {k_name: 'VTA [DA1]'},
        {k_name: 'VTA [GABA2]'})
-vta_GABA0 = 0
-vta_DA0 = 1
-vta_GABA1 = 2
-vta_DA1 = 3
-vta_GABA2 = 4
+vta_GABA0, vta_DA0, vta_GABA1, vta_DA1, vta_GABA2 = np.arange(5)
 
 pptg = ({k_name: 'PPTg [GABA]'},
         {k_name: 'PPTg [ACh]'},
         {k_name: 'PPTg [Glu]'})
-pptg_GABA = 0
-pptg_ACh = 1
-pptg_Glu = 2
+pptg_GABA, pptg_ACh, pptg_Glu = np.arange(3)
 
 amygdala = ({k_name: 'Amygdala [Glu]'}, )
 amygdala_Glu = 0

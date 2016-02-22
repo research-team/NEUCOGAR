@@ -1,78 +1,160 @@
 import os
 import nest
+import logging
 import datetime
-import numpy as np
 from time import clock
 from parameters import *
+from data import *
 
 times = []
-parts_dict = {}         # dict part      : name_part
 spikegenerators = {}    # dict name_part : spikegenerator
 spikedetectors = {}     # dict name_part : spikedetector
 multimeters = {}        # dict name_part : multimeter
 
 SYNAPSES = 0
-NEURONS = 0
 
+FORMAT = '%(name)s.%(levelname)s: %(message)s.'
+logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('function')
 
-
-def log_conn (pre, post, syn_type, weight):
-    global SYNAPSES
-    SYNAPSES += len(pre) * len(post)
-    logger.debug("{0} -> {1} ({2}) w[{3}] // {4} synapses".format(parts_dict[pre], parts_dict[post],
-                                                                  syn_type, weight, len(pre) * len(post)))
-
-
-def f_register(item, name):
+def generate_neurons():
     global NEURONS
-    parts_dict[item] = name
-    logger.debug("{0} [{1}, {2}] {3} neurons".format(name, item[0], item[0] + len(item) - 1, len(item)))
-    NEURONS += len(item)
+    logger.debug("* * * Start generate neurons")
+    parts_no_dopa = gpe + gpi + stn + amygdala + (vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2], snc[snc_GABA]) + \
+                    striatum + motor + prefrontal + nac + pptg + thalamus +  snr
+
+    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], snc[snc_DA])
+
+    all_parts = tuple(sorted(parts_no_dopa + parts_with_dopa))
+
+    if test_flag:
+        # TEST NUMBER
+        motor[motor_Glu0][k_NN] = 60
+        motor[motor_Glu1][k_NN] = 150
+        striatum[D1][k_NN] = 30
+        striatum[D2][k_NN] = 30
+        striatum[tan][k_NN] = 8
+        gpe[gpe_GABA][k_NN] = 30
+        gpi[gpi_GABA][k_NN] = 10
+        stn[stn_Glu][k_NN] = 15
+        snc[snc_GABA][k_NN] = 40
+        snc[snc_DA][k_NN] = 100
+        snr[snr_GABA][k_NN] = 21
+        thalamus[thalamus_Glu][k_NN] = 90
+
+        prefrontal[pfc_Glu0][k_NN] = 150
+        prefrontal[pfc_Glu1][k_NN] = 150
+        nac[nac_ACh][k_NN] = 15
+        nac[nac_GABA0][k_NN] = 70
+        nac[nac_GABA1][k_NN] = 70
+        vta[vta_GABA0][k_NN] = 30
+        vta[vta_DA0][k_NN] = 20
+        vta[vta_GABA1][k_NN] = 30
+        vta[vta_DA1][k_NN] = 20
+        vta[vta_GABA2][k_NN] = 30
+        pptg[pptg_GABA][k_NN] = 20
+        pptg[pptg_ACh][k_NN] = 14
+        pptg[pptg_Glu][k_NN] = 23
+
+        amygdala[amygdala_Glu][k_NN] = 40
+    else:
+        # REAL NUMBER
+        cerebral_cortex_NN = 29000000
+        motor[motor_Glu0][k_NN] = int(cerebral_cortex_NN * 0.8 / 6)
+        motor[motor_Glu1][k_NN] = int(cerebral_cortex_NN * 0.2 / 6)
+        striatum_NN = 2500000
+        striatum[D1][k_NN] = int(striatum_NN * 0.425)
+        striatum[D2][k_NN] = int(striatum_NN * 0.425)
+        striatum[tan][k_NN] = int(striatum_NN * 0.05)
+        gpe[gpe_GABA][k_NN] = 84100
+        gpi[gpi_GABA][k_NN] = 12600
+        stn[stn_Glu][k_NN] = 22700
+        snc[snc_GABA][k_NN] = 3000              #TODO check number of neurons
+        snc[snc_DA][k_NN] = 12700               #TODO check number of neurons
+        snr[snr_GABA][k_NN] = 47200
+        thalamus[thalamus_Glu][k_NN] = int(5000000 / 6) #!!!!
+
+        prefrontal[pfc_Glu0][k_NN] = 183000
+        prefrontal[pfc_Glu1][k_NN] = 183000
+        nac[nac_ACh][k_NN] = 1500               #TODO not real!!!
+        nac[nac_GABA0][k_NN] = 14250            #TODO not real!!!
+        nac[nac_GABA1][k_NN] = 14250            #TODO not real!!!
+        vta[vta_GABA0][k_NN] = 7000
+        vta[vta_DA0][k_NN] = 20000
+        vta[vta_GABA1][k_NN] = 7000
+        vta[vta_DA1][k_NN] = 20000
+        vta[vta_GABA2][k_NN] = 7000
+        pptg[pptg_GABA][k_NN] = 2000
+        pptg[pptg_ACh][k_NN] = 1400
+        pptg[pptg_Glu][k_NN] = 2300
+
+        amygdala[amygdala_Glu][k_NN] = 30000    #TODO not real!!!
+
+        for part in all_parts:
+            part[k_NN] = NN_minimal if int(part[k_NN] * NN_coef) < NN_minimal else int(part[k_NN] * NN_coef)
+
+    NEURONS = sum(item[k_NN] for item in all_parts)
+    logger.debug('Initialised: {0} neurons'.format(NEURONS))
+
+    # assign neuron params to every part
+    nest.SetDefaults('iaf_psc_exp', iaf_neuronparams)
+    nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
+
+    # without dopamine
+    for part in parts_no_dopa:
+        part[k_model] = 'iaf_psc_exp'
+    # with dopamine
+    for part in parts_with_dopa:
+        part[k_model] = 'iaf_psc_alpha'
+
+    for part in all_parts:
+        part[k_IDs] = nest.Create(part[k_model], part[k_NN])
+        logger.debug("{0} [{1}, {2}] {3} neurons".format(part[k_name], part[k_IDs][0],
+                                                         part[k_IDs][0] + part[k_NN] - 1,
+                                                         part[k_NN]))
+    print "lol"
 
 
-'''Help method to get neurons_list from iter_all{'name' : neurons_list}'''
-def get_ids(name, iter_all=None):
-    if iter_all is not None:
-        get_ids.iter_all = iter_all
-    for part in get_ids.iter_all:
-        if part[k_name] == name:
-            return part[k_ids]
-    raise KeyError
+def log_connection(pre, post, syn_type, weight):
+    global SYNAPSES
+    SYNAPSES += pre[k_NN] * post[k_NN]
+    logger.debug("{0} -> {1} ({2}) w[{3}] // {4} synapses".format(pre[k_name], post[k_name],
+                                                                  syn_type, weight, pre[k_NN] * post[k_NN]))
 
 
 def connect(pre, post, syn_type=GABA, weight_coef=1):
-    types[syn_type][0]['weight'] = weight_coef * types[syn_type][1]                 # edit weight in syn_param
-    syn = types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0]  # help variable
-    nest.Connect(pre, post, conn_spec=conn_dict, syn_spec=syn)
-    log_conn(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
-
+    types[syn_type][0]['weight'] = weight_coef * types[syn_type][1]
+    nest.Connect(pre[k_IDs],
+                 post[k_IDs],
+                 conn_spec=conn_dict,
+                 syn_spec=types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0])
+    log_connection(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
 
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
-    name = parts_dict[part]
+    name = part[k_name]
     spikegenerators[name] = nest.Create('poisson_generator', 1, {'rate': float(rate),
                                                                  'start': float(startTime),
                                                                  'stop': float(stopTime)})
-    nest.Connect(spikegenerators[name], part,
-                 syn_spec=gen_static_syn,
+    nest.Connect(spikegenerators[name], part[k_IDs],
+                 syn_spec=static_syn,
                  conn_spec={'rule': 'fixed_outdegree',
-                            'outdegree': int(len(part) * coef_part)})
+                            'outdegree': int(part[k_NN] * coef_part)})
     logger.debug("Generator => {0}. Element #{1}".format(name, spikegenerators[name][0]))
 
 
 def connect_detector(part):
-    name = parts_dict[part]
-    number = len(part) if len(part) < N_rec else N_rec
+    name = part[k_name]
+    number = part[k_NN] if part[k_NN] < N_rec else N_rec
     spikedetectors[name] = nest.Create('spike_detector', params=detector_param)
-    nest.Connect(part[:number], spikedetectors[name])
+    nest.Connect(part[k_IDs][:number], spikedetectors[name])
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
 
 
 def connect_multimeter(part):
-    name = parts_dict[part]
-    multimeters[name] = nest.Create('multimeter', params=mm_param)                  # ToDo add count of multimeters
-    nest.Connect(multimeters[name], (part[0],))
-    logger.debug("Multimeter => {0}. On {1}".format(name, part[0]) )
+    name = part[k_name]
+    multimeters[name] = nest.Create('multimeter', params=multimeter_param)  # ToDo add count of multimeters
+    nest.Connect(multimeters[name], (part[k_IDs][0],))
+    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_IDs][0]))
 
 
 '''Generates string full name of an image'''
@@ -104,20 +186,19 @@ def get_log(startbuild, endbuild):
     logger.info("Number of synapses : {}".format(SYNAPSES))
     logger.info("Building time      : {}".format(endbuild - startbuild))
     logger.info("Simulation time    : {}".format(endsimulate - startsimulate))
-    for key in spikedetectors:
+    for key in spikedetectors:              #FixMe bug in '1000.0 / N_rec' in some case N_rec can be equal part[k_IDs]
         logger.info("{0:>18} rate: {1:.2f}Hz".format(key, nest.GetStatus(spikedetectors[key], 'n_events')[0] / T * 1000.0 / N_rec))
     logger.info("Dopamine           : {}".format('YES' if dopa_flag else 'NO'))
     logger.info("Noise              : {}".format('YES' if generator_flag else 'NO'))
 
 
 def save(GUI):
-    global SAVE_PATH
+    global txtResultPath
+    SAVE_PATH = "output-{0}/".format(NEURONS)
     if GUI:
         import pylab as pl
         import nest.raster_plot
         import nest.voltage_trace
-
-        SAVE_PATH = "output-{0}(png)/".format(NEURONS)
         logger.debug("Saving IMAGES into {0}".format(SAVE_PATH))
         if not os.path.exists(SAVE_PATH):
             os.mkdir(SAVE_PATH)
@@ -136,16 +217,16 @@ def save(GUI):
             except Exception:
                 print(" * * * from {0} is NOTHING".format(key))
 
-    SAVE_PATH = "output-{0}(txt)/".format(NEURONS)
-    logger.debug("Saving TEXT into {0}".format(SAVE_PATH))
-    if not os.path.exists(SAVE_PATH):
-        os.mkdir(SAVE_PATH)
+    txtResultPath = SAVE_PATH + 'txt/'
+    logger.debug("Saving TEXT into {0}".format(txtResultPath))
+    if not os.path.exists(txtResultPath):
+        os.mkdir(txtResultPath)
     for key in spikedetectors:
         save_spikes(spikedetectors[key], name=key)           #, hist=True)
     for key in multimeters:
         save_voltage(multimeters[key], name=key)
 
-    with open(SAVE_PATH + 'timeSimulation.txt', 'w') as f:
+    with open(txtResultPath + 'timeSimulation.txt', 'w') as f:
         for item in times:
             f.write(item)
 
@@ -156,7 +237,7 @@ def save_spikes(detec, name, hist=False):
     ts = ev["times"]
     gids = ev["senders"]
 
-    with open("{0}@spikes_{1}.txt".format(SAVE_PATH, name), 'w') as f:
+    with open("{0}@spikes_{1}.txt".format(txtResultPath, name), 'w') as f:
         f.write("Name: {0}, Title: {1}, Hist: {2}\n".format(name, title, "True" if hist else "False"))
         for num in range(0, len(ts)):
             f.write("{0} {1}\n".format(str(ts[num]), str(gids[num])))
@@ -168,10 +249,11 @@ def save_voltage(detec, name):
     ts = ev["times"]
     voltages = ev["V_m"]
 
-    with open("{0}@voltage_{1}.txt".format(SAVE_PATH, name), 'w') as f:
+    with open("{0}@voltage_{1}.txt".format(txtResultPath, name), 'w') as f:
         f.write("Name: {0}, Title: {1}\n".format(name, title))
         for num in range(0, len(ts)):
             f.write("{0} {1}\n".format(str(ts[num]), str(voltages[num])))
 
 
 # ToDo => params={'spike_times': np.arange(1, T, 20.) in generator
+
