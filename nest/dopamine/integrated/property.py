@@ -33,7 +33,7 @@ w_DA_in = -w_DA_ex
 
 NN_minimal = 10
 
-NN_coef = 0.0004
+NN_coef = 0.0005
 
 # dopamine model key
 dopa_model_ex = 'dopa_ex'
@@ -42,5 +42,5 @@ gen_static_syn = 'noise_conn'
 
 dopa_flag = True        # dopamine modulation flag
 generator_flag = True   # poisson generator with rate set up flag
-test_flag = True       # True - testing mode | False - real number neurons
+test_flag = False       # True - testing mode | False - real number neurons
 statusGUI = True        # True - GUI is on | False - is off

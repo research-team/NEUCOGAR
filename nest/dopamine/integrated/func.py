@@ -17,11 +17,12 @@ FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('function')
 
+
 def generate_neurons():
     global NEURONS
     logger.debug("* * * Start generate neurons")
     parts_no_dopa = gpe + gpi + stn + amygdala + (vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2], snc[snc_GABA]) + \
-                    striatum + motor + prefrontal + nac + pptg + thalamus +  snr
+                    striatum + motor + prefrontal + nac + pptg + thalamus + snr
 
     parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], snc[snc_DA])
 
@@ -112,7 +113,6 @@ def generate_neurons():
         logger.debug("{0} [{1}, {2}] {3} neurons".format(part[k_name], part[k_IDs][0],
                                                          part[k_IDs][0] + part[k_NN] - 1,
                                                          part[k_NN]))
-    print "lol"
 
 
 def log_connection(pre, post, syn_type, weight):
@@ -129,6 +129,7 @@ def connect(pre, post, syn_type=GABA, weight_coef=1):
                  conn_spec=conn_dict,
                  syn_spec=types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0])
     log_connection(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
+
 
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
     name = part[k_name]
@@ -256,4 +257,3 @@ def save_voltage(detec, name):
 
 
 # ToDo => params={'spike_times': np.arange(1, T, 20.) in generator
-

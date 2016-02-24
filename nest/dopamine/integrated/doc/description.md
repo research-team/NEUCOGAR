@@ -11,12 +11,12 @@
 [data]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/data.py
 
 
-1. [Structure](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#structure)
-2. [Initialization of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#Initialization-of-neurons)
-3. [Connection of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-neurons)
-4. [Connection of devices](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#connection-of-devices)
-5. [Simulation](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#simulation)
-6. [Save results](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#save-results)
+1. [Structure](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#1-structure)
+2. [Initialization of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#2-Initialization-of-neurons)
+3. [Connection of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#3-connection-of-neurons)
+4. [Connection of devices](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#4-connection-of-devices)
+5. [Simulation](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#5-simulation)
+6. [Save results](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#6-save-results)
 
 
 ## 1. Structure
@@ -201,7 +201,8 @@ def log_connection(pre, post, syn_type, weight):
 #		 key	 synapse parameters   weight    name 	 another type
 types = {GABA:  (STDP_synparams_GABA, w_GABA,  'GABA'),
 		 ACh:   (STDP_synparams_ACh,  w_ACh,   'Ach'),
-		 Glu:   (STDP_synparams_Glu,  w_Glu,   'Glu'),
+		 Glu:   (STDP_synparams_Glu,  w_Glu,   'Gl
+),
 		 DA_ex: (DOPA_synparams_ex,   w_DA_ex, 'DA_ex', dopa_model_ex),
 		 DA_in: (DOPA_synparams_in,   w_DA_in, 'DA_in', dopa_model_in)}
 ```
@@ -470,19 +471,27 @@ The following devices generate sequences of spikes which can be send to a neuron
 			<b>spike_generator</b>
 		<td width=33%>
 			<b>noise_generator</b>
-	<tr>
+	<tr valign="top">
 		<td>
 			The poisson_generator simulates a neuron that is firing with Poisson statistics, 
 			i.e. exponentially distributed interspike intervals. It will generate a <i>unique</i>
 			spike train for each of it's targets 
 		<td>
+			A spike generator can be used to generate spikes at specific times
+  			which are given to the spike generator as an array.
+  			Spike times are given in milliseconds, and must be sorted with the
+  			earliest spike first. All spike times must be strictly in the future.
+  			Trying to set a spike time in the past or at the current time step,
+  			will cause a NEST error.
+		<td>
 			This device can be used to inject a Gaussian "white" noise current into a node.
 			The current is not really white, but a piecewise constant current with Gaussian
 			distributed amplitude. The current changes at intervals of dt. dt must be a
-			multiple of the simulation step size, the default is 1.0ms,
-			corresponding to a 1kHz cut-off.
-		<td>
+			multiple of the simulation step size.
 	<tr>
+		<td align="center" colspan="3">
+			<b>Parameters</b>
+	<tr valign="top">
 		<td>
 			<ul>
 				<li><b>rate		</b> -	mean firing rate in Hz 
@@ -511,12 +520,47 @@ The following devices generate sequences of spikes which can be send to a neuron
 				<li><b>requency</b> - Frequency of sine modulation in Hz
 			</ul>
 	<tr>
+		<td align="center" colspan="3">
+			<b>Remarks</b>
+	<tr valign="top">
 		<td>
-			<img src="" />
+
 		<td>
-			<img src="" />
+
 		<td>
-			<img src="" />
+
+	<tr>
+		<td align="center" colspan="3">
+			<b>Example</b>
+	<tr valign="top">
+		<td>
+
+			<ul>
+				<li>rate: 100
+				<li>start: 1
+				<li>stop: 1000
+			</ul>
+			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/poisson_generator.png" />
+		<td>
+			<ul>
+				<li> spike_times: every 50 ms (from 1 to 1000ms)
+				<li> spike_weights: 10 
+			</ul>
+			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/spike_generator.png" />
+		<td>
+			<ul>
+				<li>dt: 50
+				<li>mean: 0.3
+				<li>start: 1; stop: 1000
+			</ul>
+			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/noise_generator.png" />
+	<tr align="center">
+		<td width=33%>
+			<b>poisson_generator</b>
+		<td width=33%>
+			<b>spike_generator</b>
+		<td width=33%>
+			<b>noise_generator</b>
 </table>
 Also see infromation in NEST folder opt/nest/share/doc/nest/help/cc/
 
