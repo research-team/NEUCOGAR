@@ -11,12 +11,22 @@
 [data]: https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/data.py
 
 
-1. [Structure](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#1-structure)
-2. [Initialization of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#2-Initialization-of-neurons)
-3. [Connection of neurons](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#3-connection-of-neurons)
-4. [Connection of devices](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#4-connection-of-devices)
-5. [Simulation](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#5-simulation)
-6. [Save results](https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/description.md#6-save-results)
+1. **[Structure](#1-structure)**
+2. **[Initialization of neurons](#2-initialization-of-neurons)**
+	1. [Main dictionary](#21-main-dictionary)
+	2. [Table of neurons](#22-table-of-neuron-parameters)
+	3. [Generating neurons](#23-generating-neurons)
+3. **[Connection of neurons](#3-connection-of-neurons)**
+	1. [Table of connections](#31-table-of-connections)
+	2. [Synapse specification](#32-synapse-specification)
+	3. [Distributing synapse parameters](#33-distributing-synapse-parameters)
+	4. [Neuromodulating connections](#34-neuromodulating-connections)
+4. **[Connection of devices](#4-connection-of-devices)**
+	1. [Spike detector](#41-spike-detector)
+	2. [Multimeter](#42-multimeter)
+	3. [Generator](#43-generator)
+5. **[Simulation](#5-simulation)**
+6. **[Save results](#6-save-results)**
 
 
 ## 1. Structure
@@ -494,40 +504,68 @@ The following devices generate sequences of spikes which can be send to a neuron
 	<tr valign="top">
 		<td>
 			<ul>
-				<li><b>rate		</b> -	mean firing rate in Hz 
 				<li><b>origin 	</b> -	Time origin for device timer in ms	
+				<li><b>rate		</b> -	mean firing rate in Hz 
 				<li><b>start 	</b> -	begin of device application with resp. to origin in ms 
 				<li><b>stop 	</b> -	end of device application with resp. to origin in ms
 			</ul>
 		<td>
 			<ul>
+				<li><b>allow_offgrid_spikes </b> - see below
 				<li><b>origin         		</b> - Time origin for device timer in ms
-       			<li><b>start          		</b> - earliest possible time stamp of a spike to be emitted in ms
-       			<li><b>stop           		</b> - earliest time stamp of a potential spike event that is not emitted in ms
+       			<li><b>precise_times        </b> - see below
+       			<li><b>shift_now_spikes     </b> - see below
        			<li><b>spike_times    		</b> - array of spike-times in ms
        			<li><b>spike_weights  		</b> - array corrsponding spike-weights, the unit depends on the receiver
-       			<li><b>precise_times        </b> - see above
-       			<li><b>allow_offgrid_spikes </b> - see above
-       			<li><b>shift_now_spikes     </b> - see above
+       			<li><b>start          		</b> - earliest possible time stamp of a spike to be emitted in ms
+       			<li><b>stop           		</b> - earliest time stamp of a potential spike event that is not emitted in ms
 			</ul>
 		<td>
 			<ul>
-				<li><b>mean    </b> - mean value of the noise current in pA
-				<li><b>td      </b> - standard deviation of noise current in pA
-				<li><b>t       </b> - interval between changes in current in ms, default 1.0ms
-				<li><b>td_mod  </b> - modulated standard deviation of noise current in pA
-				<li><b>hase    </b> - Phase of sine modulation (0-360 deg)
-				<li><b>requency</b> - Frequency of sine modulation in Hz
+				<li><b>dt       </b> - interval between changes in current in ms, default 1.0ms
+				<li><b>frequency</b> - Frequency of sine modulation in Hz
+				<li><b>mean     </b> - mean value of the noise current in pA
+				<li><b>origin   </b> - analogically
+				<li><b>phase    </b> - Phase of sine modulation (0-360 deg)
+				<li><b>start    </b> - analogically
+				<li><b>std      </b> - standard deviation of noise current in pA
+				<li><b>std_mod  </b> - modulated standard deviation of noise current in pA
+       			<li><b>stop     </b> - analogically
 			</ul>
 	<tr>
 		<td align="center" colspan="3">
 			<b>Remarks</b>
 	<tr valign="top">
 		<td>
-
+			A Poisson generator may, especially at high rates, emit more than one
+   			spike during a single time step. If this happens, the generator does
+   			not actually send out n spikes. Instead, it emits a single spike with
+   			n-fold synaptic weight for the sake of efficiency.
+   			<br/><a href="http://www.nest-simulator.org/cc/poisson_generator/">More</a>.
 		<td>
-
+			<ul>
+				<li><b>precise_times</b> (default: false) 
+     				If false, spike times will be rounded to simulation steps, i.e., multiples
+     				of the resolution.
+				<li><b>allow_offgrid_times</b> (default: false) 
+     				If false, spike times will be rounded to the nearest step if they are
+     				less than tic/2 from the step, otherwise NEST reports an error.
+				<li><b>shift_now_spikes</b> (default: false) 
+     				If false, spike times rounded down to the current point in time will
+     				be considered in the past and ignored.
+     				<br/><a href="http://www.nest-simulator.org/cc/spike_generator/">More</a>.
+			</ul>	
 		<td>
+			<ul>
+				<li>All targets receive different currents.
+ 				<li>The currents for all targets change at the same points in time.
+ 				<li>The interval between changes, dt, must be a multiple of the time step.
+ 				<li>The effect of this noise current on a neuron DEPENDS ON DT. Consider
+   					the membrane potential fluctuations evoked when a noise current is
+   					injected into a neuron.
+
+			</ul>
+			<br/><a href="http://www.nest-simulator.org/cc/noise_generator/">More</a>.
 
 	<tr>
 		<td align="center" colspan="3">
