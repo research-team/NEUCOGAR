@@ -18,7 +18,10 @@ T = 1000.
 dt = 10.
 
 # neurons number for spike detector
-N_rec = 100
+N_detect = 100
+
+# neurons number for multimeter
+N_volt = 3
 
 # generator delay
 pg_delay = 10.
@@ -33,7 +36,7 @@ w_DA_in = -w_DA_ex
 
 NN_minimal = 10
 
-NN_coef = 0.0005
+NN_coef = 0.0001
 
 # dopamine model key
 dopa_model_ex = 'dopa_ex'

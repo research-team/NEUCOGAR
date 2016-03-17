@@ -2,6 +2,9 @@ import numpy
 import pylab
 import os
 
+import pyqtgraph.examples
+pyqtgraph.examples.run()
+
 #TODO change directory
 path = "/home/alex/Desktop/test/"
 

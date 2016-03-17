@@ -155,10 +155,10 @@ else:
 logger.debug('Attaching spikes detector')
 
 spikedetector = nest.Create("spike_detector", 2, params=detector_param)
-nest.Connect(prefrontal_cortex[cortex][:N_rec], (spikedetector[0],))
-logger.debug("spike detecor is attached to prefrontal cortex: tracing %d neurons" % N_rec)
-nest.Connect(vta[vta_DA0][:N_rec], (spikedetector[1],))
-logger.debug("spike detecor is attached to VTA[DA0]: tracing %d neurons" % N_rec)
+nest.Connect(prefrontal_cortex[cortex][:N_detect], (spikedetector[0],))
+logger.debug("spike detecor is attached to prefrontal cortex: tracing %d neurons" % N_detect)
+nest.Connect(vta[vta_DA0][:N_detect], (spikedetector[1],))
+logger.debug("spike detecor is attached to VTA[DA0]: tracing %d neurons" % N_detect)
 
 # ============
 # MULTIMETER
@@ -211,7 +211,7 @@ endsimulate = clock()
 build_time = endbuild - startbuild
 sim_time = endsimulate - endbuild
 events_th = nest.GetStatus(spikedetector, "n_events")[0]
-rate_th = events_th / sim_time * 1000.0 / N_rec
+rate_th = events_th / sim_time * 1000.0 / N_detect
 
 # logger.info("Number of neurons : {0}".format(len(thalamus)))
 # logger.info("Number of synapses: {0}".format(num_synapses))

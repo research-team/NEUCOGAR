@@ -19,7 +19,7 @@ logger = logging.getLogger('function')
 
 
 def generate_neurons():
-    global NEURONS
+    global NEURONS, all_parts
     logger.debug("* * * Start generate neurons")
     parts_no_dopa = gpe + gpi + stn + amygdala + (vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2], snc[snc_GABA]) + \
                     striatum + motor + prefrontal + nac + pptg + thalamus + snr
@@ -145,7 +145,7 @@ def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
 
 def connect_detector(part):
     name = part[k_name]
-    number = part[k_NN] if part[k_NN] < N_rec else N_rec
+    number = part[k_NN] if part[k_NN] < N_detect else N_detect
     spikedetectors[name] = nest.Create('spike_detector', params=detector_param)
     nest.Connect(part[k_IDs][:number], spikedetectors[name])
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
@@ -154,8 +154,8 @@ def connect_detector(part):
 def connect_multimeter(part):
     name = part[k_name]
     multimeters[name] = nest.Create('multimeter', params=multimeter_param)  # ToDo add count of multimeters
-    nest.Connect(multimeters[name], (part[k_IDs][0],))
-    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_IDs][0]))
+    nest.Connect(multimeters[name], (part[k_IDs][:N_volt]))
+    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_IDs][:N_volt]))
 
 
 '''Generates string full name of an image'''
@@ -188,14 +188,16 @@ def get_log(startbuild, endbuild):
     logger.info("Building time      : {}".format(endbuild - startbuild))
     logger.info("Simulation time    : {}".format(endsimulate - startsimulate))
     for key in spikedetectors:              #FixMe bug in '1000.0 / N_rec' in some case N_rec can be equal part[k_IDs]
-        logger.info("{0:>18} rate: {1:.2f}Hz".format(key, nest.GetStatus(spikedetectors[key], 'n_events')[0] / T * 1000.0 / N_rec))
+        print "***************"
+        print nest.GetStatus(spikedetectors[key])[0]
+        logger.info("{0:>18} rate: {1:.2f}Hz".format(key, nest.GetStatus(spikedetectors[key], 'n_events')[0] / T * 1000.0 / N_detect))
     logger.info("Dopamine           : {}".format('YES' if dopa_flag else 'NO'))
     logger.info("Noise              : {}".format('YES' if generator_flag else 'NO'))
 
 
 def save(GUI):
     global txtResultPath
-    SAVE_PATH = "output-{0}/".format(NEURONS)
+    SAVE_PATH = "../results/output-{0}/".format(NEURONS)
     if GUI:
         import pylab as pl
         import nest.raster_plot
@@ -205,7 +207,7 @@ def save(GUI):
             os.mkdir(SAVE_PATH)
         for key in spikedetectors:
             try:
-                nest.raster_plot.from_device((spikedetectors[key][0],), hist=True)
+                nest.raster_plot.from_device(spikedetectors[key], hist=True)
                 pl.savefig(f_name_gen(SAVE_PATH, "spikes_" + key.lower()), dpi=dpi_n, format='png')
                 pl.close()
             except Exception:
@@ -224,36 +226,77 @@ def save(GUI):
         os.mkdir(txtResultPath)
     for key in spikedetectors:
         save_spikes(spikedetectors[key], name=key)           #, hist=True)
-    for key in multimeters:
-        save_voltage(multimeters[key], name=key)
+    #for key in multimeters:
+    #    save_voltage(multimeters[key], name=key)
 
     with open(txtResultPath + 'timeSimulation.txt', 'w') as f:
         for item in times:
             f.write(item)
 
+from collections import defaultdict
+
+GlobalDICT = {}
 
 def save_spikes(detec, name, hist=False):
     title = "Raster plot from device '%i'" % detec[0]
     ev = nest.GetStatus(detec, "events")[0]
     ts = ev["times"]
     gids = ev["senders"]
+    data = defaultdict(list)
+    temp_dict ={}
 
-    with open("{0}@spikes_{1}.txt".format(txtResultPath, name), 'w') as f:
-        f.write("Name: {0}, Title: {1}, Hist: {2}\n".format(name, title, "True" if hist else "False"))
-        for num in range(0, len(ts)):
-            f.write("{0} {1}\n".format(str(ts[num]), str(gids[num])))
+    if len(ts):
+        with open("{0}@spikes_{1}.txt".format(txtResultPath, name), 'w') as f:
+            f.write("Name: {0}, Title: {1}, Hist: {2}\n".format(name, title, "True" if hist else "False"))
+            for num in range(0, len(ev["times"])):
+                data[round(ts[num], 1)].append(gids[num])
+            for key in sorted(data.iterkeys()):
+                f.write("{0:>5} {1:>4} : {2}\n".format(key, len(data[key]), sorted(data[key])))
+                temp_dict[key] = len(data[key])
+    else:
+        print "Spikes in {0} is NULL".format(name)
 
+    result_list = []
+    '''
+        if len(ts):
+            for i in np.arange(0, int(min(key for key in temp_dict)), 1):
+                result_list.append(0)
+            for i in np.arange(int(min(key for key in temp_dict)), int(max(key for key in temp_dict)) + 1, 1):
+                result_list.append( sum(temp_dict[key] for key in temp_dict if int(key) == i) )
+            for i in np.arange(max(key for key in temp_dict) + 1, int(T), 1):
+                result_list.append(0)
+        else:
+            for i in np.arange(0, T, 1):
+                result_list.append(0)
 
+        GlobalDICT[name] = result_list
+    '''
 def save_voltage(detec, name):
     title = "Membrane potential"
     ev = nest.GetStatus(detec, "events")[0]
-    ts = ev["times"]
-    voltages = ev["V_m"]
-
     with open("{0}@voltage_{1}.txt".format(txtResultPath, name), 'w') as f:
         f.write("Name: {0}, Title: {1}\n".format(name, title))
-        for num in range(0, len(ts)):
-            f.write("{0} {1}\n".format(str(ts[num]), str(voltages[num])))
+        print int(T / multimeter_param['interval'])
+        for line in range(0, int(T / multimeter_param['interval'])):
+            for index in range(0, N_volt):
+                print "{0} {1} ".format(ev["times"][line], ev["V_m"][line])
+            #f.write("\n")
+            print "\n"
 
 
-# ToDo => params={'spike_times': np.arange(1, T, 20.) in generator
+#ToDo => params={'spike_times': np.arange(1, T, 20.) in generator
+
+def testUnit():
+    import matplotlib.pyplot as plt
+
+    data = [ GlobalDICT[key][:999] for key in GlobalDICT ]
+
+    plt.xlabel("Time in ms")
+    plt.ylabel("Part of brain")
+
+    #ax.set_xticklabels(np.arange(len(data[0])))
+    #ax.set_yticklabels('kek', 'lol', 'tot')
+
+    plt.imshow(data, aspect='auto', interpolation='none', cmap="hot")
+    plt.show()
+    #plt.savefig("TESTPIC.png",dpi=360, format='png')
