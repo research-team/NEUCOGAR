@@ -13,16 +13,16 @@ generate_neurons()
 
 logger.debug("* * * Start connection initialisation")
 # * * * NIGROSTRIATAL * * *
-connect(motor[motivation], striatum[D1], syn_type=Glu, weight_coef=0.005)
-connect(motor[motivation], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
+connect(motor[motor_Glu0], striatum[D1], syn_type=Glu, weight_coef=0.005)
+connect(motor[motor_Glu0], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
 connect(motor[motor_Glu0], striatum[D2], syn_type=Glu, weight_coef=0.05)
 connect(motor[motor_Glu0], thalamus[thalamus_Glu], syn_type=Glu, weight_coef=0.008)
 connect(motor[motor_Glu0], stn[stn_Glu], syn_type=Glu, weight_coef=7)
-connect(motor[action], striatum[D1], syn_type=Glu)
-connect(motor[action], striatum[D2], syn_type=Glu)
-connect(motor[action], thalamus[thalamus_Glu], syn_type=Glu)
-connect(motor[action], stn[stn_Glu], syn_type=Glu)
-connect(motor[action], nac[nac_GABA0])
+connect(motor[motor_Glu1], striatum[D1], syn_type=Glu)
+connect(motor[motor_Glu1], striatum[D2], syn_type=Glu)
+connect(motor[motor_Glu1], thalamus[thalamus_Glu], syn_type=Glu)
+connect(motor[motor_Glu1], stn[stn_Glu], syn_type=Glu)
+connect(motor[motor_Glu1], nac[nac_GABA0])
 
 connect(striatum[tan], striatum[D1])
 connect(striatum[tan], striatum[D2], syn_type=Glu)
@@ -68,14 +68,14 @@ connect(vta[vta_GABA1], vta[vta_DA1])
 connect(vta[vta_GABA2], nac[nac_GABA1])
 
 connect(pptg[pptg_GABA], vta[vta_GABA0])
-connect(tpp[pptg_GABA], snc[snc_GABA], weight_coef=0.000005)
+connect(pptg[pptg_GABA], snc[snc_GABA], weight_coef=0.000005)
 connect(pptg[pptg_ACh], vta[vta_GABA0], syn_type=ACh)
 connect(pptg[pptg_ACh], vta[vta_DA1], syn_type=ACh)
 connect(pptg[pptg_Glu], vta[vta_GABA0], syn_type=Glu)
 connect(pptg[pptg_Glu], vta[vta_DA1], syn_type=Glu)
 connect(pptg[pptg_ACh], striatum[D1], syn_type=ACh, weight_coef=0.3)
-connect(tpp[pptg_ACh], snc[snc_GABA], syn_type=ACh, weight_coef=0.000005)
-connect(tpp[pptg_Glu], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
+connect(pptg[pptg_ACh], snc[snc_GABA], syn_type=ACh, weight_coef=0.000005)
+connect(pptg[pptg_Glu], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
 
 # * * * INTEGRATED * * *
 connect(prefrontal[pfc_Glu0], vta[vta_DA0], syn_type=Glu)
@@ -173,7 +173,6 @@ connect_multimeter(snc[snc_DA])
 del generate_neurons, connect, connect_generator, connect_detector, connect_multimeter
 
 endbuild = datetime.datetime.now()
-
 
 simulate()
 get_log(startbuild, endbuild)
