@@ -7,11 +7,34 @@
 [Dongen2007]: http://dare.ubvu.vu.nl/bitstream/handle/1871/11031/6554.pdf
 [Jennifer2014]: https://www.researchgate.net/publication/264427777_The_neurobiology_of_methamphetamine_induced_psychosis
 
+Legend:
+- **Amygdala**  
+- **GPe**: globus pallidus external
+- **GPi**: globus pallidus internal
+- **Motor Cortex**
+- **NAc**: Nucleus Accumbens
+	- NAc core
+	- NAc shell
+- **PPTg**: Pedunculopontine Tegmental nucleus
+- **Prefrontal cortex**
+- **SNr**: substantia nigra pars reticulata
+- **SNc**: substantia nigra pars compacta
+- **STN**: subthalamic nucleus
+- **Striatum**
+- **Thalamus**
+- **VTA**: Ventral Tegmental Area
+
+Prefix description:
+- **GABA** - GABA
+- **Glu** - glutamate
+- **ACh** - acetylcholine
+- **DA** - dopamine
+
 ### About dopamine
 
 ### Dopamine synapse and effects
 
-**Advanced scheme**
+**Advanced scheme**  
 <img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/test_files/support%20files/dopa_synapse.png"  width="80%"/>
 
 
