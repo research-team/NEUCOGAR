@@ -1,8 +1,7 @@
-1. **[Nigrostriatal](#nigrostriatal)**
-2. **[Mesocorticolimbic](#mesocorticolimbic)**
+1. **[Nigrostriatal](#nigrostriatal-pathway)**
+2. **[Mesocorticolimbic](#mesocorticolimbic-pathway)**
 3. **[Integration](#integration)**
 4. **[Parts of dopamine pathway](#parts)**
-
 
 [Janhunen2006]: https://www.researchgate.net/publication/6656868_Janhunen_S_Ahtee_L_Differential_nicotinic_regulation_of_the_nigrostriatal_and_mesolimbic_dopaminergic_pathways_implications_for_drug_development_Neurosci_Biobehav_Rev_31_287-314
 [Dongen2007]: http://dare.ubvu.vu.nl/bitstream/handle/1871/11031/6554.pdf
@@ -10,11 +9,10 @@
 
 ### About dopamine
 
-
 ### Dopamine synapse and effects
 
 **Advanced scheme**
-![dopa_syn](test_files/support files/dopa_synapse.png)
+<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/test_files/support%20files/dopa_synapse.png"  width="80%"/>
 
 
 ========================
@@ -25,11 +23,11 @@
 <table>
 	<tr align="center">
 		<td width="33%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/step_1/BG_generators.png" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/step_1/doc/BG_generators.png" />
 		<td width="33%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/step_2/Striatum_D1_D2.png" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/step_2/doc/Striatum_D1_D2.png" />
 		<td width="33%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/step_3/Basal-ganglia-advanced.jpg" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/step_3/doc/Basal-ganglia-advanced.jpg" />
 	<tr align="center">
 		<td>
 			<b>
@@ -42,7 +40,7 @@
 				<a href="https://github.com/research-team/NEUCOGAR/tree/master/nest/dopamine/nigrostriatal/step_3"> Step 3 </a>
 	<tr align="center">
 		<td colspan="3">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/Nigrostriatal.png" width="70%" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/doc/diagram.png" width="70%" />
 </table>
 
 
@@ -82,7 +80,7 @@
 			p291
 	<tr>
 		<td colspan="3" align="center">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/Mesocorticolimbic.png" width="60%" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/mesocorticolimbic/doc/diagram.png" width="60%" />
 </table>
 
 | Source    | Destination | Connection        |
@@ -115,9 +113,9 @@
 <table>
 	<tr align="center">
 		<td width="25%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/Nigrostriatal.png" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/doc/diagram.png" />
 		<td width="25%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/Mesocorticolimbic.png" />
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/mesocorticolimbic/doc/diagram.png" />
 		<td width="25%">
 			<img src="test_files/support files/scheme2.png"/> 
 		<td width="25%">
@@ -135,7 +133,7 @@
 			p3
 	<tr align="center">
 		<td colspan="4">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/IntegratedDOPA.png"/>
+			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/integrated/doc/diagram.png"/>
 </table>
 
  Source    	| Destination 	| Connection        
