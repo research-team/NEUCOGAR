@@ -59,8 +59,8 @@ allModels = ['aeif_cond_alpha',
              'izhikevich',
              'mat2_psc_exp',
              #'mcculloch_pitts_neuron',
-             #'parrot_neuron',
-             #'parrot_neuron_ps',
+             #'parrot_neuron',              does not have recordables
+             #'parrot_neuron_ps',           does not have recordables
              'pp_pop_psc_delta',
              'pp_psc_delta']
 
@@ -110,6 +110,7 @@ for model in allModels:
     #nest.voltage_trace.show()
     nest.ResetKernel()
 
+
 #Test block
 '''
 neuron = nest.Create('iaf_cond_alpha')
@@ -143,5 +144,48 @@ pylab.legend(("g_exc", "g_inh"))
 pylab.draw()
 
 #nest.voltage_trace.from_device(multimeter)
+nest.voltage_trace.show()
+'''
+'''
+for model in allModels:
+    print "\n", model
+    print nest.GetDefaults(model)
+'''
+'''
+neuron = nest.Create('aeif_cond_alpha')
+multimeter = nest.Create('multimeter', params = {'withtime': True, 'interval': 0.1, 'record_from':['V_m', 'g_ex', 'g_in', 'w']})
+generator_ex = nest.Create("spike_generator", params = {"spike_times": numpy.array([20.0, 50.0, 58.0]),
+                                                     "spike_weights": numpy.array([400., 500., 500.])})
+generator_in = nest.Create("spike_generator", params={"spike_times": numpy.array([25.0, 30.0, 55.0]),
+                                                   "spike_weights": numpy.array([-400., -500., -500.])})
+nest.Connect(multimeter, neuron)
+nest.Connect(generator_ex, neuron)
+nest.Connect(generator_in, neuron)
+
+nest.Simulate(100.)
+
+events = nest.GetStatus(multimeter)[0]['events']
+t = events['times']
+
+pylab.subplot(311)
+pylab.title('aeif_cond_alpha')
+pylab.plot(t, events['V_m'])
+pylab.ylabel('Membrane potential [mV]')
+pylab.draw()
+#pylab.savefig(path + "iaf_psc_alpha" + ".png", dpi=dpi_n, format='png')
+
+pylab.subplot(312)
+pylab.plot(t, events['g_ex'], t, events['g_in'])
+pylab.xlabel("time (ms)")
+pylab.ylabel('Synaptic conductance (nS)')
+pylab.legend(("g_exc", "g_inh"))
+pylab.draw()
+
+pylab.subplot(313)
+pylab.plot(t, events['w'])
+pylab.xlabel("time (ms)")
+pylab.ylabel('Spike-adaptation (pA)')
+pylab.draw()
+
 nest.voltage_trace.show()
 '''
