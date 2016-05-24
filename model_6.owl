@@ -1,0 +1,799 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#"
+     xml:base="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xml="http://www.w3.org/XML/1998/namespace"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#consistsOf -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#consistsOf"/>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#hasProperty -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#hasProperty"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Active -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Active">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Anticipation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Anticipation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Ask_for_help -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Ask_for_help">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Associativity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Associativity">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Synchronisation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Biology -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Biology"/>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Brain_wave -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Brain_wave">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cell -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cell">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Changing_the_subject -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Changing_the_subject">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Circuit -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Circuit">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Consciousness -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Consciousness">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cortical_column -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cortical_column">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cry_for_help -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cry_for_help">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Curiosity -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Curiosity">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Decision_making -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Decision_making">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Emotions"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neucortex"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Decision_making"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Story_telling"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Working"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#med"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Differentiation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Differentiation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Sensor"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Dividing_and_Conquering -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Dividing_and_Conquering">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Do -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Do">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Instinctive"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interneuron"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Learned"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Motor"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Elevating -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Elevating">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Emotions -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Emotions">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#External_Representations -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#External_Representations">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#IIT"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Frontal_cortex -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Frontal_cortex">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neucortex"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Homeostatic -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Homeostatic">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#IIT -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#IIT">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Philosophy"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#If -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#If">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Instinctive"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Learned"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Polychronisation"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Sensor"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Impersonation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Impersonation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Instinctive -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Instinctive">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Homeostatic"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reaction"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflex_arc"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_small"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interest -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interest">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Curiosity"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Emotions"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interneuron -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interneuron">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Knowing_How -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Knowing_How">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Learned -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Learned">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Associativity"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Brain_wave"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Curiosity"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interest"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Mirror"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reaction"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-organizing"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#small"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Biology"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Randomness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Logical_Contradiction -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Logical_Contradiction">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Logical_Reasoning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#consistsOf"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Logical_Reasoning -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Logical_Reasoning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Story_telling"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#consistsOf"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Long_term -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Long_term">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Micro"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Micro -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Micro">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Circuit"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Frontal_cortex"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Mirror -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Mirror">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Model_of_six -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Model_of_six"/>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Motor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Motor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neucortex -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neucortex">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cell"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Randomness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cortical_column"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Polychronisation"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Personality -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Personality">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Philosophy -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Philosophy"/>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Polychronisation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Polychronisation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cortical_column"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Randomness -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Randomness">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Biology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reaction -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reaction">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Active"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Model_of_six"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reasoning_by_Analogy -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reasoning_by_Analogy">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Logical_Reasoning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Story_telling"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflection -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflection">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Model_of_six"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflex_arc -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflex_arc">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Differentiation"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reformulating -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reformulating">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Relfective -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Relfective">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Short_term"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#big"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Resignation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Resignation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Searching_Extensively -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Searching_Extensively">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-Conscious -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-Conscious">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Consciousness"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflection"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#huge"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-Reflective -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-Reflective">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Long_term"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Personality"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Relfective"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_big"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-organizing -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-organizing">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Life"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-reflection -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-reflection">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Sensor -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Sensor">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuron"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Short_term -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Short_term">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Simplifying -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Simplifying">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Story_telling -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Story_telling">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Emotions"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Associativity"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Synchronisation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Synchronisation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Brain_wave"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Then -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Then">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Hebbian_learning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Interneuron"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Polychronisation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Model_of_six"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neucortex"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Symbols"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Model_of_six"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Wishful_thinking -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Wishful_thinking">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Working -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Working">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#big -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#big">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#huge -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#huge">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#med -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#med">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#small -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#small">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_big -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_big">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_small -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_small">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Fi"/>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 4.2.3.20160319-0906) https://github.com/owlcs/owlapi -->
+
