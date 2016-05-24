@@ -110,6 +110,7 @@
     <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Circuit -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Circuit">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
     </owl:Class>
     
@@ -283,8 +284,6 @@
     <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
     </owl:Class>
@@ -405,7 +404,6 @@
     <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Memory">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Micro"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
     </owl:Class>
     
@@ -472,8 +470,9 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cortical_column"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Polychronisation"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Psychology"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Decision_making"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Neuro"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction"/>
     </owl:Class>
     
 
@@ -495,9 +494,16 @@
     <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Planning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#consistsOf"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Pattern_matching"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -514,6 +520,7 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Prediction">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Cortical_column"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Imagination"/>
     </owl:Class>
     
 
@@ -562,6 +569,23 @@
     
 
 
+    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflective -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflective">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Short_term"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#big"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#consistsOf"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
     <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflex_arc -->
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reflex_arc">
@@ -575,17 +599,6 @@
 
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Reformulating">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Way2Think"/>
-    </owl:Class>
-    
-
-
-    <!-- http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Relfective -->
-
-    <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Relfective">
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Deliberative"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Short_term"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#big"/>
     </owl:Class>
     
 
@@ -621,7 +634,6 @@
     <owl:Class rdf:about="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Self-Reflective">
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Long_term"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Personality"/>
-        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Relfective"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#Thinking"/>
         <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max/ontologies/2015/4/model_of_six#very_big"/>
     </owl:Class>
