@@ -78,6 +78,7 @@ libmodelsmodule_la_SOURCES= \
 		stdp_connection_facetshw_hom.h stdp_connection_facetshw_hom_impl.h\
 		stdp_connection_hom.h stdp_connection_hom.cpp\
 		stdp_dopa_connection.h stdp_dopa_connection.cpp\
+		stdp_h5_connection.h stdp_h5_connection.cpp\
 		stdp_connection_facetshw_hom.h stdp_connection_facetshw_hom_impl.h\
 		stdp_pl_connection_hom.h stdp_pl_connection_hom.cpp\
 		stdp_triplet_connection.h\
