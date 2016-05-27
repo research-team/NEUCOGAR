@@ -27,7 +27,8 @@ nest.Connect(neuron1, neuron2, model="stdp_serotonine_synapse")
 #### Implementation details
 **In short**
 
-Based in NEST-2.10.0 source code
+Based on NEST-2.10.0 source code
+
 1) Added two new files based on stdp_dopa_connection:
 "nest-2.10.0/models/stdp_h5_connection.cpp"
 "nest-2.10.0/models/stdp_h5_connection.h"
