@@ -2,7 +2,10 @@
 
 #### How to build custom "serotonin" version of NEST
 **NB! This will rewrite your current NEST installation.**
-
+0) Delete your NEST installation
+```bash
+sudo -rm $HOME/opt/nest
+```
 1) Install required third-party packages:
 ```bash
 sudo apt-get install build-essential autoconf automake libtool libltdl7-dev libreadline6-dev libncurses5-dev libgsl0-dev python-all-dev python-numpy python-scipy python-matplotlib ipython gsl-bin libgsl0-dev libgsl0-dbg
@@ -10,10 +13,11 @@ sudo apt-get install build-essential autoconf automake libtool libltdl7-dev libr
 2) Rebuild NEST from custom sources:
 ```bash
 cd neucogar/nest/serotonin/research/C/nest-2.10.0 	#Browse to sorce dir
+cd ../											   #Browse up
 mkdir nest-ht5                             			#Create a build directory
 cd nest-ht5                                 		#Change to the build directory
 ../nest-2.10.0/configure --prefix=$HOME/opt/nest    #Configure custom NEST
-make                                                #Compile by running
+make -j2                                            #Compile by running (-j2 means compilation in 2 threads)
 sudo make install                                   #Install by running
 ```
 
@@ -55,7 +59,7 @@ if (syn_name == "stdp_serotonin_synapse") {
 stdp_h5_connection.h stdp_h5_connection.cpp\
 ```
 
-"nest-2.10.0/models/Makefile.in"
+"nest-2.10.0/models/Makefile.in":
 
 ```bash
 ...

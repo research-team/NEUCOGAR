@@ -252,10 +252,13 @@ STDPH5Connection< targetidentifierT >::update_serotonin_(
   const STDPH5CommonProperties& cp )
 {
   double_t minus_dt = h5_spikes[h5_spikes_idx_].spike_time_ - h5_spikes[h5_spikes_idx_ + 1].spike_time_;
+  
   // increase spikes counter
   ++h5_spikes_idx_;
+  
   // exp decay
   n_ = n_ * std::exp( minus_dt / cp.tau_n_ );
+  
   // Check current level of h5 (n) in relation to its baseline (b_).
   // There are 3 possible ways:
   // 1) n > b_ : self-coincidense is good, spike will increase the "n"
@@ -266,12 +269,12 @@ STDPH5Connection< targetidentifierT >::update_serotonin_(
     // self-confidence
     n_ = n_ + h5_spikes[h5_spikes_idx_].multiplicity_ / cp.tau_n_;
   } else {
-	  if (n >= cp.b_/2) {
+	  if (n_ >= cp.b_/2) {
         // uncertainty
         n_ = n_ - h5_spikes[h5_spikes_idx_].multiplicity_ / cp.tau_n_;
 	  } else {
 		// increase the confidence to prevent zero self-confidence
-		n_ = n_ + cp.b_ * (1 / tau_c_ + 1 / tau_n_);
+		n_ = n_ + cp.b_ * (1 / cp.tau_c_ + 1 / cp.tau_n_);
 	  }
   }
 }
