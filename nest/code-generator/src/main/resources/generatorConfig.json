@@ -1,0 +1,9 @@
+{
+  "Thalamus_5HT": {
+    "name": "Thalamus_HT5",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  }
+}
