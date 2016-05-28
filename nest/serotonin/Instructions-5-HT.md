@@ -2,9 +2,10 @@
 
 #### How to build custom "serotonin" version of NEST
 **NB! This will rewrite your current NEST installation.**
+
 0) Delete your NEST installation
 ```bash
-sudo -rm $HOME/opt/nest
+sudo rm -rf $HOME/opt/nest
 ```
 1) Install required third-party packages:
 ```bash
@@ -17,7 +18,7 @@ cd ../											   #Browse up
 mkdir nest-ht5                             			#Create a build directory
 cd nest-ht5                                 		#Change to the build directory
 ../nest-2.10.0/configure --prefix=$HOME/opt/nest    #Configure custom NEST
-make -j2                                            #Compile by running (-j2 means compilation in 2 threads)
+make -j2  &> ../ht5-build-log.txt                   #Compile by running (-j2 means compilation in 2 threads) with output to ht5-build-log.txt
 sudo make install                                   #Install by running
 ```
 
@@ -27,6 +28,8 @@ vt = nest.Create("volume_transmitter")
 nest.Connect(dopa_neuron, vt, model="static")
 nest.Connect(neuron1, neuron2, model="stdp_serotonine_synapse")
 ```
+
+**See working example**: [test-serotonin.py](./research/C/Py-Tests/test_serotonin.py)
 
 #### Implementation details
 **In short**

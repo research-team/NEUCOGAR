@@ -461,6 +461,9 @@ ModelsModule::init( SLIInterpreter* )
   */
   register_connection_model< STDPH5Connection< TargetIdentifierPtrRport > >(
      net_, "stdp_serotonine_synapse" );
+  // Variant of stdp_serotonine_synapse with low memory consumption
+  register_connection_model< STDPDopaConnection< TargetIdentifierIndex > >(
+      net_, "stdp_serotonine_synapse_hpc" );
 }
 
 } // namespace nest
