@@ -1,0 +1,171 @@
+<?xml version="1.0"?>
+
+
+<!DOCTYPE rdf:RDF [
+    <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
+    <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
+    <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
+    <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
+]>
+
+
+<rdf:RDF xmlns="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#"
+     xml:base="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness"
+     xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+     xmlns:owl="http://www.w3.org/2002/07/owl#"
+     xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+    <owl:Ontology rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Anticipation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Anticipation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Appraisal -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Appraisal">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Awareness -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Awareness">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Self-consciousness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Common_sense_logic -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Common_sense_logic">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Deliberation"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Deliberation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Deliberation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Emotion -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Emotion">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Appraisal"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Imitation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Imitation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Learning"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Learning -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Learning">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Memory -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Memory">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Cognition"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Learning"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Subjective_experience"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Pattern_matching -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Pattern_matching">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Prediction"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Prediction -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Prediction">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Anticipation"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Decision_making"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Self-consciousness -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Self-consciousness">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Subjective_experience -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Subjective_experience">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/max-talanov/ontologies/2016/4/consciousness#Consciousness"/>
+    </owl:Class>
+</rdf:RDF>
+
+
+
+<!-- Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net -->
+
