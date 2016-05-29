@@ -7,7 +7,7 @@ nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True}) # set to True to permit overwriting
 
 # Set up simulation time limits
-T = 1000.0
+T = 40.0
 dt = 10.0
 
 # Set basic params
@@ -68,26 +68,36 @@ nest.Connect(voltmeter, sero_neuron)
 
 # Set up output file
 if nest.GetStatus(neuron2)[0]['local']:
-    filename = 'weight.gdf'
+    filename = 'simulation_results.gdf'
     fname = open(filename, 'w')
 else:
     raise
+
+# Tab delimiter in a string
+dlm = '\t'
+# Next line symbol
+nl = '\n';
+
+# Set-up file header: time[ms], connection weight, serotonin concentration, eligibility trace
+fname.write('time'+ dlm + 'weight' + dlm + 'n' + dlm + 'c' + nl)
+
+def get_neuron1_prop(property_name):
+    return str(nest.GetStatus(nest.FindConnections(neuron1, synapse_model="sero"))[0][property_name])
 
 # Run simualtion
 weight = None
 for t in np.arange(0, T + dt, dt):
     if nest.GetStatus(neuron2)[0]['local']:
-        weight = nest.GetStatus(nest.FindConnections(neuron1, synapse_model="sero"))[0]['weight']
-        print(weight)
-        weightstr = str(weight)
-        timestr = str(t)
-        data = timestr + ' ' + weightstr + '\n'
+        data = str(t) + dlm + get_neuron1_prop('weight') + dlm + get_neuron1_prop('n') + dlm + get_neuron1_prop('c') + nl
         fname.write(data)
         nest.Simulate(dt)
 
 if nest.GetStatus(neuron2)[0]['local']:
     print("weight = " + str(weight) + " pA")
     fname.close()
+
+print("Eligibility trace = " + get_neuron1_prop('c'))
+print("Serotonin conc-on = " + get_neuron1_prop('n'))
 
 plot.from_device(voltmeter, timeunit="s")
 plot.show()
