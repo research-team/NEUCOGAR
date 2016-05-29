@@ -103,7 +103,7 @@ def get_log(startbuild, endbuild):
 
 def save(GUI):
     global txtResultPath
-    SAVE_PATH = "../results/output-count/"
+    SAVE_PATH = "./results/"
     if GUI:
         import pylab as pl
         import nest.raster_plot

@@ -54,6 +54,24 @@ public class App {
     private NeuromodulationFileGenerator neuromodulationFileGenerator;
 
 
+    public static void main(String[] args) throws JAXBException {
+        if (args.length == 0) {
+            LOG.debug("Filename parameter is missing");
+            return;
+        }
+        String fileName = args[0];
+
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(CoreConfig.class);
+        App bean = annotationConfigApplicationContext.getBean(App.class);
+        try {
+            bean.run(fileName);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
     public boolean isBrainRegionVM(MxCell mxCell) {
         String value = mxCell.getValue();
         if (value != null && !value.isEmpty()) {
@@ -249,8 +267,9 @@ public class App {
     }
 
 
-    public void run() throws JAXBException, URISyntaxException, FileNotFoundException {
-        URL resource = this.getClass().getClassLoader().getResource("serotonin_pathway.xml");
+    public void run(String name) throws JAXBException, URISyntaxException, FileNotFoundException {
+        LOG.debug("Loading " + name);
+        URL resource = this.getClass().getClassLoader().getResource(name);
 
         FileInputStream fileInputStream = new FileInputStream(resource.getFile());
 
@@ -300,17 +319,6 @@ public class App {
         neuromodulationFileGenerator.generate(brainRegionServices.getPythonBrainRegionMap());
     }
 
-     public static void main(String[] args) throws JAXBException {
-        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(CoreConfig.class);
-        App bean = annotationConfigApplicationContext.getBean(App.class);
-        try {
-            bean.run();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void addToAllReceptorsBrainRegion() {
         for (String s : brainRegionServices.getKeys()) {
