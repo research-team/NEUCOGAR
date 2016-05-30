@@ -7,7 +7,7 @@ nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True}) # set to True to permit overwriting
 
 # Set up simulation time limits
-T = 40.0
+T = 10000.0
 dt = 10.0
 
 # Set basic params
@@ -91,6 +91,7 @@ for t in np.arange(0, T + dt, dt):
         data = str(t) + dlm + get_neuron1_prop('weight') + dlm + get_neuron1_prop('n') + dlm + get_neuron1_prop('c') + nl
         fname.write(data)
         nest.Simulate(dt)
+        print '///////////////////////////////// ' + str(t/T * 100) + ' % completed'
 
 if nest.GetStatus(neuron2)[0]['local']:
     print("weight = " + str(weight) + " pA")
