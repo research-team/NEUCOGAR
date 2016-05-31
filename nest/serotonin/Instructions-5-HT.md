@@ -22,6 +22,8 @@ make -j2  &> ../ht5-build-log.txt                   #Compile by running (-j2 mea
 sudo make install                                   #Install by running
 ```
 
+If something goes wrong during compilation (i.e. "file not found" exceptions), you should download nest-2.10.0 fron official NEST's site, and then rewrite original files by the ones from "neucogar/serotonin/research/C/nest-2.10.0" 
+
 3) Use serotonin-driven synapse named "stdp_serotonine_synapse" in your fav Python editor:
 ```bash
 vt = nest.Create("volume_transmitter")

@@ -22,7 +22,7 @@ STDPH5CommonProperties::STDPH5CommonProperties()
   , tau_plus_( 10.0 )
   , tau_c_( 2000.0 )
   , tau_n_( 1000.0 )
-  , b_( 100.0 )
+  , b_( 0.4 )
   , Wmin_( 0.0 )
   , Wmax_( 200.0 )
 {

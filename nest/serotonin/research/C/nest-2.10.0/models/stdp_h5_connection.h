@@ -253,6 +253,11 @@ STDPH5Connection< targetidentifierT >::update_serotonin_(
 {
   double_t minus_dt = h5_spikes[h5_spikes_idx_].spike_time_ - h5_spikes[h5_spikes_idx_ + 1].spike_time_;
 
+  // probability of spontaneous increase of n
+  double_t probability = 0.2;
+  // total amount of probability probes
+  int Np = 10;
+
   // increase spikes counter
   ++h5_spikes_idx_;
 
@@ -261,21 +266,20 @@ STDPH5Connection< targetidentifierT >::update_serotonin_(
 
   // Check current level of h5 (n) in relation to its baseline (b_).
   // There are 3 possible ways:
-  // 1) n > b_ : self-coincidense is good, spike will increase the "n"
+  // 1) n > b_ : self-coincidense reach its maximum and cant increase
   // 2) _b/2 < n < b_ :	uncertainty in making decision, spike will decrease the "n"
   // 3) n < b_/2 :	pure self-coincidense, spike will slightly increase the "n" to prevent permanent ground level of "n"
-  if (n_ > cp.b_) /// if h5 level is greater than baseline
+  if (n_ < cp.b_) /// if h5 level is greater than baseline
   { 
-    // self-confidence
-    n_ = n_ + h5_spikes[h5_spikes_idx_].multiplicity_ / cp.tau_n_;
-  } else {
-	  if (n_ >= cp.b_/2) {
-        // uncertainty
-        n_ = n_ - h5_spikes[h5_spikes_idx_].multiplicity_ / cp.tau_n_;
-	  } else {
-		// increase the confidence to prevent zero self-confidence
-		n_ = n_ + cp.b_ * (1 / cp.tau_c_ + 1 / cp.tau_n_);
-	  }
+    if (n_ >= cp.b_/2) {
+	    // uncertainty
+    	n_ = n_ - h5_spikes[h5_spikes_idx_].multiplicity_ / cp.tau_n_;
+	} else {
+	    // randomly increase the confidence to prevent zero self-confidence
+		if ((std::rand() % Np) >= Np * (1 - probability)) {
+			n_ = n_ + h5_spikes[h5_spikes_idx_].multiplicity_ / cp.tau_n_;
+		}
+	}
   }
 }
 
