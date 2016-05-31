@@ -1,35 +1,55 @@
-/* Based on stdp_dopa_connection */
+/*
+ *  stdp_nora_connection.cpp
+ *
+ *  This file is part of NEST.
+ *
+ *  Copyright (C) 2004 The NEST Initiative
+ *
+ *  NEST is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  NEST is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with NEST.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
 
 #include "network.h"
 #include "dictdatum.h"
 #include "connector_model.h"
 #include "common_synapse_properties.h"
-#include "stdp_h5_connection.h"
+#include "stdp_nora_connection.h"
 #include "event.h"
 #include "nestmodule.h"
 
 namespace nest
 {
 //
-// Implementation of class STDPH5CommonProperties.
+// Implementation of class STDPNoraCommonProperties.
 //
 
-STDPH5CommonProperties::STDPH5CommonProperties()
+STDPNoraCommonProperties::STDPNoraCommonProperties()
   : CommonSynapseProperties()
   , vt_( 0 )
-  , A_plus_( 1.5 )
-  , A_minus_( 1.8 )
-  , tau_plus_( 10.0 )
-  , tau_c_( 2000.0 )
-  , tau_n_( 1000.0 )
-  , b_( 100.0 )
+  , A_plus_( 1.0 )
+  , A_minus_( 1.5 )
+  , tau_plus_( 20.0 )
+  , tau_c_( 1000.0 )
+  , tau_n_( 200.0 )
+  , b_( 0.0 )
   , Wmin_( 0.0 )
   , Wmax_( 200.0 )
 {
 }
 
 void
-STDPH5CommonProperties::get_status( DictionaryDatum& d ) const
+STDPNoraCommonProperties::get_status( DictionaryDatum& d ) const
 {
   CommonSynapseProperties::get_status( d );
 
@@ -49,7 +69,7 @@ STDPH5CommonProperties::get_status( DictionaryDatum& d ) const
 }
 
 void
-STDPH5CommonProperties::set_status( const DictionaryDatum& d, ConnectorModel& cm )
+STDPNoraCommonProperties::set_status( const DictionaryDatum& d, ConnectorModel& cm )
 {
   CommonSynapseProperties::set_status( d, cm );
 
@@ -59,7 +79,7 @@ STDPH5CommonProperties::set_status( const DictionaryDatum& d, ConnectorModel& cm
     vt_ = dynamic_cast< volume_transmitter* >( NestModule::get_network().get_node( vtgid ) );
 
     if ( vt_ == 0 )
-      throw BadProperty( "Serotonine source must be volume transmitter" );
+      throw BadProperty( "Noradrenaline source must be volume transmitter" );
   }
 
   updateValue< double_t >( d, "A_plus", A_plus_ );
@@ -73,10 +93,10 @@ STDPH5CommonProperties::set_status( const DictionaryDatum& d, ConnectorModel& cm
 }
 
 Node*
-STDPH5CommonProperties::get_node()
+STDPNoraCommonProperties::get_node()
 {
   if ( vt_ == 0 )
-    throw BadProperty( "No volume transmitter has been assigned to the serotonin synapse." );
+    throw BadProperty( "No volume transmitter has been assigned to the noradrenaline synapse." );
   else
     return vt_;
 }

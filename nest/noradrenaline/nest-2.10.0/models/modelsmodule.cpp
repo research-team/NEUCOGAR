@@ -119,6 +119,7 @@
 #include "stdp_pl_connection_hom.h"
 #include "stdp_triplet_connection.h"
 #include "stdp_dopa_connection.h"
+#include "stdp_nora_connection.h"
 #include "stdp_h5_connection.h"
 #include "gap_junction.h"
 #include "ht_connection.h"
@@ -455,6 +456,14 @@ ModelsModule::init( SLIInterpreter* )
     net_, "stdp_dopamine_synapse" );
   register_connection_model< STDPDopaConnection< TargetIdentifierIndex > >(
     net_, "stdp_dopamine_synapse_hpc" );
+
+  /* BeginDocumentation
+     Name: stdp_noradrenaline_synapse
+  */
+  register_connection_model< STDPNoraConnection< TargetIdentifierPtrRport > >(
+    net_, "stdp_noradrenaline_synapse" );
+  register_connection_model< STDPNoraConnection< TargetIdentifierIndex > >(
+    net_, "stdp_noradrenaline_synapse_hpc" );
 
   /* BeginDocumentation
      Name: stdp_serotonine_synapse
