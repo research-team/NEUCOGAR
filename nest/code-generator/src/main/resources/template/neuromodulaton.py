@@ -4,7 +4,6 @@ logger = logging.getLogger('neuromodulation')
 startbuild = datetime.datetime.now()
 
 
-
 # Connect the volume transmitter to the parts
 vt_ex = nest.Create('volume_transmitter')
 vt_in = nest.Create('volume_transmitter')
