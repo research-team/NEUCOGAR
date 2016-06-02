@@ -423,6 +423,8 @@ tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
 #### 16. iaf_psc_alpha_presc
 
+Leaky iaf neuron, alpha PSC synapses, canonical implementation.
+
 Parameters| Value | Description
 ---------|---------|--------
 V_reset | -70.0 | Reset membrane potential after a spike in mV
@@ -603,6 +605,8 @@ tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 ![23] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/mat2_psc_exp.png)
 
 #### 24. pp_pop_psc_delta
+
+(nest stops working when using inhibitory neurons in this model)
 
 Population of point process neurons with leaky integration of delta-shaped PSCs.
 
