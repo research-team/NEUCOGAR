@@ -40,7 +40,7 @@ public class NeuromodulationFileGenerator {
     public static final String KEY_GENERATOR_COEF = "coef_part";
 
     public static final String RECEPTOR_CONNECTION_PLACE_HOLDER = "connect(%1$2s, %2$2s, " + KEY_SYNAPSE_TYPE + "=%3$2s, " + KEY_WEIGHT_COEF + "=%4$.9f)";
-    public static final String GENERATOR_CONNECTION_PLACE_HOLDER = "connect_generator(%1$2s, " + KEY_GENERATOR_START_TIME + "=%2$.9f, " + KEY_GENERATOR_STOP_TIME + "=%3$.9f, " + KEY_GENERATOR_RATE + "=%4$.9f, " + KEY_GENERATOR_COEF + "=%4$.9f)";
+    public static final String GENERATOR_CONNECTION_PLACE_HOLDER = "connect_generator(%1$2s, " + KEY_GENERATOR_START_TIME + "=%2$.9f, " + KEY_GENERATOR_STOP_TIME + "=%3$.9f, " + KEY_GENERATOR_RATE + "=%4$.9f, " + KEY_GENERATOR_COEF + "=%5$.9f)";
     public static final String DETECTOR_CONNECTION_PLACE_HOLDER = "connect_detector(%1$2s)";
     public static final String MULTIMETER_CONNECTION_PLACE_HOLDER = "connect_multimeter(%1$2s)";
 
