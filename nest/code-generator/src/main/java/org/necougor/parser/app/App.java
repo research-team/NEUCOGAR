@@ -6,6 +6,7 @@ import org.jsoup.examples.HtmlToPlainText;
 import org.necougor.parser.config.CoreConfig;
 import org.necougor.parser.generators.DataFileGenerator;
 import org.necougor.parser.generators.NeuromodulationFileGenerator;
+import org.necougor.parser.model.config.SynapseTypeConfig;
 import org.necougor.parser.model.image.MxCell;
 import org.necougor.parser.model.image.MxGraphModel;
 import org.necougor.parser.model.python.BrainRegion;
@@ -26,6 +27,7 @@ import org.springframework.core.env.CommandLinePropertySource;
 import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
@@ -55,6 +57,9 @@ public class App {
     @Autowired
     private NeuromodulationFileGenerator neuromodulationFileGenerator;
 
+    @Autowired
+    @Resource(name = "synapseConfig")
+    HashMap<String, SynapseTypeConfig> stringSynapseTypeConfigMap;
 
     public static void main(String[] args) throws JAXBException {
 
@@ -357,7 +362,7 @@ public class App {
 
         //On brain region link pointer
         for (LinkVM link : links) {
-            final SynapseType synapseType = ParseUtil.getSynapseTypeByLink(link);
+            final String synapseType = ParseUtil.getSynapseTypeByLink(link, stringSynapseTypeConfigMap);
             if (brainRegionServices.containsKey(link.getSource())) {
                 //From brain region
                 final BrainRegion brainRegion = brainRegionServices.getById(link.getSource());

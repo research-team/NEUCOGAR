@@ -1,12 +1,23 @@
 package org.necougor.parser.util;
 
+import org.necougor.parser.model.config.SynapseTypeConfig;
 import org.necougor.parser.model.python.Receptor;
 import org.necougor.parser.model.vm.LinkVM;
 import org.necougor.parser.model.vm.ReceptorVM;
 import org.necougor.parser.type.NerounModel;
 import org.necougor.parser.type.SynapseType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import java.util.Map;
+
+@Component
 public class ParseUtil {
+
+    private static final Logger LOG = LoggerFactory.getLogger(ParseUtil.class);
+
 
     public static String clearText(String text) {
         text = TextUtil.br2nl(text);
@@ -24,29 +35,39 @@ public class ParseUtil {
 
 
     //TODO: make it by legend
-    public static SynapseType getSynapseTypeByLink(LinkVM link) {
-        final String color = link.getColor();
-        if(color.equals("purple") || color.equals("orange")){
-            return SynapseType.DA_ex;
-        }
-        if (color.equals("green")) {
-            final String value = link.getValue();
-            if (value.equals("In")) {
-                return SynapseType.DA_in;
-            } else if (value.equals("Ex")) {
-                return SynapseType.DA_ex;
-            }else{
-                return SynapseType.DA_ex;
+    public static String getSynapseTypeByLink(LinkVM link, Map<String, SynapseTypeConfig> stringSynapseTypeConfigMap) {
+
+        for (String key : stringSynapseTypeConfigMap.keySet()) {
+            SynapseTypeConfig synapseTypeConfig = stringSynapseTypeConfigMap.get(key);
+            if (link.getColor().equals(synapseTypeConfig.getColor())) {
+                if (!TextUtil.isEmpty(link.getValue())) {
+                    //have value text
+                    if (!TextUtil.isEmpty(synapseTypeConfig.getValue())) {
+                        //config have value param
+                        if (synapseTypeConfig.getValue().equals(link.getValue())) {
+                            LOG.debug("Link " + link.toString() + " define as " + key);
+                            return key;
+                        }
+                    } else {
+                        //config don't have value
+                        continue;
+                    }
+                }else{
+                    if(TextUtil.isEmpty(synapseTypeConfig.getValue())){
+                        //value of rec and config are empty
+                        LOG.debug("Link " + link.toString() + " define as " + key);
+                        return key;
+                    }else {
+                        continue;
+                    }
+                }
             }
-           // return SynapseType.None;
-        } else if (color.equals("FF0000")) {
-            return SynapseType.Ach;
-        } else if (color.equals("Blue")) {
-            return SynapseType.GABA;
-        } else if (color.equals("red")) {
-            return SynapseType.Glu;
+
+
         }
-        return SynapseType.None;
+
+        LOG.debug("Link " + link.toString() + " undefined, setting DA_ex");
+        return "DA_ex";
     }
 
 

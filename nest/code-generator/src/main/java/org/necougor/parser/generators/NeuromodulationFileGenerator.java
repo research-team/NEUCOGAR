@@ -4,19 +4,23 @@ package org.necougor.parser.generators;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.necougor.parser.model.config.GeneratorConfig;
+import org.necougor.parser.model.config.SynapseTypeConfig;
 import org.necougor.parser.model.python.BrainRegion;
 import org.necougor.parser.model.python.Receptor;
 import org.necougor.parser.type.SynapseType;
 import org.necougor.parser.util.CommonUtil;
-import org.necougor.parser.util.GeneratorUtil;
-import org.necougor.parser.util.PropertyUtil;
 import org.necougor.parser.util.FileReaderWriterUtil;
+import org.necougor.parser.util.GeneratorUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
-import java.io.*;
+import javax.annotation.Resource;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -41,12 +45,12 @@ public class NeuromodulationFileGenerator {
     public static final String MULTIMETER_CONNECTION_PLACE_HOLDER = "connect_multimeter(%1$2s)";
 
 
-    public static final String RECEPTOR_DA_EX_MODEL_CONNECTION_PLACE_HOLDER = "nest.Connect(%1$2s[k_IDs], vt_ex)";
-    public static final String RECEPTOR_DA_IN_MODEL_CONNECTION_PLACE_HOLDER = "nest.Connect(%1$2s[k_IDs], vt_in)";
+    public static final String RECEPTOR_MODEL_CONNECTION_PLACE_HOLDER = "nest.Connect(%1$2s[k_IDs], %2$2s)";
 
 
-    private static SynapseType[] types = {SynapseType.Ach, SynapseType.DA_ex, SynapseType.GABA, SynapseType.DA_in, SynapseType.Glu};
-
+    @Autowired
+    @Resource(name = "synapseConfig")
+    private Map<String, SynapseTypeConfig> stringSynapseTypeConfigMap;
 
     public void generate(Map<String, BrainRegion> pythonBrainRegionMap) {
 
@@ -108,29 +112,36 @@ public class NeuromodulationFileGenerator {
         return new Gson().fromJson(br, listType);
     }
 
+
     private String generateConnections(Map<String, BrainRegion> pythonBrainRegionMap) {
         String connections = "";
         Map<String, Float> property;
 
-        List<String> allDataFileNames = CommonUtil.getAllWeightLinks(pythonBrainRegionMap);
+
+        List<String> allDataFileNames = CommonUtil.getAllWeightLinks(pythonBrainRegionMap, stringSynapseTypeConfigMap);
         property = new LinkWeightPropertyGenerator(allDataFileNames).load();
 
 
+        LOG.debug("ALL CONFIGs " + stringSynapseTypeConfigMap.keySet().toString());
+
         //// FIXME: 03.06.2016
-        SynapseType[] daTypes = {SynapseType.DA_ex, SynapseType.DA_in};
+        List<String> customRecep = new ArrayList<>();
+        for (String key : stringSynapseTypeConfigMap.keySet()) {
+            if (stringSynapseTypeConfigMap.get(key).getModelName() != null) {
+                customRecep.add(key);
+            }
+        }
+
+
         for (String key : pythonBrainRegionMap.keySet()) {
             final BrainRegion brainRegion = pythonBrainRegionMap.get(key);
             final List<Receptor> receptors = brainRegion.getInnerReceptors();
             for (Receptor receptor : receptors) {
                 final String fromName = GeneratorUtil.createVarName(brainRegion.getZoneName(), receptor.getType());
-                for (SynapseType type : daTypes) {
+                for (String type : customRecep) {
                     final List<Receptor> connected = receptor.getConnectedReceptorBySynapseType(type);
                     if (!connected.isEmpty()) {
-                        if (type == SynapseType.DA_ex) {
-                            connections = connections + String.format(Locale.ENGLISH, RECEPTOR_DA_EX_MODEL_CONNECTION_PLACE_HOLDER, fromName) + "\n";
-                        } else {
-                            connections = connections + String.format(Locale.ENGLISH, RECEPTOR_DA_EX_MODEL_CONNECTION_PLACE_HOLDER, fromName) + "\n";
-                        }
+                        connections = connections + String.format(Locale.ENGLISH, RECEPTOR_MODEL_CONNECTION_PLACE_HOLDER, fromName, type) + "\n";
                     }
                 }
             }
@@ -139,13 +150,12 @@ public class NeuromodulationFileGenerator {
         //// FIXME: 03.06.2016
 
 
-
         for (String key : pythonBrainRegionMap.keySet()) {
             final BrainRegion brainRegion = pythonBrainRegionMap.get(key);
             final List<Receptor> receptors = brainRegion.getInnerReceptors();
             for (Receptor receptor : receptors) {
                 final String fromName = GeneratorUtil.createVarName(brainRegion.getZoneName(), receptor.getType());
-                for (SynapseType type : types) {
+                for (String type : stringSynapseTypeConfigMap.keySet()) {
                     final List<Receptor> connected = receptor.getConnectedReceptorBySynapseType(type);
                     if (!connected.isEmpty()) {
                         for (Receptor conn : connected) {
