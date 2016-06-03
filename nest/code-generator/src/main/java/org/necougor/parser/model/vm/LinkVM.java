@@ -62,4 +62,15 @@ public class LinkVM extends CommonVM {
         return new LinkVM(getId(), getColor(), getSource(), getTarget(), false, getValue());
     }
 
+
+    @Override
+    public String toString() {
+        return "LinkVM{" +
+                "source='" + source + '\'' +
+                ", target='" + target + '\'' +
+                ", value='" + value + '\'' +
+                ", isBeDirect=" + isBeDirect +
+                ", color=" + getColor() +
+                '}';
+    }
 }

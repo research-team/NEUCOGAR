@@ -1,5 +1,6 @@
 package org.necougor.parser.util;
 
+import org.necougor.parser.model.config.SynapseTypeConfig;
 import org.necougor.parser.model.python.BrainRegion;
 import org.necougor.parser.model.python.Receptor;
 import org.necougor.parser.type.SynapseType;
@@ -27,10 +28,8 @@ public class CommonUtil {
         return propertyName;
     }
 
-    private static SynapseType[] types = {SynapseType.Ach, SynapseType.DA_ex, SynapseType.GABA, SynapseType.DA_in, SynapseType.Glu};
 
-
-    public static List<String> getAllWeightLinks(Map<String, BrainRegion> pythonBrainRegionMap){
+    public static List<String> getAllWeightLinks(Map<String, BrainRegion> pythonBrainRegionMap, Map<String, SynapseTypeConfig> stringSynapseTypeConfigMap) {
         List<String> propertyNames = new ArrayList<>();
 
         for (String key : pythonBrainRegionMap.keySet()) {
@@ -38,13 +37,13 @@ public class CommonUtil {
             final List<Receptor> receptors = brainRegion.getInnerReceptors();
             for (Receptor receptor : receptors) {
                 final String fromName = GeneratorUtil.createVarName(brainRegion.getZoneName(), receptor.getType());
-                for (SynapseType type : types) {
+                for (String type : stringSynapseTypeConfigMap.keySet()) {
                     final List<Receptor> connected = receptor.getConnectedReceptorBySynapseType(type);
                     if (!connected.isEmpty()) {
                         for (Receptor conn : connected) {
                             if (conn != null) {
                                 final String toName = GeneratorUtil.createVarName(conn.getBrainRegion().getZoneName(), conn.getType());
-                                String propertyName = fromName+"-"+toName;
+                                String propertyName = fromName + "-" + toName;
                                 propertyNames.add(propertyName);
                             }
                         }
@@ -56,7 +55,7 @@ public class CommonUtil {
     }
 
 
-    public static List<String> readFileByLine(String path,Object classLoader) {
+    public static List<String> readFileByLine(String path, Object classLoader) {
         List lines = new ArrayList<>();
         InputStream resourceAsStream = classLoader.getClass().getClassLoader().getResourceAsStream(path);
         Scanner scanner = new Scanner(resourceAsStream);
@@ -66,5 +65,6 @@ public class CommonUtil {
         }
         return lines;
     }
+
 
 }

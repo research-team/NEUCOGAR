@@ -1,13 +1,10 @@
 package org.necougor.parser.model.python;
 
 
-import org.necougor.parser.type.SynapseType;
-import org.necougor.parser.util.ParseUtil;
-
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.HashMap;
 
 public class Receptor {
 
@@ -28,20 +25,20 @@ public class Receptor {
 
     private boolean isSpikeGeneratorConnected;
 
-    private Map<SynapseType, List<Receptor>> connectedTo;
+    private Map<String, List<Receptor>> connectedTo;
 
-    public List<Receptor> getConnectedReceptorBySynapseType(SynapseType type) {
+    public List<Receptor> getConnectedReceptorBySynapseType(String type) {
         if (!connectedTo.containsKey(type)) {
             connectedTo.put(type, new ArrayList<>());
         }
         return connectedTo.get(type);
     }
 
-    public Map<SynapseType, List<Receptor>> getConnectedTo() {
+    public Map<String, List<Receptor>> getConnectedTo() {
         return connectedTo;
     }
 
-    public void setConnectedTo(Map<SynapseType, List<Receptor>> connectedTo) {
+    public void setConnectedTo(Map<String, List<Receptor>> connectedTo) {
         this.connectedTo = connectedTo;
     }
 
