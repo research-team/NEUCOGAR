@@ -141,7 +141,7 @@ public class NeuromodulationFileGenerator {
                 for (String type : customRecep) {
                     final List<Receptor> connected = receptor.getConnectedReceptorBySynapseType(type);
                     if (!connected.isEmpty()) {
-                        connections = connections + String.format(Locale.ENGLISH, RECEPTOR_MODEL_CONNECTION_PLACE_HOLDER, fromName, type) + "\n";
+                        connections = connections + String.format(Locale.ENGLISH, RECEPTOR_MODEL_CONNECTION_PLACE_HOLDER, fromName, stringSynapseTypeConfigMap.get(type).getModelName()) + "\n";
                     }
                 }
             }

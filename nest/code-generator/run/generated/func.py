@@ -7,16 +7,15 @@ from parameters import *
 from data import *
 
 times = []
-spikegenerators = {}    # dict name_part : spikegenerator
-spikedetectors = {}     # dict name_part : spikedetector
-multimeters = {}        # dict name_part : multimeter
+spikegenerators = {}  # dict name_part : spikegenerator
+spikedetectors = {}  # dict name_part : spikedetector
+multimeters = {}  # dict name_part : multimeter
 
 SYNAPSES = 0
 
 FORMAT = '%(name)s.%(levelname)s: %(message)s.'
 logging.basicConfig(format=FORMAT, level=logging.DEBUG)
 logger = logging.getLogger('function')
-
 
 nest.SetDefaults('iaf_psc_exp', iaf_neuronparams)
 nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
@@ -34,7 +33,7 @@ def connect(pre, post, syn_type=GABA, weight_coef=1):
     nest.Connect(pre[k_IDs],
                  post[k_IDs],
                  conn_spec=conn_dict,
-                 syn_spec=types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0])
+                 syn_spec=types[syn_type][3] if syn_type in (DA_ex, DA_in, SERO_ex, SERO_in) else types[syn_type][0])
     log_connection(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
 
 
@@ -66,9 +65,11 @@ def connect_multimeter(part):
 
 
 '''Generates string full name of an image'''
+
+
 def f_name_gen(path, name):
     return "{0}{1}_{2}_dopamine_{3}.png".format(path, name, 'yes' if dopa_flag else 'no',
-                                                            'noise' if generator_flag else 'static')
+                                                'noise' if generator_flag else 'static')
 
 
 def simulate():
@@ -84,7 +85,7 @@ def simulate():
         times.append("{0:10.1f} {1:8.1f} {2:10.1f} {3:4.1f} {4}\n".format(begin, end - begin, end,
                                                                           t, datetime.datetime.now().time()))
         begin = end
-        print "COMPLETED {0}%\n".format(t/dt)
+        print "COMPLETED {0}%\n".format(t / dt)
     endsimulate = datetime.datetime.now()
     logger.debug('* * * Simulation completed successfully')
 
@@ -93,10 +94,11 @@ def get_log(startbuild, endbuild):
     logger.info("Number of synapses : {}".format(SYNAPSES))
     logger.info("Building time      : {}".format(endbuild - startbuild))
     logger.info("Simulation time    : {}".format(endsimulate - startsimulate))
-    for key in spikedetectors:              #FixMe bug in '1000.0 / N_rec' in some case N_rec can be equal part[k_IDs]
+    for key in spikedetectors:  # FixMe bug in '1000.0 / N_rec' in some case N_rec can be equal part[k_IDs]
         print "***************"
         print nest.GetStatus(spikedetectors[key])[0]
-        logger.info("{0:>18} rate: {1:.2f}Hz".format(key, nest.GetStatus(spikedetectors[key], 'n_events')[0] / T * 1000.0 / N_detect))
+        logger.info("{0:>18} rate: {1:.2f}Hz".format(key, nest.GetStatus(spikedetectors[key], 'n_events')[
+            0] / T * 1000.0 / N_detect))
     logger.info("Dopamine           : {}".format('YES' if dopa_flag else 'NO'))
     logger.info("Noise              : {}".format('YES' if generator_flag else 'NO'))
 
@@ -131,17 +133,19 @@ def save(GUI):
     if not os.path.exists(txtResultPath):
         os.mkdir(txtResultPath)
     for key in spikedetectors:
-        save_spikes(spikedetectors[key], name=key)           #, hist=True)
-    #for key in multimeters:
+        save_spikes(spikedetectors[key], name=key)  # , hist=True)
+    # for key in multimeters:
     #    save_voltage(multimeters[key], name=key)
 
     with open(txtResultPath + 'timeSimulation.txt', 'w') as f:
         for item in times:
             f.write(item)
 
+
 from collections import defaultdict
 
 GlobalDICT = {}
+
 
 def save_spikes(detec, name, hist=False):
     title = "Raster plot from device '%i'" % detec[0]
@@ -149,7 +153,7 @@ def save_spikes(detec, name, hist=False):
     ts = ev["times"]
     gids = ev["senders"]
     data = defaultdict(list)
-    temp_dict ={}
+    temp_dict = {}
 
     if len(ts):
         with open("{0}@spikes_{1}.txt".format(txtResultPath, name), 'w') as f:
@@ -177,6 +181,8 @@ def save_spikes(detec, name, hist=False):
 
         GlobalDICT[name] = result_list
     '''
+
+
 def save_voltage(detec, name):
     title = "Membrane potential"
     ev = nest.GetStatus(detec, "events")[0]
@@ -186,23 +192,23 @@ def save_voltage(detec, name):
         for line in range(0, int(T / multimeter_param['interval'])):
             for index in range(0, N_volt):
                 print "{0} {1} ".format(ev["times"][line], ev["V_m"][line])
-            #f.write("\n")
+            # f.write("\n")
             print "\n"
 
 
-#ToDo => params={'spike_times': np.arange(1, T, 20.) in generator
+# ToDo => params={'spike_times': np.arange(1, T, 20.) in generator
 
 def testUnit():
     import matplotlib.pyplot as plt
 
-    data = [ GlobalDICT[key][:999] for key in GlobalDICT ]
+    data = [GlobalDICT[key][:999] for key in GlobalDICT]
 
     plt.xlabel("Time in ms")
     plt.ylabel("Part of brain")
 
-    #ax.set_xticklabels(np.arange(len(data[0])))
-    #ax.set_yticklabels('kek', 'lol', 'tot')
+    # ax.set_xticklabels(np.arange(len(data[0])))
+    # ax.set_yticklabels('kek', 'lol', 'tot')
 
     plt.imshow(data, aspect='auto', interpolation='none', cmap="hot")
     plt.show()
-    #plt.savefig("TESTPIC.png",dpi=360, format='png')
+    # plt.savefig("TESTPIC.png",dpi=360, format='png')

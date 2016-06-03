@@ -1,7 +1,6 @@
 package org.necougor.parser.generators;
 
 
-import org.necougor.parser.app.App;
 import org.necougor.parser.model.python.BrainRegion;
 import org.necougor.parser.model.python.Receptor;
 import org.necougor.parser.util.CommonUtil;
@@ -14,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.Formatter;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class DataFileGenerator {
