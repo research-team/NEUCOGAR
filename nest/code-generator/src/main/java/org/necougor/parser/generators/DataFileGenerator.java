@@ -81,6 +81,7 @@ public class DataFileGenerator {
     }
 
     private String createStringModel(Receptor receptor, BrainRegion brainRegion) {
+        formatter = new Formatter();
         String propertyName = GeneratorUtil.createIndexVarName(brainRegion.getZoneName(), receptor.getType());
         long count = property.get(propertyName);
         String name = GeneratorUtil.createVarName(brainRegion.getZoneName(), receptor.getType());

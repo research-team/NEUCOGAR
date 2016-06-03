@@ -164,7 +164,9 @@ public class NeuromodulationFileGenerator {
                                 LOG.debug("Resolving " + fromName + "-" + toName + " weight");
                                 float weight = property.get(fromName + "-" + toName);
                                 LOG.debug("Setting " + fromName + "-" + toName + " " + weight + " weight");
-                                final String s = formatString(fromName, toName, type.toString(), weight);
+
+
+                                final String s = formatString(fromName, toName, type, weight);
                                 connections = connections + s + "\n";
                             }
                         }
