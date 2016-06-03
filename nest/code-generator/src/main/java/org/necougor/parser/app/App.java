@@ -22,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.core.env.CommandLinePropertySource;
+import org.springframework.core.env.SimpleCommandLinePropertySource;
 import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBContext;
@@ -53,6 +55,33 @@ public class App {
     @Autowired
     private NeuromodulationFileGenerator neuromodulationFileGenerator;
 
+
+    public static void main(String[] args) throws JAXBException {
+
+        CommandLinePropertySource ps = new SimpleCommandLinePropertySource(args);
+        ps.setNonOptionArgsPropertyName("file");
+
+        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext();
+        annotationConfigApplicationContext.getEnvironment().getPropertySources().addFirst(ps);
+        annotationConfigApplicationContext.register(CoreConfig.class);
+        annotationConfigApplicationContext.refresh();
+
+
+        String fileName = ps.getProperty("file");
+        String count = ps.getProperty("count");
+        String recNF = ps.getProperty("recNF");
+        String congWF = ps.getProperty("conWF");
+        String genCF = ps.getProperty("genCF");
+
+        App bean = annotationConfigApplicationContext.getBean(App.class);
+        try {
+            bean.run(fileName);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
 
     public boolean isBrainRegionVM(MxCell mxCell) {
         String value = mxCell.getValue();
@@ -249,10 +278,10 @@ public class App {
     }
 
 
-    public void run() throws JAXBException, URISyntaxException, FileNotFoundException {
-        URL resource = this.getClass().getClassLoader().getResource("serotonin_pathway.xml");
+    public void run(String name) throws JAXBException, URISyntaxException, FileNotFoundException {
+        LOG.debug("Loading file " + name);
 
-        FileInputStream fileInputStream = new FileInputStream(resource.getFile());
+        FileInputStream fileInputStream = new FileInputStream("./" + name);
 
         JAXBContext jc = JAXBContext.newInstance(MxGraphModel.class);
         StreamSource xml = new StreamSource(fileInputStream);
@@ -300,17 +329,6 @@ public class App {
         neuromodulationFileGenerator.generate(brainRegionServices.getPythonBrainRegionMap());
     }
 
-     public static void main(String[] args) throws JAXBException {
-        AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(CoreConfig.class);
-        App bean = annotationConfigApplicationContext.getBean(App.class);
-        try {
-            bean.run();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void addToAllReceptorsBrainRegion() {
         for (String s : brainRegionServices.getKeys()) {
@@ -494,8 +512,6 @@ public class App {
             }
 
         }
-
-        System.out.println("Root is " + root);
 
         brainRegionVMs1.remove(root);
         root.setX(new Double(0));

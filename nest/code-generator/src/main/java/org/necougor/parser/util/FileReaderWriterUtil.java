@@ -10,17 +10,14 @@ import java.nio.file.Paths;
 
 public class FileReaderWriterUtil {
 
-    private static final String TEMPLATE_PATH_PREFIX = "template/";
-    private static final String GENERATED_PATH_PREFIX = "generated/";
+    private static final String TEMPLATE_PATH_PREFIX = "./template/";
+    private static final String GENERATED_PATH_PREFIX = "./generated/";
 
     private static String readFileToString(String path) {
         byte[] encoded = new byte[0];
         try {
-            URL path1 = new FileReaderWriterUtil().getClass().getClassLoader().getResource(path);
-            encoded = Files.readAllBytes(Paths.get(path1.toURI()));
+            encoded = Files.readAllBytes(Paths.get(path));
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
         return new String(encoded, StandardCharsets.UTF_8);
@@ -33,13 +30,10 @@ public class FileReaderWriterUtil {
     public static void writeGeneratedStringToFile(String text, String fileName) {
         PrintWriter printWriter = null;
         try {
-            URL resource = new FileReaderWriterUtil().getClass().getClassLoader().getResource(GENERATED_PATH_PREFIX+fileName);
-            File file = new File(resource.toURI());
+            File file = new File(GENERATED_PATH_PREFIX+fileName);
             printWriter = new PrintWriter(file);
             printWriter.write(text);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
             e.printStackTrace();
         } finally {
             if (printWriter != null) {

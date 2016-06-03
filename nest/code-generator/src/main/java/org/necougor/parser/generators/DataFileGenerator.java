@@ -1,13 +1,17 @@
 package org.necougor.parser.generators;
 
 
+import org.necougor.parser.app.App;
 import org.necougor.parser.model.python.BrainRegion;
 import org.necougor.parser.model.python.Receptor;
 import org.necougor.parser.util.CommonUtil;
 import org.necougor.parser.util.FileReaderWriterUtil;
 import org.necougor.parser.util.GeneratorUtil;
 import org.necougor.parser.util.ParseUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -22,6 +26,13 @@ public class DataFileGenerator {
     public static final String KEY_MODEL = "Model";
     public static final String KEY_IDS = "IDs";
     public static final String MODEL_TEMPLATE = "{'" + KEY_NAME + "': '%1$2s', '" + KEY_NUMBER_NEURON + "': %2$2d, '" + KEY_MODEL + "': '%3$2s', '" + KEY_IDS + "': nest.Create('%3$2s', %2$2d)}";
+
+
+    private static final Logger LOG = LoggerFactory.getLogger(DataFileGenerator.class);
+
+    @Autowired
+    private Environment env;
+
 
     @Autowired
     private Formatter formatter;
@@ -38,7 +49,11 @@ public class DataFileGenerator {
 
     private String generateData(Map<String, BrainRegion> pythonBrainRegionMap) {
         List<String> allDataFileNames = CommonUtil.getAllDataFileNames(pythonBrainRegionMap);
-        property = new ReceptorPropertyCountGenerator(allDataFileNames).load();
+
+        String count = env.getProperty("count");
+        Integer cValue = count == null ? null : Integer.valueOf(count);
+
+        property = new ReceptorPropertyCountGenerator(allDataFileNames, cValue).load();
         String data = "";
 
         for (String key : pythonBrainRegionMap.keySet()) {
@@ -73,8 +88,6 @@ public class DataFileGenerator {
         String stringModel = formatter.format(MODEL_TEMPLATE, name, count, model).toString();
         return stringModel;
     }
-
-
 
 
 }

@@ -14,9 +14,12 @@ public class ReceptorPropertyCountGenerator {
     private final List<String> expected;
     private static final Integer DEFAULT_COUNT = 10;
     private static final Logger LOG = LoggerFactory.getLogger(ReceptorPropertyCountGenerator.class);
+    private Integer count;
 
-    public ReceptorPropertyCountGenerator(List<String> expected) {
+
+    public ReceptorPropertyCountGenerator(List<String> expected, Integer count) {
         this.expected = expected;
+        this.count = count;
     }
 
     public Map<String, Integer> load() {
@@ -34,6 +37,35 @@ public class ReceptorPropertyCountGenerator {
         });
 
         propertyUtil.writePropertyFile(property);
+        if (count != null) {
+            LOG.debug("Recount the count of neuron with total number " + count);
+            return configureWeight(prop);
+        }
         return prop;
     }
+
+
+    private Map<String, Integer> configureWeight(Map<String, Integer> prop) {
+        Map<String, Integer> newProp = new HashMap<>();
+        int total = 0;
+
+        for (String key : prop.keySet()) {
+            total += prop.get(key);
+        }
+        LOG.debug("Current total number of neuron is " + total);
+
+        for (String key : prop.keySet()) {
+            float coef = (float) prop.get(key) / (float) total;
+
+            Float newVal = (coef * count);
+
+            Integer value = newVal.intValue() < DEFAULT_COUNT ? DEFAULT_COUNT : newVal.intValue();
+            newProp.put(key, value);
+            LOG.debug("New neuron value to " + key + " is " + value);
+        }
+
+        return newProp;
+    }
+
+
 }

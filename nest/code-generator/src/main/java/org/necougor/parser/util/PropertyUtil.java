@@ -12,27 +12,27 @@ public class PropertyUtil {
 
     private String propFileName;
 
-    //TODO: use classPath
-    private static final String PREFIX = "properties/";
+    private static final String PREFIX = "./properties/";
 
     public PropertyUtil(String propFileName) {
         this.propFileName = PREFIX + propFileName;
     }
 
 
-    public static void main(String[] args) {
-        PropertyUtil propertyUtil = new PropertyUtil("weight.property");
-        propertyUtil.loadPropertyFile();
-    }
-
     public Map<String, String> loadPropertyFile() {
+        File file = new File(propFileName);
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         Properties prop = new Properties();
         InputStream input = null;
         Map<String, String> map = new HashMap<String, String>();
         try {
-            URL resource = this.getClass().getClassLoader().getResource(propFileName);
-            input = new FileInputStream(resource.getFile());
-            prop.load(input);
+            FileInputStream fis = new FileInputStream(propFileName);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+            prop.load(in);
             final Enumeration enumeration = prop.propertyNames();
             while (enumeration.hasMoreElements()) {
                 final String key = (String) enumeration.nextElement();
@@ -58,13 +58,13 @@ public class PropertyUtil {
         Properties prop = new Properties();
         OutputStream output = null;
         try {
-            URL resource = this.getClass().getClassLoader().getResource(propFileName);
-            output = new FileOutputStream(resource.getFile());
+            FileOutputStream fis = new FileOutputStream(propFileName);
             for (String key : map.keySet()) {
                 prop.setProperty(key, map.get(key));
             }
             // save properties to project root folder
-            prop.store(output, null);
+            OutputStreamWriter writer = new OutputStreamWriter(fis);
+            prop.store(writer, null);
         } catch (IOException io) {
             io.printStackTrace();
         } finally {

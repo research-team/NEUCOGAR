@@ -20,6 +20,7 @@ public class LinkWeightPropertyGenerator {
     }
 
     public Map<String, Float> load() {
+        LOG.debug("Loading " + propFileName);
         PropertyUtil propertyUtil = new PropertyUtil(propFileName);
         Map<String, String> property = propertyUtil.loadPropertyFile();
         Map<String, Float> prop = new HashMap<>();
