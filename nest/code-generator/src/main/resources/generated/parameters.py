@@ -42,6 +42,18 @@ DOPA_synparams_in = dict({'weight': w_DA_in,
                           'Wmax': -100.,
                           'Wmin': -85.}, **DOPA_synparams)
 
+
+SERO_synparams = {'delay': 1.}
+# Serotanine exhibitory synapse
+SERO_synparams_ex = dict({'weight': w_SERO_ex,
+                          'Wmax': 100.,
+                          'Wmin': 85.}, **SERO_synparams)
+# Serotanine inhibitory synapse
+SERO_synparams_in = dict({'weight': w_SERO_in,
+                          'Wmax': -100.,
+                          'Wmin': -85.}, **SERO_synparams)
+
+
 # Create volume transmitters
 
 # Dictionary of synapses with keys and their parameters
@@ -49,7 +61,10 @@ types = {GABA: (STDP_synparams_GABA, w_GABA, 'GABA'),
          Ach: (STDP_synparams_Ach, w_ACh, 'Ach'),
          Glu: (STDP_synparams_Glu, w_Glu, 'Glu'),
          DA_ex: (DOPA_synparams_ex, w_DA_ex, 'DA_ex', dopa_model_ex),
-         DA_in: (DOPA_synparams_in, w_DA_in, 'DA_in', dopa_model_in)}
+         DA_in: (DOPA_synparams_in, w_DA_in, 'DA_in', dopa_model_in),
+         SERO_ex: (DOPA_synparams_ex, w_SERO_ex, 'SERO_ex', sero_model_ex),
+         SERO_in: (DOPA_synparams_in, w_SERO_in, 'SERO_in', sero_model_in)
+         }
 
 # Parameters for generator links
 static_syn = {

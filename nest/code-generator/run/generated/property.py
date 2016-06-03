@@ -4,6 +4,8 @@ Glu = 1
 Ach = 2
 DA_ex = 3
 DA_in = 4
+SERO_ex = 5
+SERO_in = 6
 
 # Quality of graphics
 dpi_n = 120
@@ -33,6 +35,8 @@ w_ACh = 8.
 # Volume transmission
 w_DA_ex = 13.
 w_DA_in = -w_DA_ex
+w_SERO_ex = 10.
+w_SERO_in = -w_SERO_ex
 
 NN_minimal = 10
 
@@ -41,6 +45,8 @@ NN_coef = 0.0001
 # dopamine model key
 dopa_model_ex = 'dopa_ex'
 dopa_model_in = 'dopa_in'
+sero_model_ex = 'sero_ex'
+sero_model_in = 'sero_in'
 gen_static_syn = 'noise_conn'
 
 dopa_flag = True        # dopamine modulation flag
