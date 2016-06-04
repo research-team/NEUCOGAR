@@ -3,6 +3,7 @@ package org.necougor.parser.generators;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import org.necougor.parser.constant.Constant;
 import org.necougor.parser.model.config.GeneratorConfig;
 import org.necougor.parser.model.config.SynapseTypeConfig;
 import org.necougor.parser.model.python.BrainRegion;
@@ -18,9 +19,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -93,25 +92,68 @@ public class NeuromodulationFileGenerator {
                 if (receptor.isSpikeGeneratorConnected()) {
                     String propertyName = GeneratorUtil.createIndexVarName(receptor.getBrainRegion().getZoneName(), receptor.getType());
                     GeneratorConfig generatorConfig = generatorConfigs.get(propertyName);
+
+
+                    if (generatorConfig == null) {
+                        LOG.debug("Config for generator for " + propertyName + " not found; Add default generator");
+                        generatorConfig = new GeneratorConfig();
+                        generatorConfig.setCoef(Constant.GENERATOR_COEF_PART_DEFAULT);
+                        generatorConfig.setRate(Constant.GENERATOR_RATE_DEFAULT);
+                        generatorConfig.setStartTime(Constant.GENERATOR_START_TIME_DEFAULT);
+                        generatorConfig.setStopTime(Constant.GENERATOR_STOP_TIME_DEFAULT);
+                        generatorConfig.setName(propertyName);
+                        generatorConfigs.put(propertyName, generatorConfig);
+                    }
+
                     final String format = String.format(Locale.US, GENERATOR_CONNECTION_PLACE_HOLDER, GeneratorUtil.createVarName(brainRegion.getZoneName(), receptor.getType()), generatorConfig.getStartTime(), generatorConfig.getStopTime(), generatorConfig.getRate(), generatorConfig.getCoef());
                     generatorsStrings = generatorsStrings + format + "\n";
                 }
             }
         }
+        writeGeneratorConfigMap(generatorConfigs);
 
         return generatorsStrings;
     }
 
     private Map<String, GeneratorConfig> getStringGeneratorConfigMap() {
         InputStream resourceAsStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("generatorConfig.json");
-        BufferedReader br = new BufferedReader(
-                new InputStreamReader(resourceAsStream));
+        BufferedReader br = new BufferedReader(new InputStreamReader(resourceAsStream));
 
         Type listType = new TypeToken<HashMap<String, GeneratorConfig>>() {
         }.getType();
         return new Gson().fromJson(br, listType);
     }
 
+
+    private void writeGeneratorConfigMap(Map<String, GeneratorConfig> generatorConfigs) {
+        Gson gsonObj = new Gson();
+        // convert map to JSON String
+        String jsonStr = gsonObj.toJson(generatorConfigs);
+
+        File file = new File("./generatorConfig.json");
+        BufferedWriter bw = null;
+        // if file doesnt exists, then create it
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                bw = new BufferedWriter(fw);
+                bw.write(jsonStr);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (bw != null) {
+                    try {
+                        bw.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+
+
+    }
 
     private String generateConnections(Map<String, BrainRegion> pythonBrainRegionMap) {
         String connections = "";

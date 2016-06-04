@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Formatter;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Component
@@ -26,7 +27,13 @@ public class DataFileGenerator {
     public static final String KEY_NUMBER_NEURON = "NN";
     public static final String KEY_MODEL = "Model";
     public static final String KEY_IDS = "IDs";
-    public static final String MODEL_TEMPLATE = "{'" + KEY_NAME + "': '%1$2s', '" + KEY_NUMBER_NEURON + "': %2$2d, '" + KEY_MODEL + "': '%3$2s', '" + KEY_IDS + "': nest.Create('%3$2s', %2$2d)}";
+    public static final String MODEL_TEMPLATE = "{'" + KEY_NAME + "': '%1$2s', '" + KEY_NUMBER_NEURON + "': %2$2s, '" + KEY_MODEL + "': '%3$2s', '" + KEY_IDS + "': nest.Create('%3$2s', %2$2s)}";
+
+    public static final String VAR_TOTAL_NUMBER_OF_NEURON_NAME = "number_of_neuron";
+
+
+    public static final String DEFAULT_VALUE_CONDITION = "if %1$2s < DEFAULT : %1$2s = DEFAULT";
+    public static final String DEFAULT_VALUE_VAR = "DEFAULT = 10";
 
 
     private static final Logger LOG = LoggerFactory.getLogger(DataFileGenerator.class);
@@ -54,13 +61,35 @@ public class DataFileGenerator {
         String count = env.getProperty("count");
         Integer cValue = count == null ? null : Integer.valueOf(count);
 
+
         property = new ReceptorPropertyCountGenerator(allDataFileNames, cValue).load();
         String data = "";
 
+
+        //FIXME
+        int total = 0;
+        for (String key : property.keySet()) {
+            total += property.get(key);
+        }
+        data = data + VAR_TOTAL_NUMBER_OF_NEURON_NAME + " = " + total + "\n";
+        data = data + DEFAULT_VALUE_VAR + " = " + 10 + "\n";
+
+
         for (String key : pythonBrainRegionMap.keySet()) {
             final BrainRegion brainRegion = pythonBrainRegionMap.get(key);
-            data = data + brainRegion.getZoneName() + " = (\n";
             final List<Receptor> brainReceptor = brainRegion.getInnerReceptors();
+            for (int i = 0; i < brainReceptor.size(); i++) {
+                final String name1 = GeneratorUtil.createIndexVarName(brainRegion.getZoneName(), brainReceptor.get(i).getType());
+                long recCount = property.get(name1);
+                data = data + name1 + "_" + KEY_NUMBER_NEURON + " = int(" + recCount + " / " + total + " * " + VAR_TOTAL_NUMBER_OF_NEURON_NAME + ")\n";
+                String cond = new Formatter().format(Locale.US, DEFAULT_VALUE_CONDITION, name1 + "_" + KEY_NUMBER_NEURON).toString();
+                data = data + cond + "\n";
+            }
+            data += "\n";
+
+            data = data + brainRegion.getZoneName() + " = (\n";
+
+
             for (int i = 0; i < brainReceptor.size(); i++) {
                 Receptor receptor = brainReceptor.get(i);
                 String stringModel = createStringModel(receptor, brainRegion);
@@ -87,7 +116,7 @@ public class DataFileGenerator {
         String name = GeneratorUtil.createVarName(brainRegion.getZoneName(), receptor.getType());
         String model = ParseUtil.getModelByReceptor(receptor).toString();
 
-        String stringModel = formatter.format(MODEL_TEMPLATE, name, count, model).toString();
+        String stringModel = formatter.format(MODEL_TEMPLATE, name, propertyName + "_" + KEY_NUMBER_NEURON, model).toString();
         return stringModel;
     }
 

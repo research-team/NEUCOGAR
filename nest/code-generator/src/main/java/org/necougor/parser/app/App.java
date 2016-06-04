@@ -347,7 +347,7 @@ public class App {
 
     private void configureLinks(List<LinkVM> links) {
         List<LinkVM> temp = new ArrayList<>();
-        int id = 0;
+        int id = 325212154;
         //resolve bedirect links
         for (LinkVM link : links) {
             if (link.isBeDirect()) {
