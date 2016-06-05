@@ -1,0 +1,34 @@
+{
+  "SERO_ex": {
+    "color": "purple",
+    "modelName": "vt_sero_in",
+    "key": ""
+  },
+  "SERO_ex": {
+    "color": "purple",
+    "value": "Ex",
+    "modelName": "vt_sero_ex"
+  },
+  "Glu": {
+    "color": "red"
+  },
+  "GABA": {
+    "color": "Blue"
+  },
+  "Ach": {
+    "color": "FF0000"
+  },
+  "DA_ex": {
+    "color": "green",
+    "value": "Ex",
+    "modelName": "vt_dopa_ex"
+  },
+  "DA_in": {
+    "color": "green",
+    "value": "In",
+    "modelName": "vt_dopa_in"
+  },
+  "A2": {
+    "color": "orange"
+  }
+}

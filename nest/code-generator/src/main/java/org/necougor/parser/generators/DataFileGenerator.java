@@ -32,8 +32,10 @@ public class DataFileGenerator {
     public static final String VAR_TOTAL_NUMBER_OF_NEURON_NAME = "number_of_neuron";
 
 
-    public static final String DEFAULT_VALUE_CONDITION = "if %1$2s < DEFAULT : %1$2s = DEFAULT";
-    public static final String DEFAULT_VALUE_VAR = "DEFAULT = 10";
+    public static final String DEFAULT_VALUE_VAR = "DEFAULT";
+
+
+    public static final String DEFAULT_VALUE_CONDITION = "if %1$2s < " + DEFAULT_VALUE_VAR + " : %1$2s = " + DEFAULT_VALUE_VAR;
 
 
     private static final Logger LOG = LoggerFactory.getLogger(DataFileGenerator.class);

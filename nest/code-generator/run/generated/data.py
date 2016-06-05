@@ -4,13 +4,13 @@ import numpy as np
 nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True,  'local_num_threads': 4, 'resolution': 0.1})
 
-number_of_neuron = 18567100
-DEFAULT = 10 = 10
+number_of_neuron = 18567530
+DEFAULT = 10
 
 raphenucleus = (
 )
 
-lateralcortex_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+lateralcortex_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if lateralcortex_5HT_NN < DEFAULT : lateralcortex_5HT_NN = DEFAULT
 
 lateralcortex = (
@@ -18,7 +18,7 @@ lateralcortex = (
 )
 lateralcortex_5HT = 0
 
-Basalganglia_5HT_NN = int(2593900 / 18567100 * number_of_neuron)
+Basalganglia_5HT_NN = int(2593900 / 18567530 * number_of_neuron)
 if Basalganglia_5HT_NN < DEFAULT : Basalganglia_5HT_NN = DEFAULT
 
 Basalganglia = (
@@ -26,7 +26,7 @@ Basalganglia = (
 )
 Basalganglia_5HT = 0
 
-entorhinalcortex_5HT_NN = int(635000 / 18567100 * number_of_neuron)
+entorhinalcortex_5HT_NN = int(635000 / 18567530 * number_of_neuron)
 if entorhinalcortex_5HT_NN < DEFAULT : entorhinalcortex_5HT_NN = DEFAULT
 
 entorhinalcortex = (
@@ -34,7 +34,7 @@ entorhinalcortex = (
 )
 entorhinalcortex_5HT = 0
 
-medialcortex_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+medialcortex_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if medialcortex_5HT_NN < DEFAULT : medialcortex_5HT_NN = DEFAULT
 
 medialcortex = (
@@ -42,11 +42,11 @@ medialcortex = (
 )
 medialcortex_5HT = 0
 
-locuscoeruleus_5HT_NN = int(1500 / 18567100 * number_of_neuron)
+locuscoeruleus_5HT_NN = int(1500 / 18567530 * number_of_neuron)
 if locuscoeruleus_5HT_NN < DEFAULT : locuscoeruleus_5HT_NN = DEFAULT
-locuscoeruleus_DA_NN = int(1500 / 18567100 * number_of_neuron)
+locuscoeruleus_DA_NN = int(1500 / 18567530 * number_of_neuron)
 if locuscoeruleus_DA_NN < DEFAULT : locuscoeruleus_DA_NN = DEFAULT
-locuscoeruleus_NA_NN = int(1500 / 18567100 * number_of_neuron)
+locuscoeruleus_NA_NN = int(1500 / 18567530 * number_of_neuron)
 if locuscoeruleus_NA_NN < DEFAULT : locuscoeruleus_NA_NN = DEFAULT
 
 locuscoeruleus = (
@@ -58,9 +58,9 @@ locuscoeruleus_5HT = 0
 locuscoeruleus_DA = 1
 locuscoeruleus_NA = 2
 
-ventraltegmentalarea_5HT_NN = int(61000 / 18567100 * number_of_neuron)
+ventraltegmentalarea_5HT_NN = int(61000 / 18567530 * number_of_neuron)
 if ventraltegmentalarea_5HT_NN < DEFAULT : ventraltegmentalarea_5HT_NN = DEFAULT
-ventraltegmentalarea_DA_NN = int(61000 / 18567100 * number_of_neuron)
+ventraltegmentalarea_DA_NN = int(61000 / 18567530 * number_of_neuron)
 if ventraltegmentalarea_DA_NN < DEFAULT : ventraltegmentalarea_DA_NN = DEFAULT
 
 ventraltegmentalarea = (
@@ -70,9 +70,9 @@ ventraltegmentalarea = (
 ventraltegmentalarea_5HT = 0
 ventraltegmentalarea_DA = 1
 
-nucleusaccumbens_5HT_NN = int(30000 / 18567100 * number_of_neuron)
+nucleusaccumbens_5HT_NN = int(30000 / 18567530 * number_of_neuron)
 if nucleusaccumbens_5HT_NN < DEFAULT : nucleusaccumbens_5HT_NN = DEFAULT
-nucleusaccumbens_DA_NN = int(30000 / 18567100 * number_of_neuron)
+nucleusaccumbens_DA_NN = int(30000 / 18567530 * number_of_neuron)
 if nucleusaccumbens_DA_NN < DEFAULT : nucleusaccumbens_DA_NN = DEFAULT
 
 nucleusaccumbens = (
@@ -82,7 +82,7 @@ nucleusaccumbens = (
 nucleusaccumbens_5HT = 0
 nucleusaccumbens_DA = 1
 
-Cerebralcortex_5HT_NN = int(100 / 18567100 * number_of_neuron)
+Cerebralcortex_5HT_NN = int(100 / 18567530 * number_of_neuron)
 if Cerebralcortex_5HT_NN < DEFAULT : Cerebralcortex_5HT_NN = DEFAULT
 
 Cerebralcortex = (
@@ -90,7 +90,7 @@ Cerebralcortex = (
 )
 Cerebralcortex_5HT = 0
 
-Thalamus_5HT_NN = int(5000000 / 18567100 * number_of_neuron)
+Thalamus_5HT_NN = int(5000000 / 18567530 * number_of_neuron)
 if Thalamus_5HT_NN < DEFAULT : Thalamus_5HT_NN = DEFAULT
 
 Thalamus = (
@@ -98,7 +98,7 @@ Thalamus = (
 )
 Thalamus_5HT = 0
 
-insularcortex_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+insularcortex_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if insularcortex_5HT_NN < DEFAULT : insularcortex_5HT_NN = DEFAULT
 
 insularcortex = (
@@ -106,9 +106,9 @@ insularcortex = (
 )
 insularcortex_5HT = 0
 
-Rostralgroup_A1_NN = int(6900 / 18567100 * number_of_neuron)
+Rostralgroup_A1_NN = int(6900 / 18567530 * number_of_neuron)
 if Rostralgroup_A1_NN < DEFAULT : Rostralgroup_A1_NN = DEFAULT
-Rostralgroup_A2_NN = int(6900 / 18567100 * number_of_neuron)
+Rostralgroup_A2_NN = int(6900 / 18567530 * number_of_neuron)
 if Rostralgroup_A2_NN < DEFAULT : Rostralgroup_A2_NN = DEFAULT
 
 Rostralgroup = (
@@ -122,7 +122,7 @@ Rostralgroup_A2 = 1
 Caudalgroup = (
 )
 
-septum_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+septum_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if septum_5HT_NN < DEFAULT : septum_5HT_NN = DEFAULT
 
 septum = (
@@ -130,7 +130,7 @@ septum = (
 )
 septum_5HT = 0
 
-hypothalamus_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+hypothalamus_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if hypothalamus_5HT_NN < DEFAULT : hypothalamus_5HT_NN = DEFAULT
 
 hypothalamus = (
@@ -142,7 +142,7 @@ hypothalamus_5HT = 0
 RMg = (
 )
 
-hippocampus_5HT_NN = int(4260000 / 18567100 * number_of_neuron)
+hippocampus_5HT_NN = int(4260000 / 18567530 * number_of_neuron)
 if hippocampus_5HT_NN < DEFAULT : hippocampus_5HT_NN = DEFAULT
 
 hippocampus = (
@@ -154,7 +154,7 @@ hippocampus_5HT = 0
 RPa = (
 )
 
-lateraltegmentalarea_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+lateraltegmentalarea_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if lateraltegmentalarea_5HT_NN < DEFAULT : lateraltegmentalarea_5HT_NN = DEFAULT
 
 lateraltegmentalarea = (
@@ -162,7 +162,7 @@ lateraltegmentalarea = (
 )
 lateraltegmentalarea_5HT = 0
 
-neocortex_5HT_NN = int(100 / 18567100 * number_of_neuron)
+neocortex_5HT_NN = int(100 / 18567530 * number_of_neuron)
 if neocortex_5HT_NN < DEFAULT : neocortex_5HT_NN = DEFAULT
 
 neocortex = (
@@ -170,7 +170,7 @@ neocortex = (
 )
 neocortex_5HT = 0
 
-bednucleusofthestriaterminalis_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+bednucleusofthestriaterminalis_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if bednucleusofthestriaterminalis_5HT_NN < DEFAULT : bednucleusofthestriaterminalis_5HT_NN = DEFAULT
 
 bednucleusofthestriaterminalis = (
@@ -178,7 +178,7 @@ bednucleusofthestriaterminalis = (
 )
 bednucleusofthestriaterminalis_5HT = 0
 
-DR_5HT_NN = int(5800 / 18567100 * number_of_neuron)
+DR_5HT_NN = int(5800 / 18567530 * number_of_neuron)
 if DR_5HT_NN < DEFAULT : DR_5HT_NN = DEFAULT
 
 DR = (
@@ -186,7 +186,7 @@ DR = (
 )
 DR_5HT = 0
 
-MnR_5HT_NN = int(1100 / 18567100 * number_of_neuron)
+MnR_5HT_NN = int(1100 / 18567530 * number_of_neuron)
 if MnR_5HT_NN < DEFAULT : MnR_5HT_NN = DEFAULT
 
 MnR = (
@@ -194,7 +194,7 @@ MnR = (
 )
 MnR_5HT = 0
 
-reticularformation_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+reticularformation_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if reticularformation_5HT_NN < DEFAULT : reticularformation_5HT_NN = DEFAULT
 
 reticularformation = (
@@ -202,7 +202,7 @@ reticularformation = (
 )
 reticularformation_5HT = 0
 
-pons_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+pons_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if pons_5HT_NN < DEFAULT : pons_5HT_NN = DEFAULT
 
 pons = (
@@ -210,7 +210,7 @@ pons = (
 )
 pons_5HT = 0
 
-Periaqueductalgray_5HT_NN = int(1000 / 18567100 * number_of_neuron)
+Periaqueductalgray_5HT_NN = int(1000 / 18567530 * number_of_neuron)
 if Periaqueductalgray_5HT_NN < DEFAULT : Periaqueductalgray_5HT_NN = DEFAULT
 
 Periaqueductalgray = (
@@ -218,9 +218,9 @@ Periaqueductalgray = (
 )
 Periaqueductalgray_5HT = 0
 
-prefrontalcortex_5HT_NN = int(366000 / 18567100 * number_of_neuron)
+prefrontalcortex_5HT_NN = int(366000 / 18567530 * number_of_neuron)
 if prefrontalcortex_5HT_NN < DEFAULT : prefrontalcortex_5HT_NN = DEFAULT
-prefrontalcortex_DA_NN = int(366000 / 18567100 * number_of_neuron)
+prefrontalcortex_DA_NN = int(366000 / 18567530 * number_of_neuron)
 if prefrontalcortex_DA_NN < DEFAULT : prefrontalcortex_DA_NN = DEFAULT
 
 prefrontalcortex = (
@@ -230,9 +230,9 @@ prefrontalcortex = (
 prefrontalcortex_5HT = 0
 prefrontalcortex_DA = 1
 
-striatum_5HT_NN = int(2500000 / 18567100 * number_of_neuron)
+striatum_5HT_NN = int(2500000 / 18567530 * number_of_neuron)
 if striatum_5HT_NN < DEFAULT : striatum_5HT_NN = DEFAULT
-striatum_DA_NN = int(2500000 / 18567100 * number_of_neuron)
+striatum_DA_NN = int(2500000 / 18567530 * number_of_neuron)
 if striatum_DA_NN < DEFAULT : striatum_DA_NN = DEFAULT
 
 striatum = (
@@ -242,7 +242,7 @@ striatum = (
 striatum_5HT = 0
 striatum_DA = 1
 
-amygdala_5HT_NN = int(3000 / 18567100 * number_of_neuron)
+amygdala_5HT_NN = int(3000 / 18567530 * number_of_neuron)
 if amygdala_5HT_NN < DEFAULT : amygdala_5HT_NN = DEFAULT
 
 amygdala = (
@@ -250,9 +250,9 @@ amygdala = (
 )
 amygdala_5HT = 0
 
-substantianigra_5HT_NN = int(62900 / 18567100 * number_of_neuron)
+substantianigra_5HT_NN = int(62900 / 18567530 * number_of_neuron)
 if substantianigra_5HT_NN < DEFAULT : substantianigra_5HT_NN = DEFAULT
-substantianigra_DA_NN = int(62900 / 18567100 * number_of_neuron)
+substantianigra_DA_NN = int(62900 / 18567530 * number_of_neuron)
 if substantianigra_DA_NN < DEFAULT : substantianigra_DA_NN = DEFAULT
 
 substantianigra = (
