@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class FileReaderWriterUtil {
-
+//TODO FILE PATH /home/dalv/idea-project/local/NEUCOGAR/nest/code-generator/src/main/resources/template/";
     private static final String TEMPLATE_PATH_PREFIX = "./template/";
     private static final String GENERATED_PATH_PREFIX = "./generated/";
 

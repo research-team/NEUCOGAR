@@ -1,3 +1,4 @@
+from __future__ import division
 import nest
 import numpy as np
 

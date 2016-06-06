@@ -1,164 +1,217 @@
+from __future__ import division
 import nest
 import numpy as np
 
 nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True,  'local_num_threads': 4, 'resolution': 0.1})
 
-raphenucleus = (
-)
+number_of_neuron = 340
+DEFAULT = 10 = 10
+LC_NA[0]_NN = int(10 / 340 * number_of_neuron)
+if LC_NA[0]_NN < DEFAULT : LC_NA[0]_NN = DEFAULT
+LC_Ach_NN = int(10 / 340 * number_of_neuron)
+if LC_Ach_NN < DEFAULT : LC_Ach_NN = DEFAULT
+LC_GABA_NN = int(10 / 340 * number_of_neuron)
+if LC_GABA_NN < DEFAULT : LC_GABA_NN = DEFAULT
+LC_D1_NN = int(10 / 340 * number_of_neuron)
+if LC_D1_NN < DEFAULT : LC_D1_NN = DEFAULT
+LC_D2_NN = int(10 / 340 * number_of_neuron)
+if LC_D2_NN < DEFAULT : LC_D2_NN = DEFAULT
+LC_NA[1]_NN = int(10 / 340 * number_of_neuron)
+if LC_NA[1]_NN < DEFAULT : LC_NA[1]_NN = DEFAULT
 
-lateralcortex = (
-{'Name': 'lateralcortex[lateralcortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+LC = (
+{'Name': 'LC[LC_NA[0]]', 'NN': LC_NA[0]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LC_NA[0]_NN)},
+{'Name': 'LC[LC_Ach]', 'NN': LC_Ach_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LC_Ach_NN)},
+{'Name': 'LC[LC_GABA]', 'NN': LC_GABA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LC_GABA_NN)},
+{'Name': 'LC[LC_D1]', 'NN': LC_D1_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LC_D1_NN)},
+{'Name': 'LC[LC_D2]', 'NN': LC_D2_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LC_D2_NN)},
+{'Name': 'LC[LC_NA[1]]', 'NN': LC_NA[1]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LC_NA[1]_NN)}
 )
-lateralcortex_5HT = 0
+LC_NA[0] = 0
+LC_Ach = 1
+LC_GABA = 2
+LC_D1 = 3
+LC_D2 = 4
+LC_NA[1] = 5
 
-Basalganglia = (
-{'Name': 'Basalganglia[Basalganglia_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-Basalganglia_5HT = 0
+PGI_GABA_NN = int(10 / 340 * number_of_neuron)
+if PGI_GABA_NN < DEFAULT : PGI_GABA_NN = DEFAULT
+PGI_Glu_NN = int(10 / 340 * number_of_neuron)
+if PGI_Glu_NN < DEFAULT : PGI_Glu_NN = DEFAULT
 
-entorhinalcortex = (
-{'Name': 'entorhinalcortex[entorhinalcortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+PGI = (
+{'Name': 'PGI[PGI_GABA]', 'NN': PGI_GABA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', PGI_GABA_NN)},
+{'Name': 'PGI[PGI_Glu]', 'NN': PGI_Glu_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', PGI_Glu_NN)}
 )
-entorhinalcortex_5HT = 0
+PGI_GABA = 0
+PGI_Glu = 1
 
-medialcortex = (
-{'Name': 'medialcortex[medialcortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-medialcortex_5HT = 0
+BNST_Glu_NN = int(10 / 340 * number_of_neuron)
+if BNST_Glu_NN < DEFAULT : BNST_Glu_NN = DEFAULT
+BNST_GABA_NN = int(10 / 340 * number_of_neuron)
+if BNST_GABA_NN < DEFAULT : BNST_GABA_NN = DEFAULT
+BNST_Ach_NN = int(10 / 340 * number_of_neuron)
+if BNST_Ach_NN < DEFAULT : BNST_Ach_NN = DEFAULT
 
-locuscoeruleus = (
-{'Name': 'locuscoeruleus[locuscoeruleus_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'locuscoeruleus[locuscoeruleus_DA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'locuscoeruleus[locuscoeruleus_NA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
+BNST = (
+{'Name': 'BNST[BNST_Glu]', 'NN': BNST_Glu_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', BNST_Glu_NN)},
+{'Name': 'BNST[BNST_GABA]', 'NN': BNST_GABA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', BNST_GABA_NN)},
+{'Name': 'BNST[BNST_Ach]', 'NN': BNST_Ach_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', BNST_Ach_NN)}
 )
-locuscoeruleus_5HT = 0
-locuscoeruleus_DA = 1
-locuscoeruleus_NA = 2
+BNST_Glu = 0
+BNST_GABA = 1
+BNST_Ach = 2
 
-ventraltegmentalarea = (
-{'Name': 'ventraltegmentalarea[ventraltegmentalarea_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'ventraltegmentalarea[ventraltegmentalarea_DA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
-)
-ventraltegmentalarea_5HT = 0
-ventraltegmentalarea_DA = 1
+Amy_Glu_NN = int(10 / 340 * number_of_neuron)
+if Amy_Glu_NN < DEFAULT : Amy_Glu_NN = DEFAULT
+Amy_Ach_NN = int(10 / 340 * number_of_neuron)
+if Amy_Ach_NN < DEFAULT : Amy_Ach_NN = DEFAULT
+Amy_GABA_NN = int(10 / 340 * number_of_neuron)
+if Amy_GABA_NN < DEFAULT : Amy_GABA_NN = DEFAULT
 
-nucleusaccumbens = (
-{'Name': 'nucleusaccumbens[nucleusaccumbens_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'nucleusaccumbens[nucleusaccumbens_DA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
+Amy = (
+{'Name': 'Amy[Amy_Glu]', 'NN': Amy_Glu_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Amy_Glu_NN)},
+{'Name': 'Amy[Amy_Ach]', 'NN': Amy_Ach_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Amy_Ach_NN)},
+{'Name': 'Amy[Amy_GABA]', 'NN': Amy_GABA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Amy_GABA_NN)}
 )
-nucleusaccumbens_5HT = 0
-nucleusaccumbens_DA = 1
+Amy_Glu = 0
+Amy_Ach = 1
+Amy_GABA = 2
 
-Cerebralcortex = (
-{'Name': 'Cerebralcortex[Cerebralcortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+RN_5-HT_NN = int(10 / 340 * number_of_neuron)
+if RN_5-HT_NN < DEFAULT : RN_5-HT_NN = DEFAULT
+RN_a1_NN = int(10 / 340 * number_of_neuron)
+if RN_a1_NN < DEFAULT : RN_a1_NN = DEFAULT
+RN_a2_NN = int(10 / 340 * number_of_neuron)
+if RN_a2_NN < DEFAULT : RN_a2_NN = DEFAULT
+
+RN = (
+{'Name': 'RN[RN_5-HT]', 'NN': RN_5-HT_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', RN_5-HT_NN)},
+{'Name': 'RN[RN_a1]', 'NN': RN_a1_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', RN_a1_NN)},
+{'Name': 'RN[RN_a2]', 'NN': RN_a2_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', RN_a2_NN)}
 )
-Cerebralcortex_5HT = 0
+RN_5-HT = 0
+RN_a1 = 1
+RN_a2 = 2
+
+Thalamus_Glu_NN = int(10 / 340 * number_of_neuron)
+if Thalamus_Glu_NN < DEFAULT : Thalamus_Glu_NN = DEFAULT
 
 Thalamus = (
-{'Name': 'Thalamus[Thalamus_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+{'Name': 'Thalamus[Thalamus_Glu]', 'NN': Thalamus_Glu_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Thalamus_Glu_NN)},
 )
-Thalamus_5HT = 0
+Thalamus_Glu = 0
 
-insularcortex = (
-{'Name': 'insularcortex[insularcortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+PVN_GABA_NN = int(10 / 340 * number_of_neuron)
+if PVN_GABA_NN < DEFAULT : PVN_GABA_NN = DEFAULT
+
+PVN = (
+{'Name': 'PVN[PVN_GABA]', 'NN': PVN_GABA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', PVN_GABA_NN)},
 )
-insularcortex_5HT = 0
+PVN_GABA = 0
 
-Rostralgroup = (
-{'Name': 'Rostralgroup[Rostralgroup_A1]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'Rostralgroup[Rostralgroup_A2]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
-)
-Rostralgroup_A1 = 0
-Rostralgroup_A2 = 1
 
-Caudalgroup = (
+Striatum = (
 )
 
-septum = (
-{'Name': 'septum[septum_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-septum_5HT = 0
+LTD_a1_NN = int(10 / 340 * number_of_neuron)
+if LTD_a1_NN < DEFAULT : LTD_a1_NN = DEFAULT
+LTD_a2_NN = int(10 / 340 * number_of_neuron)
+if LTD_a2_NN < DEFAULT : LTD_a2_NN = DEFAULT
+LTD_Ach_NN = int(10 / 340 * number_of_neuron)
+if LTD_Ach_NN < DEFAULT : LTD_Ach_NN = DEFAULT
 
-hypothalamus = (
-{'Name': 'hypothalamus[hypothalamus_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+LTD = (
+{'Name': 'LTD[LTD_a1]', 'NN': LTD_a1_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LTD_a1_NN)},
+{'Name': 'LTD[LTD_a2]', 'NN': LTD_a2_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LTD_a2_NN)},
+{'Name': 'LTD[LTD_Ach]', 'NN': LTD_Ach_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', LTD_Ach_NN)}
 )
-hypothalamus_5HT = 0
+LTD_a1 = 0
+LTD_a2 = 1
+LTD_Ach = 2
 
-RMg = (
+PrH_GABA_NN = int(10 / 340 * number_of_neuron)
+if PrH_GABA_NN < DEFAULT : PrH_GABA_NN = DEFAULT
+
+PrH = (
+{'Name': 'PrH[PrH_GABA]', 'NN': PrH_GABA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', PrH_GABA_NN)},
+)
+PrH_GABA = 0
+
+
+NTS = (
 )
 
-hippocampus = (
-{'Name': 'hippocampus[hippocampus_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-hippocampus_5HT = 0
+AcbCore_Ach_NN = int(10 / 340 * number_of_neuron)
+if AcbCore_Ach_NN < DEFAULT : AcbCore_Ach_NN = DEFAULT
+AcbCore_GABA[0]_NN = int(10 / 340 * number_of_neuron)
+if AcbCore_GABA[0]_NN < DEFAULT : AcbCore_GABA[0]_NN = DEFAULT
 
-RPa = (
+AcbCore = (
+{'Name': 'AcbCore[AcbCore_Ach]', 'NN': AcbCore_Ach_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', AcbCore_Ach_NN)},
+{'Name': 'AcbCore[AcbCore_GABA[0]]', 'NN': AcbCore_GABA[0]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', AcbCore_GABA[0]_NN)}
 )
+AcbCore_Ach = 0
+AcbCore_GABA[0] = 1
 
-lateraltegmentalarea = (
-{'Name': 'lateraltegmentalarea[lateraltegmentalarea_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-lateraltegmentalarea_5HT = 0
+Prefrontalcortex_Glu[1]_NN = int(10 / 340 * number_of_neuron)
+if Prefrontalcortex_Glu[1]_NN < DEFAULT : Prefrontalcortex_Glu[1]_NN = DEFAULT
+Prefrontalcortex_Glu[0]_NN = int(10 / 340 * number_of_neuron)
+if Prefrontalcortex_Glu[0]_NN < DEFAULT : Prefrontalcortex_Glu[0]_NN = DEFAULT
 
-neocortex = (
-{'Name': 'neocortex[neocortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+Prefrontalcortex = (
+{'Name': 'Prefrontalcortex[Prefrontalcortex_Glu[1]]', 'NN': Prefrontalcortex_Glu[1]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Prefrontalcortex_Glu[1]_NN)},
+{'Name': 'Prefrontalcortex[Prefrontalcortex_Glu[0]]', 'NN': Prefrontalcortex_Glu[0]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Prefrontalcortex_Glu[0]_NN)}
 )
-neocortex_5HT = 0
+Prefrontalcortex_Glu[1] = 0
+Prefrontalcortex_Glu[0] = 1
 
-bednucleusofthestriaterminalis = (
-{'Name': 'bednucleusofthestriaterminalis[bednucleusofthestriaterminalis_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-bednucleusofthestriaterminalis_5HT = 0
+Ab_NA_NN = int(10 / 340 * number_of_neuron)
+if Ab_NA_NN < DEFAULT : Ab_NA_NN = DEFAULT
 
-DR = (
-{'Name': 'DR[DR_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+Ab = (
+{'Name': 'Ab[Ab_NA]', 'NN': Ab_NA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Ab_NA_NN)},
 )
-DR_5HT = 0
+Ab_NA = 0
 
-MnR = (
-{'Name': 'MnR[MnR_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-MnR_5HT = 0
+VTA_DA[0]_NN = int(10 / 340 * number_of_neuron)
+if VTA_DA[0]_NN < DEFAULT : VTA_DA[0]_NN = DEFAULT
+VTA_a1_NN = int(10 / 340 * number_of_neuron)
+if VTA_a1_NN < DEFAULT : VTA_a1_NN = DEFAULT
+VTA_DA[1]_NN = int(10 / 340 * number_of_neuron)
+if VTA_DA[1]_NN < DEFAULT : VTA_DA[1]_NN = DEFAULT
 
-reticularformation = (
-{'Name': 'reticularformation[reticularformation_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+VTA = (
+{'Name': 'VTA[VTA_DA[0]]', 'NN': VTA_DA[0]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', VTA_DA[0]_NN)},
+{'Name': 'VTA[VTA_a1]', 'NN': VTA_a1_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', VTA_a1_NN)},
+{'Name': 'VTA[VTA_DA[1]]', 'NN': VTA_DA[1]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', VTA_DA[1]_NN)}
 )
-reticularformation_5HT = 0
+VTA_DA[0] = 0
+VTA_a1 = 1
+VTA_DA[1] = 2
 
-pons = (
-{'Name': 'pons[pons_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-pons_5HT = 0
+Aa_NA_NN = int(10 / 340 * number_of_neuron)
+if Aa_NA_NN < DEFAULT : Aa_NA_NN = DEFAULT
 
-Periaqueductalgray = (
-{'Name': 'Periaqueductalgray[Periaqueductalgray_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
+Aa = (
+{'Name': 'Aa[Aa_NA]', 'NN': Aa_NA_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Aa_NA_NN)},
 )
-Periaqueductalgray_5HT = 0
+Aa_NA = 0
 
-prefrontalcortex = (
-{'Name': 'prefrontalcortex[prefrontalcortex_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'prefrontalcortex[prefrontalcortex_DA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
-)
-prefrontalcortex_5HT = 0
-prefrontalcortex_DA = 1
+AcbShell_GABA[1]_NN = int(10 / 340 * number_of_neuron)
+if AcbShell_GABA[1]_NN < DEFAULT : AcbShell_GABA[1]_NN = DEFAULT
 
-striatum = (
-{'Name': 'striatum[striatum_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'striatum[striatum_DA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
+AcbShell = (
+{'Name': 'AcbShell[AcbShell_GABA[1]]', 'NN': AcbShell_GABA[1]_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', AcbShell_GABA[1]_NN)},
 )
-striatum_5HT = 0
-striatum_DA = 1
+AcbShell_GABA[1] = 0
 
-amygdala = (
-{'Name': 'amygdala[amygdala_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-)
-amygdala_5HT = 0
+Motorcortex_Glu_NN = int(10 / 340 * number_of_neuron)
+if Motorcortex_Glu_NN < DEFAULT : Motorcortex_Glu_NN = DEFAULT
 
-substantianigra = (
-{'Name': 'substantianigra[substantianigra_5HT]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)},
-{'Name': 'substantianigra[substantianigra_DA]', 'NN': 10, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', 10)}
+Motorcortex = (
+{'Name': 'Motorcortex[Motorcortex_Glu]', 'NN': Motorcortex_Glu_NN, 'Model': 'iaf_psc_alpha', 'IDs': nest.Create('iaf_psc_alpha', Motorcortex_Glu_NN)},
 )
-substantianigra_5HT = 0
-substantianigra_DA = 1
+Motorcortex_Glu = 0
 

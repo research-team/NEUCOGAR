@@ -17,8 +17,8 @@ SERO_synparams_in['vt'] = vt_sero_in[0]
 
 nest.CopyModel('stdp_dopamine_synapse', dopa_model_ex, DOPA_synparams_ex)
 nest.CopyModel('stdp_dopamine_synapse', dopa_model_in, DOPA_synparams_in)
-nest.CopyModel('stdp_serotanine_synapse', sero_model_in, SERO_synparams_in)
-nest.CopyModel('stdp_serotanine_synapse', sero_model_ex, SERO_synparams_ex)
+nest.CopyModel('stdp_serotonine_synapse', sero_model_in, SERO_synparams_in)
+nest.CopyModel('stdp_serotonine_synapse', sero_model_ex, SERO_synparams_ex)
 
 %1$2s
 

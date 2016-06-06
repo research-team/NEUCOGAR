@@ -285,8 +285,8 @@ public class App {
 
     public void run(String name) throws JAXBException, URISyntaxException, FileNotFoundException {
         LOG.debug("Loading file " + name);
-
-        FileInputStream fileInputStream = new FileInputStream("./" + name);
+///TODO: file path "./" + name
+        FileInputStream fileInputStream = new FileInputStream("./" + name );
 
         JAXBContext jc = JAXBContext.newInstance(MxGraphModel.class);
         StreamSource xml = new StreamSource(fileInputStream);
@@ -299,6 +299,10 @@ public class App {
         MxCell[] mxCells = mxGraphModel.getRoot().getMxCell();
         List<MxCell> mxCells1 = removeLegenda(mxCells);
 
+
+        for (MxCell mxCell : mxCells1) {
+            System.out.println(mxCell.getValue());
+        }
 
         List<BrainRegionVM> brainRegionVMs = parseBrainRegion(mxCells1);
         brainRegionMap = new HashMap<>();
@@ -347,7 +351,7 @@ public class App {
 
     private void configureLinks(List<LinkVM> links) {
         List<LinkVM> temp = new ArrayList<>();
-        int id = 0;
+        int id = 325212154;
         //resolve bedirect links
         for (LinkVM link : links) {
             if (link.isBeDirect()) {

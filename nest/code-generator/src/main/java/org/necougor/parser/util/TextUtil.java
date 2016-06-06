@@ -17,7 +17,7 @@ public class TextUtil {
         }
     }
 
-    public static String clearText(String text){
+    public static String clearText(String text) {
         text = text.replaceAll(";", "");
         text = text.replaceAll("nbsp", "");
         text = text.replaceAll("&", "");
@@ -28,17 +28,17 @@ public class TextUtil {
     public static String br2nl(String html) {
         if (html == null)
             return html;
-        Document document = Jsoup.parse(html);
-        document.outputSettings(new Document.OutputSettings().prettyPrint(false));//makes html() preserve linebreaks and spacing
-        document.select("br").append("\\n");
-        document.select("p").prepend("\\n\\n");
-        String s = document.html().replaceAll("\\\\n", "\n");
-        return Jsoup.clean(s, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
+        return Jsoup.parse(html).text().replaceAll("\\<.*?>", "");
     }
 
-    public static String clear(String text){
+    public static String clear(String text) {
         text = br2nl(text);
         return clearText(text);
+    }
+
+    public static void main(String[] args) {
+        String clear = clear("&lt;div&gt;striatum&lt;br&gt;&lt;/div&gt;");
+        System.out.println(clear);
     }
 
 }
