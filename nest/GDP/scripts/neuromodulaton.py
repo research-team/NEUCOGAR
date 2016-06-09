@@ -86,4 +86,4 @@ endbuild = datetime.datetime.now()
 
 simulate()
 get_log(startbuild, endbuild)
-save(GUI=statusGUI)
+save(GUI=status_gui)
