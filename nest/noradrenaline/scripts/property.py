@@ -1,53 +1,64 @@
-# keys for connection type
+# Keys for connection type
 GABA = 0
 Glu = 1
 ACh = 2
 DA_ex = 3
 DA_in = 4
-NA = 5
-#DA = 6
+NA_ex = 5
+SERO_in = 6
+SERO_ex = 7
+
+# Keys for synapse models
+model = 0
+basic_weight = 1
 
 # Quality of graphics
 dpi_n = 120
 
-k_IDs = 'IDs'
-k_name = 'Name'
-k_NN = 'NN'
+# Keys for parts dictionary
+k_IDs   = 'IDs'
+k_name  = 'Name'
+k_NN    = 'NN'
 k_model = 'Model'
 
-# general settings
+# T - simulation time | dt - simulation pause step
 T = 1000.
 dt = 10.
 
-# neurons number for spike detector
+# Neurons number for spike detector
 N_detect = 100
 
-# neurons number for multimeter
+# Neurons number for multimeter
 N_volt = 3
 
-# generator delay
+# Generator delay
 pg_delay = 10.
 
+# Synapse weights
 w_Glu = 3.
 w_GABA = -w_Glu * 2
 w_ACh = 8.
+w_DA_ex = 13.
+w_DA_in = -w_DA_ex
+w_NA_ex = 13.
+w_SERO_ex = 10.
+w_SERO_in = -w_SERO_ex
 
-# Volume transmission
-w_NR_ex = 13.
-w_NR_in = -w_NR_ex
-
+# Minimal number of neurons
 NN_minimal = 10
 
-NN_coef = 0.0001
+# Synapse models
+glu_synapse      = 'glu_synapse'
+gaba_synapse     = 'gaba_synapse'
+ach_synapse      = 'ach_synapse'
+dopa_synapse_ex  = 'dopa_synapse_ex'
+dopa_synapse_in  = 'dopa_synapse_in'
+nora_synapse_ex  = 'nora_synapse_ex'
+sero_synapse_ex  = 'sero_synapse_ex'
+sero_synapse_in  = 'sero_synapse_in'
+gen_static_syn   = 'noise_conn'
 
-# dopamine model key
-nora_model_ex = 'dopa_ex'
-gen_static_syn = 'noise_conn'
-#nora_model_ex = 'dopa_ex'
-nora_model_in = 'dopa_in'
-
-nora_flag = True        # dopamine modulation flag
-#nora_flag = True
-generator_flag = True   # poisson generator with rate set up flag
-test_flag = True       # True - testing mode | False - real number neurons
-statusGUI = True        # True - GUI is on | False - is off
+# Additional setings
+dopamine_flag = True     # dopamine modulation flag
+generator_flag = True
+status_gui = True        # True - GUI is on | False - is off
