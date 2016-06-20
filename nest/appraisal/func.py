@@ -74,11 +74,20 @@ def connect(pre, post, syn_type=GABA, weight_coef=1):
     log_connection(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
 
 
-def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
+def connect_generator(part, startTime=1, stopTime=T, rate=250, weight=1, coef_part=1):
     name = part[k_name]
     spikegenerators[name] = nest.Create('poisson_generator', 1, {'rate': float(rate),
                                                                  'start': float(startTime),
                                                                  'stop': float(stopTime)})
+
+    static_syn = {
+        'model': 'static_synapse',
+        'weight': float(weight + 2) * 6,
+        'delay': 0.1
+    }
+
+    nest.SetDefaults('static_synapse', {})
+
     nest.Connect(spikegenerators[name], part[k_IDs],
                  syn_spec=static_syn,
                  conn_spec={'rule': 'fixed_outdegree',
@@ -148,7 +157,7 @@ def save(GUI):
         logger.debug("Saving IMAGES into {0}".format(SAVE_PATH))
         for key in spikedetectors:
             try:
-                nest.raster_plot.from_device(spikedetectors[key], hist=True)
+                nest.raster_plot.from_device(spikedetectors[key], hist=True, hist_binwidth=3.3)
                 pl.savefig(f_name_gen(SAVE_PATH, "spikes_" + key.lower()), dpi=dpi_n, format='png')
                 pl.close()
             except Exception:

@@ -49,12 +49,6 @@ types = {GABA:  (STDP_synparams_GABA, w_GABA, 'GABA'),
          DA_ex: (DOPA_synparams_ex, w_DA_ex, 'DA_ex', dopa_synapse_ex),
          DA_in: (DOPA_synparams_in, w_DA_in, 'DA_in', dopa_synapse_in)}
 
-# Parameters for generator links
-static_syn = {
-    'model': 'static_synapse',
-    'weight': w_Glu * 5,
-    'delay': 0.1
-}
 
 # Device parameters
 multimeter_param = {'to_memory': True,
