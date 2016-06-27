@@ -10,27 +10,28 @@ nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True,
                       'local_num_threads': 4,
                       'resolution': 0.1})
-generate_neurons(12000)
+generate_neurons(10000)
 
 logger.debug("* * * Start connection initialisation")
 # * * * NIGROSTRIATAL * * *
-connect(motor[Cortex], thalamus[thalamus_Glu], syn_type=Glu, weight_coef=0.7)
-connect(motor[Cortex], striatum[D1], syn_type=Glu)
-connect(motor[Cortex], striatum[D2], syn_type=Glu)
+connect(motor[Cortex], thalamus[thalamus_Glu], syn_type=Glu, weight_coef=0.4)
+connect(motor[Cortex], striatum[D1], syn_type=Glu, weight_coef=1)
+connect(motor[Cortex], striatum[D2], syn_type=Glu, weight_coef=1)
+connect(motor[Cortex], stn[stn_Glu], syn_type=Glu, weight_coef=1)
 
-connect(striatum[D1], snr[snr_GABA], weight_coef=0.01)
-connect(striatum[D1], gpi[gpi_GABA], weight_coef=0.01)
+connect(striatum[D1], snr[snr_GABA], weight_coef=0.1)
+connect(striatum[D1], gpi[gpi_GABA], weight_coef=0.1)
 
-connect(striatum[D1], gpe[gpe_GABA], weight_coef=0.001)
-connect(striatum[D2], gpe[gpe_GABA], weight_coef=5)
+connect(striatum[D1], gpe[gpe_GABA], weight_coef=0.1)
+connect(striatum[D2], gpe[gpe_GABA], weight_coef=0.1)
 
-connect(gpe[gpe_GABA], stn[stn_Glu], weight_coef=0.05)
+connect(gpe[gpe_GABA], stn[stn_Glu], weight_coef=0.5)
 
-connect(stn[stn_Glu], snr[snr_GABA], syn_type=Glu, weight_coef=30)
-connect(stn[stn_Glu], gpi[gpi_GABA], syn_type=Glu, weight_coef=30)
+connect(stn[stn_Glu], snr[snr_GABA], syn_type=Glu, weight_coef=2)
+connect(stn[stn_Glu], gpi[gpi_GABA], syn_type=Glu, weight_coef=2)
 
-connect(gpi[gpi_GABA], thalamus[thalamus_Glu], weight_coef=1)
-connect(snr[snr_GABA], thalamus[thalamus_Glu], weight_coef=1)
+connect(gpi[gpi_GABA], thalamus[thalamus_Glu], weight_coef=3)
+connect(snr[snr_GABA], thalamus[thalamus_Glu], weight_coef=3)
 
 connect(thalamus[thalamus_Glu], motor[FrontalCortex], syn_type=Glu)
 
@@ -50,26 +51,28 @@ if dopa_flag:
     nest.Connect(vta[vta_DA0][k_IDs], vt_ex)
     nest.Connect(vta[vta_DA0][k_IDs], vt_ex)
 
-    connect(snc[snc_DA], striatum[D1], syn_type=DA_ex)
+    connect(snc[snc_DA], striatum[D1], syn_type=DA_ex, weight_coef=1)
     connect(snc[snc_DA], striatum[D2], syn_type=DA_in)
 
-    connect(vta[vta_DA0], striatum[D1], syn_type=DA_ex)
+    connect(vta[vta_DA0], striatum[D1], syn_type=DA_ex, weight_coef=1)
     connect(vta[vta_DA0], striatum[D2], syn_type=DA_in)
 
 
 logger.debug("* * * Creating spike generators...")
 if generator_flag:
-    connect_generator(motor[Cortex], 0.1, T, rate=300, coef_part=1)
+    connect_generator(motor[Cortex], 9.9, T, rate=300, coef_part=1, weight=2)
+    #connect_generator(gpi[gpi_GABA], 0.1, 9.9, rate=300, coef_part=1, weight=2)
+    #connect_generator(snr[snr_GABA], 0.1, 9.9, rate=300, coef_part=1, weight=2)
 
 
     delta = [1.0, 1.5, 0.38, 0.8, 0.33]
 
-    k = 10
+    k = 9.9
     iter = 0
 
     for i in range(5) :
-        connect_generator(snc[snc_DA], k, k + 3.3, rate = delta[iter], coef_part=1)
-        connect_generator(vta[vta_DA0], k, k + 3.3, rate = delta[iter],  coef_part=1)
+        connect_generator(snc[snc_DA], k, k + 3.3, rate = 300, weight=delta[iter], coef_part=1)
+        connect_generator(vta[vta_DA0], k, k + 3.3, rate = 300, weight=delta[iter],  coef_part=1)
         iter += 1
         k += 3.3
 
