@@ -9,7 +9,7 @@ nest.ResetKernel()
 w_recep = {'AMPA': 18.}
 neuron = nest.Create('ht_neuron')
 
-p_gens = nest.Create('spike_generator', params={'spike_times': numpy.array(3.0)})
+p_gens = nest.Create('spike_generator', params={'spike_times': numpy.array([15.0])})
 mm = nest.Create('multimeter',
                  params={'interval': 0.1,
                          'record_from': ['V_m']})
