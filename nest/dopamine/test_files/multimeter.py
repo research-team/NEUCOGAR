@@ -37,9 +37,9 @@ V_min double - Absolute lower value for the membrane potential.
 '''
 
 if neuron_model == "iaf_psc_alpha" or neuron_model == "iaf_psc_exp":
-    n = nest.Create(neuron_model, params={'E_L': -70.0, 'C_m': 5.2, 'tau_m': 4.0, 't_ref': 1.0, 'V_th': -55.0, 'V_reset': -80.0, 'tau_syn_ex': 1.0, 'I_e': 2.0})
+    n = nest.Create(neuron_model, params={'E_L': -70.0, 'C_m': 5.2, 'tau_m': 4.0, 't_ref': 1.0, 'V_th': -55.0, 'V_reset': -80.0, 'tau_syn_ex': 1.0, 'I_e': 10.0})
 elif neuron_model == "iaf_psc_delta":
-    n = nest.Create(neuron_model, params={'V_reset': -70.0})
+    n = nest.Create(neuron_model, params={'V_reset': -80.0})
 else:
     n = nest.Create(neuron_model, params={'tau_syn_ex': 1.0})
 
@@ -52,10 +52,11 @@ elif neuron_model == "mat2_psc_exp":
 
 # Create spike generators and connect
 gex = nest.Create('spike_generator', params={'spike_times': np.array(np.arange(10.0, 25.0, 0.1))})
-gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
+#gex = nest.Create('spike_generator', params={'spike_times': np.array([5.0, 10, 15])})
+#gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
 
 nest.Connect(gex, n, syn_spec={'weight':  40.0}) # excitatory
-nest.Connect(gin, n, syn_spec={'weight': -20.0}) # inhibitory
+#nest.Connect(gin, n, syn_spec={'weight': -20.0}) # inhibitory
 nest.Connect(m, n)
 nest.Connect(n, sd)
 
