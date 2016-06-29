@@ -5,8 +5,8 @@ import numpy as np
 import pylab as pl
 import nest.raster_plot
 
-neuron_model = "iaf_psc_alpha"
-neuron_model = "iaf_psc_delta"
+#neuron_model = "iaf_psc_alpha"
+#neuron_model = "iaf_psc_delta"
 neuron_model = "iaf_psc_exp"
 #neuron_model = "iaf_cond_exp" -
 #neuron_model = "iaf_cond_alpha" -
@@ -51,7 +51,7 @@ elif neuron_model == "mat2_psc_exp":
     m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m', 'V_th']})
 
 # Create spike generators and connect
-gex = nest.Create('spike_generator', params={'spike_times': np.array(np.arange(5.0, 10.0, 1.0))})
+gex = nest.Create('spike_generator', params={'spike_times': np.array(np.arange(3.0, 7.0, 2.0))})
 #gex = nest.Create('spike_generator', params={'spike_times': np.array([5.0, 10, 15])})
 #gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
 
