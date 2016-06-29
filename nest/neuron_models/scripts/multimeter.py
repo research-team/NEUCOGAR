@@ -37,7 +37,7 @@ V_min double - Absolute lower value for the membrane potential.
 '''
 
 if neuron_model == "iaf_psc_alpha" or neuron_model == "iaf_psc_exp":
-    n = nest.Create(neuron_model, params={'E_L': -70.0, 'C_m': 5.2, 'tau_m': 4.0, 't_ref': 1.0, 'V_th': -55.0, 'V_reset': -80.0, 'tau_syn_ex': 1.0, 'I_e': 10.0})
+    n = nest.Create(neuron_model, params={'V_m': -70.,'E_L': -70.0, 'C_m': 5.2, 'tau_m': 4.0, 't_ref': 1.0, 'V_th': -55.0, 'V_reset': -80.0, 'tau_syn_ex': 1.0, 'I_e': 10.0})
 elif neuron_model == "iaf_psc_delta":
     n = nest.Create(neuron_model, params={'V_reset': -80.0})
 else:
@@ -66,7 +66,10 @@ nest.Simulate(100)
 # obtain and display data
 events = nest.GetStatus(m)[0]['events']
 t = events['times']
-
+pl.subplot(111)
+pl.plot(t, events['V_m'])
+pl.ylabel('Membrane potential [mV]')
+'''
 if neuron_model == "iaf_psc_alpha" or neuron_model == "iaf_psc_exp":
     pl.subplot(311)
     pl.plot(t, events['V_m'])
@@ -98,6 +101,6 @@ else:
     pl.subplot(111)
     pl.plot(t, events['V_m'])
     pl.ylabel('Membrane potential [mV]')
-
+'''
 nest.raster_plot.from_device(sd)
 nest.raster_plot.show()

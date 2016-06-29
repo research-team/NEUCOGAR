@@ -6,7 +6,7 @@ from neuronparams import *
 
 nest.ResetKernel()
 
-path = "/Users/komarovvitaliy/GitHub/NEUCOGAR/CalculationNM/Results/"
+path = "/Users/komarovvitaliy/GitHub/NEUCOGAR/nest/neuron_models/Results/"
 dpi_n = 130
 
 allModels = [#'aeif_cond_alpha',
