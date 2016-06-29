@@ -23,8 +23,21 @@ nest.SetStatus(sd, {"label": "spikes", "withtime": True, "withgid": True, "to_fi
 print neuron_model, ' recordables: ', nest.GetDefaults(neuron_model)['recordables']
 
 # create neuron and multimeter
+'''
+E_L double - Resting membrane potential in mV.
+C_m double - Capacity of the membrane in pF
+tau_m double - Membrane time constant in ms.
+t_ref double - Duration of refractory period in ms.
+V_th double - Spike threshold in mV.
+V_reset double - Reset potential of the membrane in mV.
+tau_syn_ex double - Rise time of the excitatory synaptic alpha function in ms.
+tau_syn_in double - Rise time of the inhibitory synaptic alpha function in ms.
+I_e double - Constant external input current in pA.
+V_min double - Absolute lower value for the membrane potential.
+'''
+
 if neuron_model == "iaf_psc_alpha" or neuron_model == "iaf_psc_exp":
-    n = nest.Create(neuron_model, params={'tau_syn_ex': 1.0, 'V_reset': -70.0})
+    n = nest.Create(neuron_model, params={'E_L': -70.0, 'C_m': 5.2, 'tau_m': 4.0, 't_ref': 1.0, 'V_th': -55.0, 'V_reset': -80.0, 'tau_syn_ex': 1.0, 'I_e': 2.0})
 elif neuron_model == "iaf_psc_delta":
     n = nest.Create(neuron_model, params={'V_reset': -70.0})
 else:
