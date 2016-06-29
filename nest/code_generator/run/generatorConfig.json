@@ -1,0 +1,64 @@
+{
+  "Thalamus_5HT": {
+    "name": "Thalamus_HT5",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  },
+  "motor_Glu0": {
+    "name": "motor_Glu0",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 300,
+    "coef_part": 1
+  },
+  "pptg_GABA": {
+    "name": "pptg_GABA",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  },
+  "pptg_Glu": {
+    "name": "pptg_Glu",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  },
+  "pptg_ACh": {
+    "name": "pptg_ACh",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  },
+  "amygdala_Glu": {
+    "name": "amygdala_Glu",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  },
+  "snc_DA": {
+    "name": "snc_DA",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  },
+  "vta_DA0": {
+    "name": "vta_DA0",
+    "startTime": 400,
+    "stopTime": 600,
+    "rate": 250,
+    "coef_part": 1
+  }
+}
+
+
+
+
+
+

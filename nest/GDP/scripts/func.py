@@ -21,9 +21,9 @@ logger = logging.getLogger('function')
 def generate_neurons():
     global NEURONS, all_parts
     logger.debug("* * * Start generate neurons")
-    parts_no_dopa = 
+    #parts_no_dopa =
 
-    parts_with_dopa = 
+    #parts_with_dopa =
 
     all_parts = tuple(sorted(parts_no_dopa + parts_with_dopa))
 
@@ -136,12 +136,12 @@ def log_connection(pre, post, syn_type, weight):
 
 
 def connect(pre, post, syn_type=GABA, weight_coef=1):
-    types[syn_type][0]['weight'] = weight_coef * types[syn_type][1]
+    synapses[syn_type][0]['weight'] = weight_coef * synapses[syn_type][1]
     nest.Connect(pre[k_IDs],
                  post[k_IDs],
                  conn_spec=conn_dict,
-                 syn_spec=types[syn_type][3] if syn_type in (DA_ex, DA_in) else types[syn_type][0])
-    log_connection(pre, post, types[syn_type][2], types[syn_type][0]['weight'])
+                 syn_spec=synapses[syn_type][3] if syn_type in (DA_ex, DA_in) else synapses[syn_type][0])
+    log_connection(pre, post, synapses[syn_type][2], synapses[syn_type][0]['weight'])
 
 
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):

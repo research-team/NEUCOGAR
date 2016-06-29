@@ -3,7 +3,7 @@
 
 #### 1. Get standard configuration (with NumPy, SciPy, Matplotlib, iPython and GNU Scientific Library)
 ```bash
-sudo apt-get install build-essential autoconf automake libtool libltdl7-dev libreadline6-dev libncurses5-dev libgsl0-dev python-all-dev python-numpy python-scipy python-matplotlib ipython gsl-bin libgsl-dev libgsl-dbg
+sudo apt-get install build-essential autoconf automake libtool libltdl7-dev libreadline6-dev libncurses5-dev libgsl0-dev python-all-dev python-numpy python-scipy python-matplotlib ipython gsl-bin libgsl0-dev libgsl0-dbg
 ```
 or you can install them from websites 
 [SciPy](http://www.scipy.org/install.html),
