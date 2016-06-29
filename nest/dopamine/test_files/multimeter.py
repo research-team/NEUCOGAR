@@ -51,7 +51,7 @@ elif neuron_model == "mat2_psc_exp":
     m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m', 'V_th']})
 
 # Create spike generators and connect
-gex = nest.Create('spike_generator', params={'spike_times': np.array(np.arange(10.0, 25.0, 0.1))})
+gex = nest.Create('spike_generator', params={'spike_times': np.array(np.arange(5.0, 10.0, 1.0))})
 #gex = nest.Create('spike_generator', params={'spike_times': np.array([5.0, 10, 15])})
 #gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
 
