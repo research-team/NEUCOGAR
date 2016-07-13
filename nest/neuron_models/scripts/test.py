@@ -51,18 +51,19 @@ if neuron_model == "iaf_psc_alpha" or neuron_model == "iaf_psc_exp":
 elif neuron_model == "iaf_psc_delta":
     n = nest.Create(neuron_model, params={'V_reset': -80.0})
 elif neuron_model == "hh_cond_exp_traub":
-    n = nest.Create(neuron_model, params={'V_m': -70.0, 'E_L': -70.0, 'V_T': -63.0, 'g_L': 6.0, 'C_m': 30.0, 'tau_syn_ex': 1.0, 'I_e': 10.0,
+    n = nest.Create(neuron_model, params={'V_m': -70.0, 'E_L': -70.0, 'V_T': -63.0, 'g_L': 6.0, 'C_m': 30.0,
+                                          'tau_syn_ex': 5.0, 'tau_syn_in': 15.0, 'I_e': 0.0,
                                           'E_ex': 0.0,
                                           'E_in': -80.0,
                                           'E_Na': 50.0,
                                           'g_Na': 20000.0,
                                           'E_K': -90.0,
-                                          'g_K': 6000.0
+                                          'g_K': 600.0
                                           })
 else:
     n = nest.Create(neuron_model, params={'tau_syn_ex': 1.0})
 
-m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m']})
+m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m', 'I_Na', 'I_K']})
 
 if neuron_model=="iaf_psc_alpha" or neuron_model=="iaf_psc_exp":
     m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m', 'input_currents_ex', 'input_currents_in', "weighted_spikes_in", "weighted_spikes_ex"]})
@@ -70,17 +71,18 @@ elif neuron_model == "mat2_psc_exp":
     m = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m', 'V_th']})
 
 # Create spike generators and connect
-gex = nest.Create('spike_generator', params={'spike_times': np.array([5.0])})
+gex = nest.Create('spike_generator', params={'spike_times': np.array([0.1])})
+gin = nest.Create('spike_generator', params={'spike_times': np.array([0.5])})
 #gex = nest.Create('spike_generator', params={'spike_times': np.array([5.0, 10, 15])})
 #gin = nest.Create('spike_generator', params={'spike_times': np.array([15.0, 25.0, 55.0])})
 
-nest.Connect(gex, n, syn_spec={'weight':  40.0}) # excitatory
-#nest.Connect(gin, n, syn_spec={'weight': -20.0}) # inhibitory
+nest.Connect(gex, n, syn_spec={'weight': 40.0}) # excitatory
+nest.Connect(gin, n, syn_spec={'weight': -20.0}) # inhibitory
 nest.Connect(m, n)
 nest.Connect(n, sd)
 
 # simulate
-nest.Simulate(20)
+nest.Simulate(6)
 
 # obtain and display data
 events = nest.GetStatus(m)[0]['events']
@@ -114,9 +116,13 @@ elif neuron_model == "mat2_psc_exp":
     pl.ylabel('Membrane potential V_th [mV]')
 
 else:
-    pl.subplot(111)
+    pl.subplot(211)
     pl.plot(t, events['V_m'])
     pl.ylabel('Membrane potential [mV]')
+
+    pl.subplot(212)
+    pl.plot(t, events['I_Na'], t, events['I_K'])
+    pl.ylabel('Currents [nA]')
 
 nest.raster_plot.from_device(sd)
 nest.raster_plot.show()
