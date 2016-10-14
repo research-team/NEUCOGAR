@@ -1,2 +1,0 @@
-Name: NAc [ACh], Title: Raster plot from device '20306', Hist: False
-752.7 :    1 : [209]

@@ -1,2 +1,0 @@
-Name: NAc [GABA1], Title: Raster plot from device '2477', Hist: False
-760.3 :    1 : [325]

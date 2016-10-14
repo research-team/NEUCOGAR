@@ -1,6 +1,0 @@
-Name: VTA [GABA0], Title: Raster plot from device '20312', Hist: False
-219.1 :    1 : [267]
-229.7 :    1 : [268]
-233.0 :    1 : [263]
-233.9 :    2 : [261, 266]
-726.4 :    1 : [270]
