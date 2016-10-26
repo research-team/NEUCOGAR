@@ -59,7 +59,7 @@ w | 0.0 | Spike-adaptation current in pA
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![1] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/aeif_cond_alpha.png)
+![1](Results/aeif_cond_alpha.png)
 
 #### 2. aeif_cond_alpha_RK5
 
@@ -96,7 +96,7 @@ w | 0.0 | Spike-adaptation current in pA
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![2] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/aeif_cond_alpha_RK5.png)
+![2] (Results/aeif_cond_alpha_RK5.png)
 
 #### 3. aeif_cond_exp
 
@@ -129,7 +129,7 @@ w | 0.0 | Spike-adaptation current in pA
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![3] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/aeif_cond_exp.png)
+![3] (Results/aeif_cond_exp.png)
 
 #### 4. amat2_psc_exp
 
@@ -151,7 +151,7 @@ C_m | 200.0 | Capacity of the membrane in pF
 tau_syn_in | 3.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![4] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/amat2_psc_exp.png)
+![4] (Results/amat2_psc_exp.png)
 
 #### 5. hh_cond_exp_traub
 
@@ -181,7 +181,7 @@ g_Na | 20000.0 | Sodium peak conductance in nS
 tau_syn_in | 10.0 |Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![5] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/hh_cond_exp_traub.png)
+![5] (Results/hh_cond_exp_traub.png)
 
 #### 6. hh_psc_alpha
 
@@ -209,7 +209,7 @@ g_Na | 12000.0 | Sodium peak conductance in nS
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![6] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/hh_psc_alpha.png)
+![6] (Results/hh_psc_alpha.png)
 
 #### 7. hh_psc_alpha_gap
 
@@ -236,7 +236,7 @@ g_Na | 4500.0 | Sodium peak conductance in nS
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![7] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/hh_psc_alpha_gap.png)
+![7] (Results/hh_psc_alpha_gap.png)
 
 #### 8. iaf_chs_2007
 
@@ -251,7 +251,7 @@ beta_Ca | 0.001 | ?? Not declared in NEST documentation
 Ca | 0.0 | ?? Not declared in NEST documentation
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![8] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_chs_2007.png)
+![8] (Results/iaf_chs_2007.png)
 
 #### 9. iaf_chxk_2008
 
@@ -275,7 +275,7 @@ tau_syn_in | 1.0 | Time constant of postsynaptic inhibitory currents in ms
 g_ahp | 443.8 | AHP conductance
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![9] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_chxk_2008.png)
+![9] (Results/iaf_chxk_2008.png)
 
 #### 10. iaf_cond_alpha
 
@@ -300,7 +300,7 @@ C_m | 250.0 | Capacity of the membrane in pF
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![10] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_cond_alpha.png)
+![10] (Results/iaf_cond_alpha.png)
 
 #### 11. iaf_cond_exp
 
@@ -325,7 +325,7 @@ C_m | 250.0 | Capacity of the membrane in pF
 tau_syn_in | 2.0 |Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![11] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_cond_exp.png)
+![11] (Results/iaf_cond_exp.png)
 
 #### 12. iaf_cond_exp_sfa_rr
 
@@ -352,7 +352,7 @@ g_in | 0.0 | Inhibitory synaptic conductance in nS
 tau_syn_in | 10.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![12] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_cond_exp_sfa_rr.png)
+![12] (Results/iaf_cond_exp_sfa_rr.png)
 
 #### 13. iaf_neuron
 
@@ -373,7 +373,7 @@ Ca |  0.0 | ?? Not declared in NEST documentation
 C_m | 250.0 | Capacity of the membrane in pF
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![13] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_neuron.png)
+![13] (Results/iaf_neuron.png)
 
 #### 14. iaf_psc_alpha
 
@@ -397,7 +397,7 @@ tau_syn_in |  2.0 | Rise time of the inhibitory synaptic alpha function in ms
 V_min | -inf | Absolute lower value for the membrane potential
 tau_Ca |  10000.0 | ?? Not declared in NEST documentation
 
-![14] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_alpha.png)
+![14] (Results/iaf_psc_alpha.png)
 
 #### 15. iaf_psc_alpha_canon
 
@@ -419,7 +419,7 @@ C_m | 250.0 | Capacity of the membrane in pF
 V_min | -inf | Absolute lower value for the membrane potential
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![15] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_alpha_canon.png)
+![15] (Results/iaf_psc_alpha_canon.png)
 
 #### 16. iaf_psc_alpha_presc
 
@@ -441,7 +441,7 @@ C_m | 250.0 | Capacity of the membrane in pF
 V_min | -inf | Absolute lower value for the membrane potential
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![16] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_alpha_presc.png)
+![16] (Results/iaf_psc_alpha_presc.png)
 
 #### 17. iaf_psc_delta
 
@@ -464,7 +464,7 @@ I_e | 0.0 | Constant input current in pA
 V_min | -1.79769313486e+308 | Absolute lower value for the membrane potential
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![17] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_delta.png)
+![17] (Results/iaf_psc_delta.png)
 
 #### 18. iaf_psc_delta_canon
 
@@ -487,7 +487,7 @@ I_e | 0.0 | Constant input current in pA
 V_min | -1.79769313486e+308 | Absolute lower value for the membrane potential
 tau_Ca |  10000.0 | ?? Not declared in NEST documentation
 
-![18] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_delta_canon.png)
+![18] (Results/iaf_psc_delta_canon.png)
 
 #### 19. iaf_psc_exp
 
@@ -510,7 +510,7 @@ C_m | 250.0 | Capacity of the membrane in pF
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![19] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_exp.png)
+![19] (Results/iaf_psc_exp.png)
 
 #### 20. iaf_psc_exp_ps
 
@@ -534,7 +534,7 @@ tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 V_min | -inf | Absolute lower value for the membrane potential
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![20] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_psc_exp_ps.png)
+![20] (Results/iaf_psc_exp_ps.png)
 
 #### 21. iaf_tum_2000
 
@@ -558,7 +558,7 @@ C_m | 250.0 | Capacity of the membrane in pF
 tau_syn_in | 2.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![21] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/iaf_tum_2000.png)
+![21] (Results/iaf_tum_2000.png)
 
 #### 22. izhikevich
 
@@ -580,7 +580,7 @@ Ca | 0.0 | ?? Not declared in NEST documentation
 V_min | -1.79769313486e+308 | Absolute lower value for the membrane potential
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![22] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/izhikevich.png)
+![22] (Results/izhikevich.png)
 
 #### 23. mat2_psc_exp
 
@@ -602,7 +602,7 @@ C_m | 100.0 | Capacity of the membrane in pF
 tau_syn_in | 3.0 | Time constant of postsynaptic inhibitory currents in ms
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![23] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/mat2_psc_exp.png)
+![23] (Results/mat2_psc_exp.png)
 
 #### 24. pp_pop_psc_delta
 
@@ -617,7 +617,7 @@ I_e | 0.0 | Constant input current in pA
 V_m | 0.0 | Membrane potential in mV
 C_m | 250.0 | Capacity of the membrane in pF
 
-![24] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/pp_pop_psc_delta.png)
+![24] (Results/pp_pop_psc_delta.png)
 
 #### 25. pp_psc_delta
 
@@ -635,4 +635,4 @@ Ca | 0.0 | ?? Not declared in NEST documentation
 C_m | 250.0 | Capacity of the membrane in pF
 tau_Ca | 10000.0 | ?? Not declared in NEST documentation
 
-![25] (https://github.com/research-team/NEUCOGAR/blob/master/CalculationNM/Results/pp_psc_delta.png)
+![25] (Results/pp_psc_delta.png)
