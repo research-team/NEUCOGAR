@@ -9,6 +9,8 @@ from time import clock
 from parameters import *
 from collections import defaultdict
 
+import nest.topology as tp
+
 spike_generators = {}   # dict name_part : spikegenerator
 spike_detectors = {}    # dict name_part : spikedetector
 multimeters = {}        # dict name_part : multimeter
@@ -24,8 +26,17 @@ save_path = ""
 logging.basicConfig(format='%(name)s.%(levelname)s: %(message)s.', level=logging.DEBUG)
 logger = logging.getLogger('function')
 
+BOUND = 0.2  # outer bound of rectangular 3d layer
+R = .25
+
+
 def getAllParts():
     return all_parts
+
+
+def generate_positions(NN):
+    return np.random.uniform(-.5, .5, (NN, 3)).tolist()
+
 
 def generate_neurons(NNumber):
     global NEURONS, all_parts
@@ -55,10 +66,33 @@ def generate_neurons(NNumber):
     # Parts with dopamine
     for part in parts_with_dopa:
         part[k_model] = 'iaf_psc_alpha'
+
     # Creating neurons
+    # For each part, create 3d layer
+    # and connect layer -> layer
     for part in all_parts:
-        part[k_IDs] = nest.Create(part[k_model], part[k_NN])
-        logger.debug("{0} [{1}, {2}] {3} neurons".format(part[k_name], part[k_IDs][0], part[k_IDs][-1:][0], part[k_NN]))
+        positions = generate_positions(part[k_NN])
+
+        specs = {
+            'positions': positions,
+            'elements': part[k_model]
+        }
+
+        part[k_outer] = tp.CreateLayer(specs)
+
+        conn_dict = {
+            'connection_type': 'divergent',
+            'mask': {'spherical': {
+                'radius': R
+            }},
+            'kernel': {'gaussian': {  # TODO appropriate kernel
+                "p_center": 0.5,
+                "sigma": 2.
+            }}
+        }
+
+        connect(part, part, dict=conn_dict)  # TODO syn types
+        logger.debug("{0} [{1}] {2} neurons".format(part[k_name], part[k_outer][0], part[k_NN]))
 
 
 def log_connection(pre, post, syn_type, weight):
@@ -70,17 +104,27 @@ def log_connection(pre, post, syn_type, weight):
                                                MaxSynapses if post[k_NN] > MaxSynapses else post[k_NN], connections))
 
 
-def connect(pre, post, syn_type=GABA, weight_coef=1):
-    # Set new weight value (weight_coef * basic weight)
-    nest.SetDefaults(synapses[syn_type][model], {'weight': weight_coef * synapses[syn_type][basic_weight]})
+def connect(pre, post, syn_type=GABA, weight_coef=1, dict=None):
+    """
+        Connects two 3d layers
+    """
+
     # Create dictionary of connection rules
-    conn_dict = {'rule': 'fixed_outdegree',
-                 'outdegree': MaxSynapses if post[k_NN] > MaxSynapses else post[k_NN],
-                 'multapses': False}
-    # Connect PRE IDs neurons with POST IDs neurons, add Connection and Synapse specification
-    nest.Connect(pre[k_IDs], post[k_IDs], conn_spec=conn_dict, syn_spec=synapses[syn_type][model])
+    conn_dict = {'connection_type': 'divergent',
+                 'weights': .0 + weight_coef * synapses[syn_type][basic_weight],
+                 'delays': {'linear': {  # linear is y = ax+c TODO appropriate function
+                     'c': 0.1,
+                     'a': 0.05
+                 }},
+                 #  'number_of_connections': (MaxSynapses if post[k_NN] > MaxSynapses else post[k_NN]) - 1
+                 'synapse_model': synapses[syn_type][model]
+    }
+    if dict is not None:
+        conn_dict.update(dict)
+
+    tp.ConnectLayers(pre[k_outer], post[k_outer], conn_dict)
     # Show data of new connection
-    log_connection(pre, post, synapses[syn_type][model], nest.GetDefaults(synapses[syn_type][model])['weight'])
+    log_connection(pre, post, synapses[syn_type][model], conn_dict['weights'])
 
 
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
@@ -93,7 +137,7 @@ def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
     conn_dict = {'rule': 'fixed_outdegree',
                  'outdegree': int(part[k_NN] * coef_part)}
     # Connect generator and part IDs with connection specification and synapse specification
-    nest.Connect(spike_generators[name], part[k_IDs], conn_spec=conn_dict, syn_spec=static_syn)
+    nest.Connect(spike_generators[name], part[k_outer], conn_spec=conn_dict, syn_spec=static_syn)
     # Show data of new generator
     logger.debug("Generator => {0}. Element #{1}".format(name, spike_generators[name][0]))
 
@@ -105,7 +149,7 @@ def connect_detector(part):
     # Add to spikeDetectors a new detector
     spike_detectors[name] = nest.Create('spike_detector', params=detector_param)
     # Connect N first neurons ID of part with detector
-    nest.Connect(part[k_IDs][:number], spike_detectors[name])
+    nest.Connect(part[k_outer][:number], spike_detectors[name])
     # Show data of new detector
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
 
@@ -113,8 +157,8 @@ def connect_detector(part):
 def connect_multimeter(part):
     name = part[k_name]
     multimeters[name] = nest.Create('multimeter', params=multimeter_param)  # ToDo add count of multimeters
-    nest.Connect(multimeters[name], (part[k_IDs][:N_volt]))
-    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_IDs][:N_volt]))
+    nest.Connect(multimeters[name], (part[k_outer][:N_volt]))
+    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_outer][:N_volt]))
 
 
 '''Generates string full name of an image'''

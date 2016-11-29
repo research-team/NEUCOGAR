@@ -13,7 +13,8 @@ basic_weight = 1
 dpi_n = 120
 
 # Keys for parts dictionary
-k_IDs   = 'IDs'
+k_outer   = 'Outer IDs'
+k_inner = 'Inner IDs'
 k_name  = 'Name'
 k_NN    = 'NN'
 k_model = 'Model'
