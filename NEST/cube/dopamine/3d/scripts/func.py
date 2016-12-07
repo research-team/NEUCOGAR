@@ -27,7 +27,9 @@ logging.basicConfig(format='%(name)s.%(levelname)s: %(message)s.', level=logging
 logger = logging.getLogger('function')
 
 BOUND = 0.2  # outer bound of rectangular 3d layer
-R = .25
+R = .25      # radius of connectivity sphere of a neuron
+
+connections = []
 
 
 def getAllParts():
@@ -35,7 +37,13 @@ def getAllParts():
 
 
 def generate_positions(NN):
-    return np.random.uniform(-.5, .5, (NN, 3)).tolist()
+    NN_in = int(NN * (1 - (1-BOUND*2)**3))
+    NN_out = NN - NN_in
+
+    inner = np.random.uniform(-.5+BOUND, .5-BOUND, (NN,3)).tolist()
+    outer = [[np.random.uniform(.5-BOUND, .5)*(1 if np.random.uniform() > 0.5 else -1) for a in range(3)] for b in range(NN_out)]
+
+    return inner, outer
 
 
 def generate_neurons(NNumber):
@@ -68,30 +76,27 @@ def generate_neurons(NNumber):
         part[k_model] = 'iaf_psc_alpha'
 
     # Creating neurons
-    # For each part, create 3d layer
-    # and connect layer -> layer
+    # For each part, create inner and outer layers
+    # and connect in->(in+out) and out->in
     for part in all_parts:
-        positions = generate_positions(part[k_NN])
+        positions_inner, positions_outer = generate_positions(part[k_NN])
 
-        specs = {
-            'positions': positions,
+        specs_inner = {
+            'positions': positions_inner,
             'elements': part[k_model]
         }
 
-        part[k_outer] = tp.CreateLayer(specs)
-
-        conn_dict = {
-            'connection_type': 'divergent',
-            'mask': {'spherical': {
-                'radius': R
-            }},
-            'kernel': {'gaussian': {  # TODO appropriate kernel
-                "p_center": 0.5,
-                "sigma": 2.
-            }}
+        specs_outer = {
+            'positions': positions_outer,
+            'elements': part[k_model]
         }
 
-        connect(part, part, dict=conn_dict)  # TODO syn types
+        part[k_outer] = tp.CreateLayer(specs_outer)
+        part[k_inner] = tp.CreateLayer(specs_inner)
+
+        part[k_NN_inner], part[k_NN_outer] = len(positions_inner), len(positions_outer)
+
+        connect_inner(part)  # TODO syn types
         logger.debug("{0} [{1}] {2} neurons".format(part[k_name], part[k_outer][0], part[k_NN]))
 
 
@@ -106,7 +111,8 @@ def log_connection(pre, post, syn_type, weight):
 
 def connect(pre, post, syn_type=GABA, weight_coef=1, dict=None):
     """
-        Connects two 3d layers
+        Connects outer parts of two 3d layers
+        TODO implement
     """
 
     # Create dictionary of connection rules
@@ -122,9 +128,60 @@ def connect(pre, post, syn_type=GABA, weight_coef=1, dict=None):
     if dict is not None:
         conn_dict.update(dict)
 
+    # todo put to connections dict
+
+    connections.append((pre, post, syn_type, weight_coef, dict))
+
+
     tp.ConnectLayers(pre[k_outer], post[k_outer], conn_dict)
     # Show data of new connection
     log_connection(pre, post, synapses[syn_type][model], conn_dict['weights'])
+
+
+def connect_real():
+    # todo connect o->i, o->o with adjusted weghts
+
+    for t in connections:
+        # connect(t[0], t[1], t[2], t[3], t[4])
+        pass
+
+
+
+def connect_inner(layer, syn_type=GABA, weight_coef=1, dict=None):
+        """
+            Creates connections inside layer
+        """
+        syn_total = (MaxSynapses if layer[k_NN] > MaxSynapses else layer[k_NN] - 1 )
+        syn_ii = syn_total * layer[k_NN_inner] / layer[k_NN]
+        syn_io = syn_total * layer[k_NN_outer] / layer[k_NN]
+
+        # Create dictionary of connection rules
+        conn_dict = {'connection_type': 'divergent',
+                     'weights': .0 + weight_coef * synapses[syn_type][basic_weight],
+                     'delays': {'linear': {  # linear is y = ax+c TODO appropriate function and parameters
+                         'c': 0.1,
+                         'a': 0.05
+                     }},
+                     'mask': {'spherical': {
+                         'radius': R
+                     }},
+                     'kernel': {'gaussian': {  # TODO appropriate kernel
+                         "p_center": 0.5,
+                         "sigma": 2.
+                     }},
+                     'number_of_connections': (MaxSynapses if layer[k_NN] > MaxSynapses else layer[k_NN]) - 1,
+                     'synapse_model': synapses[syn_type][model]
+        }
+
+        conn_dict_ii = dict(conn_dict, number_of_connections=syn_ii)
+        conn_dict_io = dict(conn_dict, number_of_connections=syn_io)
+
+        if dict is not None:
+            conn_dict.update(dict)
+
+        tp.ConnectLayers(layer[k_inner], layer[k_inner], conn_dict_ii)
+        tp.ConnectLayers(layer[k_inner], layer[k_outer], conn_dict_io)
+        # TODO connect out -> in
 
 
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):

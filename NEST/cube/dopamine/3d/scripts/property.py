@@ -17,6 +17,8 @@ k_outer   = 'Outer IDs'
 k_inner = 'Inner IDs'
 k_name  = 'Name'
 k_NN    = 'NN'
+k_NN_inner = 'Inner NN'
+k_NN_outer = 'Outer NN'
 k_model = 'Model'
 
 # T - simulation time | dt - simulation pause step
