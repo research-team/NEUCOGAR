@@ -4,9 +4,10 @@ import time
 import logging
 import datetime
 import numpy as np
-from data import *
+from parts import *
 from time import clock
-from parameters import *
+from synapses import *
+from simulation_params import *
 from collections import defaultdict
 
 import nest.topology as tp
@@ -18,7 +19,6 @@ startsimulate = 0
 endsimulate = 0
 txt_result_path = ""    # path for txt results
 all_parts = tuple()     # tuple of all parts
-MaxSynapses = 4000      # max synapses
 SYNAPSES = 0            # synapse number
 NEURONS = 0             # neurons number
 times = []              # store time simulation
@@ -26,10 +26,8 @@ save_path = ""
 logging.basicConfig(format='%(name)s.%(levelname)s: %(message)s.', level=logging.DEBUG)
 logger = logging.getLogger('function')
 
-BOUND = 0.2  # outer bound of rectangular 3d layer
-R = .25      # radius of connectivity sphere of a neuron
-
-connections = []
+connections = dict()
+parts = dict()
 
 
 def getAllParts():
@@ -37,16 +35,34 @@ def getAllParts():
 
 
 def generate_positions(NN):
+    """
+    Generates uniformly random 3D positions for inner and outer layers
+    Args:
+        NN: Total number of neurons
+
+    Returns: (list of inner positions, list of outer positions)
+
+    """
     NN_in = int(NN * (1 - (1-BOUND*2)**3))
     NN_out = NN - NN_in
 
-    inner = np.random.uniform(-.5+BOUND, .5-BOUND, (NN,3)).tolist()
+    inner = np.random.uniform(-.5+BOUND, .5-BOUND, (NN_in, 3)).tolist()
     outer = [[np.random.uniform(.5-BOUND, .5)*(1 if np.random.uniform() > 0.5 else -1) for a in range(3)] for b in range(NN_out)]
 
     return inner, outer
 
 
 def generate_neurons(NNumber):
+    """
+    Generates layers for all declared parts.
+    NB: This function doesn't connect anything.
+
+    Args:
+        NNumber: Desired number of neurons in entire network (actual number may be slightly different)
+
+    Returns: None
+
+    """
     global NEURONS, all_parts
     logger.debug("* * * Start generate neurons")
 
@@ -77,7 +93,6 @@ def generate_neurons(NNumber):
 
     # Creating neurons
     # For each part, create inner and outer layers
-    # and connect in->(in+out) and out->in
     for part in all_parts:
         positions_inner, positions_outer = generate_positions(part[k_NN])
 
@@ -94,25 +109,49 @@ def generate_neurons(NNumber):
         part[k_outer] = tp.CreateLayer(specs_outer)
         part[k_inner] = tp.CreateLayer(specs_inner)
 
+        part[k_outer_ids] = nest.GetNodes(part[k_outer])[0]
+        part[k_inner_ids] = nest.GetNodes(part[k_inner])[0]
+
         part[k_NN_inner], part[k_NN_outer] = len(positions_inner), len(positions_outer)
 
-        connect_inner(part)  # TODO syn types
-        logger.debug("{0} [{1}] {2} neurons".format(part[k_name], part[k_outer][0], part[k_NN]))
+        parts[part[k_name]] = part
+
+        logger.debug("Created {0} [{1}, {2}] {3} neurons".format(part[k_name],
+                                                                 part[k_outer][0], part[k_inner][0], part[k_NN]))
 
 
 def log_connection(pre, post, syn_type, weight):
     global SYNAPSES
-    connections = pre[k_NN] * post[k_NN] if post[k_NN] < MaxSynapses else pre[k_NN] * MaxSynapses
-    SYNAPSES += connections
+    count = len(nest.GetConnections(source=pre[k_outer_ids], target=post[k_outer_ids]))
+    SYNAPSES += count
     logger.debug("{0} -> {1} ({2}) w[{3}] // "
                  "{4}x{5}={6} synapses".format(pre[k_name], post[k_name], syn_type[:-8], weight, pre[k_NN],
-                                               MaxSynapses if post[k_NN] > MaxSynapses else post[k_NN], connections))
+                                               MaxSynapses if post[k_NN] > MaxSynapses else post[k_NN], count))
+
+
+def add_connection(pre, post, syn_type=GABA, weight_coef=1, dict=None):
+    """
+    Adds connection to dictionary for further connecting
+
+    Args:
+        pre: source layer
+        post: target layer
+        syn_type: synapse type
+        weight_coef: weight coefficient for connection
+        dict: custom connection parameters, will override defaults
+
+    Returns: None
+
+    """
+    if not pre[k_name] in connections:
+        connections[pre[k_name]] = []
+
+    connections[pre[k_name]].append((post, syn_type, weight_coef, dict))
 
 
 def connect(pre, post, syn_type=GABA, weight_coef=1, dict=None):
     """
         Connects outer parts of two 3d layers
-        TODO implement
     """
 
     # Create dictionary of connection rules
@@ -128,30 +167,45 @@ def connect(pre, post, syn_type=GABA, weight_coef=1, dict=None):
     if dict is not None:
         conn_dict.update(dict)
 
-    # todo put to connections dict
-
-    connections.append((pre, post, syn_type, weight_coef, dict))
-
-
     tp.ConnectLayers(pre[k_outer], post[k_outer], conn_dict)
     # Show data of new connection
     log_connection(pre, post, synapses[syn_type][model], conn_dict['weights'])
 
 
-def connect_real():
-    # todo connect o->i, o->o with adjusted weghts
+def connect_all():
+    """
+        Creates all the connections (intra layer + inter layer)
+    """
 
-    for t in connections:
-        # connect(t[0], t[1], t[2], t[3], t[4])
-        pass
+    for name, ts in connections.iteritems():
+        total = parts[name][k_NN_inner]
+
+        for t in ts:
+            total += t[0][k_NN_outer]
+
+        syn_total = min(MaxSynapses, total) - 1
+        connect_inner(parts[name], int(syn_total * ((.0 + parts[name][k_NN_inner])/ total)))
+
+        for t in ts:
+            # TODO nest crashing when number of connections is specified
+            number_of_connections = int(syn_total * ( (t[0][k_NN_outer] + .0) / total ))
+            conn_dict = {
+                # 'number_of_connections': number_of_connections
+            }
+            if t[3] is not None:
+                conn_dict.update(t[3])
+
+            connect(parts[name], t[0], t[1], t[2], conn_dict)  # TODO ugly
 
 
-
-def connect_inner(layer, syn_type=GABA, weight_coef=1, dict=None):
+def connect_inner(layer, syn_oi, syn_type=GABA, weight_coef=1, custom_dict=None):
         """
             Creates connections inside layer
         """
-        syn_total = (MaxSynapses if layer[k_NN] > MaxSynapses else layer[k_NN] - 1 )
+        # TODO number of connections
+        # TODO use mask, kernel and number of connections together
+
+        syn_total = min(MaxSynapses, layer[k_NN]) - 1
         syn_ii = syn_total * layer[k_NN_inner] / layer[k_NN]
         syn_io = syn_total * layer[k_NN_outer] / layer[k_NN]
 
@@ -169,32 +223,55 @@ def connect_inner(layer, syn_type=GABA, weight_coef=1, dict=None):
                          "p_center": 0.5,
                          "sigma": 2.
                      }},
-                     'number_of_connections': (MaxSynapses if layer[k_NN] > MaxSynapses else layer[k_NN]) - 1,
                      'synapse_model': synapses[syn_type][model]
         }
+        if custom_dict is not None:
+            conn_dict.update(custom_dict)
 
-        conn_dict_ii = dict(conn_dict, number_of_connections=syn_ii)
-        conn_dict_io = dict(conn_dict, number_of_connections=syn_io)
-
-        if dict is not None:
-            conn_dict.update(dict)
+        conn_dict_ii = dict(conn_dict)
+        conn_dict_io = dict(conn_dict)
+        conn_dict_oi = dict(conn_dict)
 
         tp.ConnectLayers(layer[k_inner], layer[k_inner], conn_dict_ii)
         tp.ConnectLayers(layer[k_inner], layer[k_outer], conn_dict_io)
-        # TODO connect out -> in
+        tp.ConnectLayers(layer[k_outer], layer[k_inner], conn_dict_oi)
+
+        logger.debug("%s inner connected" % layer[k_name])
 
 
+pg_count = 0
 def connect_generator(part, startTime=1, stopTime=T, rate=250, coef_part=1):
+    global pg_count
     name = part[k_name]
-    # Add to spikeGenerators dict a new generator
+    # Add to spike_generators dict a new generator
+
+    # model_name = 'pg'+str(pg_count)
+    # pg_count += 1
+    # nest.CopyModel('poisson_generator', model_name, {
+    #     'rate' : float(rate),
+    #     'start': float(startTime),
+    #     'stop' : float(stopTime)
+    # })
+    #
+    # layer_dict = {
+    #     'elements': model_name,
+    #     'positions': [[0., 0., 0.]]
+    # }
+    # spike_generators[name] = tp.CreateLayer(layer_dict)
+    # # Create dictionary of connection rules
+    # conn_dict = {'connection_type': 'divergent',
+    #              # 'number_of_connections': int(part[k_NN] * coef_part),
+    #              'synapse_model': 'static_synapse'
+    #              }
+    # #tp.ConnectLayers(spike_generators[name], part[k_outer], conn_dict)
+
     spike_generators[name] = nest.Create('poisson_generator', 1, {'rate' : float(rate),
                                                                   'start': float(startTime),
                                                                   'stop' : float(stopTime)})
-    # Create dictionary of connection rules
     conn_dict = {'rule': 'fixed_outdegree',
-                 'outdegree': int(part[k_NN] * coef_part)}
+                 'outdegree': int(part[k_NN_outer] * coef_part)}
     # Connect generator and part IDs with connection specification and synapse specification
-    nest.Connect(spike_generators[name], part[k_outer], conn_spec=conn_dict, syn_spec=static_syn)
+    nest.Connect(spike_generators[name], part[k_outer_ids], conn_spec=conn_dict, syn_spec=static_syn)
     # Show data of new generator
     logger.debug("Generator => {0}. Element #{1}".format(name, spike_generators[name][0]))
 
@@ -206,7 +283,8 @@ def connect_detector(part):
     # Add to spikeDetectors a new detector
     spike_detectors[name] = nest.Create('spike_detector', params=detector_param)
     # Connect N first neurons ID of part with detector
-    nest.Connect(part[k_outer][:number], spike_detectors[name])
+    nest.Connect(part[k_outer_ids][:number], spike_detectors[name])  # TODO
+    nest.Connect(part[k_inner_ids][:number], spike_detectors[name])
     # Show data of new detector
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
 
@@ -214,8 +292,8 @@ def connect_detector(part):
 def connect_multimeter(part):
     name = part[k_name]
     multimeters[name] = nest.Create('multimeter', params=multimeter_param)  # ToDo add count of multimeters
-    nest.Connect(multimeters[name], (part[k_outer][:N_volt]))
-    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_outer][:N_volt]))
+    nest.Connect(multimeters[name], (part[k_outer_ids][:N_volt]))
+    logger.debug("Multimeter => {0}. On {1}".format(name, part[k_outer_ids][:N_volt]))
 
 
 '''Generates string full name of an image'''
@@ -275,7 +353,6 @@ def save(GUI):
             except Exception:
                 print("From {0} is NOTHING".format(key))
         print "Results {0}/{1}".format(N_events_gen, len(spike_detectors))
-        print "Results {0}/{1}".format(N_events_gen, len(spike_detectors))
 
     txt_result_path = save_path + 'txt/'
     logger.debug("Saving TEXT into {0}".format(txt_result_path))
@@ -307,6 +384,7 @@ def save_spikes(detec, name, hist=False):
                 f.write("{0:>5} : {1:>4} : {2}\n".format(key, len(data[key]), sorted(data[key])))
     else:
         print "Spikes in {0} is NULL".format(name)
+
 
 def save_voltage(multimeters):
     import h5py

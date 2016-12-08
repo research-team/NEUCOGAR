@@ -1,4 +1,5 @@
-from property import *
+from keys import *
+from simulation_params import *
 import nest
 import numpy.random as random
 # Neuron parameters

@@ -1,4 +1,4 @@
-from property import *
+from keys import *
 """
 Primal/initial dictionary of parts
 It contains:

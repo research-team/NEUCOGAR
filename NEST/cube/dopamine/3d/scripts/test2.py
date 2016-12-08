@@ -19,5 +19,7 @@ nest.CopyModel('stdp_dopamine_synapse', dopa_synapse_in, DOPA_synparams_in)
 
 generate_neurons(3000)
 
-connect(pptg[pptg_Glu], pptg[pptg_GABA])
+add_connection(pptg[pptg_Glu], pptg[pptg_GABA])
+
+connect_all()
 print "3d connected"
