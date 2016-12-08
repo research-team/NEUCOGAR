@@ -140,11 +140,11 @@ connect_generator(vta[vta_DA0], 400., 600., rate=250, coef_part=1)
 
 
 logger.debug("* * * Attaching spikes detector")
-for part in getAllParts():
+for part in get_all_parts():
     connect_detector(part)
 
 logger.debug("* * * Attaching multimeters")
-for part in getAllParts():
+for part in get_all_parts():
     connect_multimeter(part)
 
 del generate_neurons, add_connection, connect_generator, connect_detector, connect_multimeter
