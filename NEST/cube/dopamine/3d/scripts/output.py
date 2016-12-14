@@ -21,10 +21,10 @@ def set_paths(new_save_path):
     global txt_result_path, save_path
 
     save_path = new_save_path
-    if not os.path.exists(save_path):
-        os.makedirs(save_path)
-
     txt_result_path = os.path.join(save_path, 'txt', '')
+
+    if not os.path.exists(txt_result_path):
+        os.makedirs(txt_result_path)
 
 
 def image_name(path, name):
@@ -48,8 +48,16 @@ def get_log(startbuild, endbuild):
     logger.info("Dopamine           : {}".format('YES' if dopamine_flag else 'NO'))
 
 
-def save(GUI):
-    if GUI:
+def save(images):
+    """
+    Save simulation results to txt_result_path folder
+    Args:
+        images: if True, png images will be created
+
+    Returns: None
+
+    """
+    if images:
         import pylab as pl
         import nest.raster_plot
         import nest.voltage_trace
@@ -57,7 +65,7 @@ def save(GUI):
         for key in g.spike_detectors:
             try:
                 nest.raster_plot.from_device(g.spike_detectors[key], hist=True)
-                pl.savefig(image_name(SAVE_PATH, "spikes_" + key.lower()), dpi=dpi_n, format='png')
+                pl.savefig(image_name(save_path, "spikes_" + key.lower()), dpi=dpi_n, format='png')
                 pl.close()
             except Exception:
                 print("From {0} is NOTHING".format(key))
@@ -65,15 +73,14 @@ def save(GUI):
         for key in g.multimeters:
             try:
                 nest.voltage_trace.from_device(g.multimeters[key])
-                pl.savefig(image_name(SAVE_PATH, "volt_" + key.lower()), dpi=dpi_n, format='png')
+                pl.savefig(image_name(save_path, "volt_" + key.lower()), dpi=dpi_n, format='png')
                 pl.close()
             except Exception:
                 print("From {0} is NOTHING".format(key))
         print "Results {0}/{1}".format(N_events_gen, len(g.spike_detectors))
 
     logger.debug("Saving TEXT into {0}".format(txt_result_path))
-    if not os.path.exists(txt_result_path):
-        os.mkdir(txt_result_path)
+
     for key in g.spike_detectors:
         save_spikes(g.spike_detectors[key], name=key)
 
@@ -85,6 +92,15 @@ def save(GUI):
 
 
 def save_spikes(detec, name, hist=False):
+    """
+    Save spikes from specified detector to file
+    Args:
+        detec: detector
+        name: file name (will be prefixed)
+        hist: include histogram?
+
+    Returns: None
+    """
     title = "Raster plot from device '%i'" % detec[0]
     ev = nest.GetStatus(detec, "events")[0]
     ts = ev["times"]
@@ -136,6 +152,16 @@ def print_connections(f):
 
 
 def print_gdf(f):
+    """
+    Print network as a graph in GDF format
+
+    Args:
+        f: file
+
+    Returns: None
+
+    """
+
     f.write("nodedef> label\n")
     for node in nest.GetNodes((0,))[0]:
         f.write("%d\n" % node)

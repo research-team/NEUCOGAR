@@ -1,5 +1,3 @@
-[structure]: ../integrated/doc/description.md
-
 # Integrated dopamine with 3D layers
 
 ## File structure

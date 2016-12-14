@@ -4,6 +4,7 @@ from time import clock, time
 import datetime
 
 import nest.topology as tp
+import nest.pynestkernel as nk
 from output import *
 from parts import *
 from synapses import *
@@ -120,22 +121,35 @@ def add_connection(pre, post, syn_type=GABA, weight_coef=1, params=None):
     if not pre[k_name] in connections:
         connections[pre[k_name]] = []
 
-    connections[pre[k_name]].append((post, syn_type, weight_coef, params))
+    connections[pre[k_name]].append({
+        'to': post,
+        'syn_type': syn_type,
+        'weight_coef': weight_coef,
+        'params': params
+    })
 
 
 def connect(pre, post, syn_type=GABA, weight_coef=1, params=None):
     """
-        Connects outer parts of two 3d layers
+    Connect outer parts of two 3d layers
+
+    Args:
+        pre: source layer
+        post: target layer
+        syn_type: synapse type
+        weight_coef: weight coefficient for synapses
+        params: custom connection params
+
+    Returns: None
     """
 
     # Create dictionary of connection rules
     conn_dict = {'connection_type': 'divergent',
-                 'weights': .0 + weight_coef * synapses[syn_type][basic_weight],
+                 'weights': float(weight_coef * synapses[syn_type][basic_weight]),
                  'delays': {'linear': {  # linear is y = ax+c TODO appropriate function
-                     'c': 0.1,
-                     'a': 0.05
+                     'c': 1.,
+                     'a': .5
                  }},
-                 #  'number_of_connections': (MaxSynapses if post[k_NN] > MaxSynapses else post[k_NN]) - 1
                  'synapse_model': synapses[syn_type][model]
                  }
     if params is not None:
@@ -158,31 +172,29 @@ def connect_all():
         total = parts[name][k_NN_inner]
 
         for t in ts:
-            total += t[0][k_NN_outer]
+            total += t['to'][k_NN_outer]
 
         syn_total = min(MaxSynapses, total) - 1
         connect_inner(parts[name], int(syn_total * ((.0 + parts[name][k_NN_inner]) / total)))
 
         for t in ts:
-            number_of_connections = int(syn_total * ((t[0][k_NN_outer] + .0) / total))
+            number_of_connections = int(syn_total * ((t['to'][k_NN_outer] + .0) / total))
             conn_dict = {
                 'number_of_connections': number_of_connections,
                 'mask': {'spherical': {  # A simple workaround for nest problem with number_of_connections
                     'radius': 2.
                 }},
             }
-            if t[3] is not None:
-                conn_dict.update(t[3])
+            if t['params'] is not None:
+                conn_dict.update(t['params'])
 
-            connect(parts[name], t[0], t[1], t[2], conn_dict)  # TODO ugly
+            connect(parts[name], t['to'], t['syn_type'], t['weight_coef'], conn_dict)
 
 
 def connect_inner(layer, syn_oi, syn_type=GABA, weight_coef=1, custom_dict=None):
     """
         Creates connections inside layer
     """
-    # TODO max number of connections
-    # TODO use mask, kernel and number of connections together
 
     syn_total = min(MaxSynapses, layer[k_NN]) - 1
     syn_ii = syn_total * layer[k_NN_inner] / layer[k_NN]
@@ -190,10 +202,10 @@ def connect_inner(layer, syn_oi, syn_type=GABA, weight_coef=1, custom_dict=None)
 
     # Create dictionary of connection rules
     conn_dict = {'connection_type': 'divergent',
-                 'weights': .0 + weight_coef * synapses[syn_type][basic_weight],
+                 'weights': float(weight_coef * synapses[syn_type][basic_weight]),
                  'delays': {'linear': {  # linear is y = ax+c TODO appropriate function and parameters
-                     'c': 0.1,
-                     'a': 0.05
+                     'c': 1.,
+                     'a': 0.5
                  }},
                  'mask': {'spherical': {
                      'radius': R
@@ -207,18 +219,43 @@ def connect_inner(layer, syn_oi, syn_type=GABA, weight_coef=1, custom_dict=None)
     if custom_dict is not None:
         conn_dict.update(custom_dict)
 
-    conn_dict_ii = dict(conn_dict)
-    conn_dict_io = dict(conn_dict)
-    conn_dict_oi = dict(conn_dict)
+    # conn_dict_ii = dict(conn_dict, number_of_connections=syn_ii)
+    # conn_dict_io = dict(conn_dict, number_of_connections=syn_io)
+    # conn_dict_oi = dict(conn_dict, number_of_connections=syn_oi)
 
-    tp.ConnectLayers(layer[k_inner], layer[k_inner], conn_dict_ii)
-    tp.ConnectLayers(layer[k_inner], layer[k_outer], conn_dict_io)
-    tp.ConnectLayers(layer[k_outer], layer[k_inner], conn_dict_oi)
+    tp.ConnectLayers(layer[k_inner], layer[k_inner], conn_dict)
+    tp.ConnectLayers(layer[k_inner], layer[k_outer], conn_dict)
+    tp.ConnectLayers(layer[k_outer], layer[k_inner], conn_dict)
+
+    # for t in [
+    #     (layer[k_inner], layer[k_inner], conn_dict),
+    #     (layer[k_inner], layer[k_outer], conn_dict),
+    #     (layer[k_outer], layer[k_inner], conn_dict)
+    # ]:
+    #     # try:
+    #         tp.ConnectLayers(*t)
+    #         syn_delta += len(nest.GetConnections(source=t[0], target=t[1]))
+    #     # except nk.NESTError:
+    #     #     del t[2]['number_of_connections']
+    #     #     tp.ConnectLayers(*t)
 
     logger.debug("%s inner connected" % layer[k_name])
 
 
 def connect_generator(part, start_time=1, stop_time=T, rate=250, coef_part=1):
+    """
+    Creates poisson generator and connects to random nodes of specified part's outer layer
+
+    Args:
+        part: destination part
+        start_time:
+        stop_time:
+        rate:
+        coef_part: proportion of part's outer neurons to connect to
+
+    Returns: None
+    """
+
     name = part[k_name]
     g.spike_generators[name] = nest.Create('poisson_generator', 1, {'rate': float(rate),
                                                                     'start': float(start_time),
@@ -232,15 +269,25 @@ def connect_generator(part, start_time=1, stop_time=T, rate=250, coef_part=1):
 
 
 def connect_detector(part):
+    """
+    Creates spike detector and connects most N_detect neurons of specified part (inner and outer layers) to it
+
+    Args:
+        part: source part
+
+    Returns: None
+    """
     name = part[k_name]
     # Init number of neurons which will be under detector watching
     number = part[k_NN] if part[k_NN] < N_detect else N_detect
-    n_in = number * part[k_NN_inner] / part[k_NN]
-    n_out = number - n_in
 
-    source = part[k_inner_ids][:n_in] + part[k_outer_ids][:n_out]
+    source = part[k_inner_ids] + part[k_outer_ids]
+
+    conn_dict = {'rule': 'fixed_indegree',
+                 'indegree': number}
+
     g.spike_detectors[name] = nest.Create('spike_detector', params=detector_param)
-    nest.Connect(source, g.spike_detectors[name])
+    nest.Connect(source, g.spike_detectors[name], conn_spec=conn_dict)
     # Show data of new detector
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
 
@@ -257,6 +304,11 @@ def connect_multimeter(part):
 
 
 def simulate():
+    """
+    Process simulation from 0 to T, pausing with interval dt for ?
+
+    Returns: None
+    """
     begin = 0
     set_paths("../results/{0}-{1}/".format(g.NEURONS, int(time()) % 10000))
     nest.PrintNetwork()
