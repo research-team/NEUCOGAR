@@ -1,6 +1,9 @@
 # Quality of graphics
 dpi_n = 120
 
+# Number of neurons
+NN = 3000
+
 # T - simulation time | dt - simulation pause step
 T = 1000.
 dt = 10.
@@ -26,7 +29,7 @@ NN_minimal = 10
 
 # Additional settings
 dopamine_flag = True     # dopamine modulation flag
-gui_enabled = True
+create_images = True
 
 MaxSynapses = 4000      # max synapses
 

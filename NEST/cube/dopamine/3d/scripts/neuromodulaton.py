@@ -8,10 +8,10 @@ startbuild = datetime.datetime.now()
 
 nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True,
-                      'local_num_threads': 1,
+                      'local_num_threads': 4,
                       'resolution': 0.1})
 
-generate_neurons(3000)
+generate_neurons(NN)
 
 # Init parameters of our synapse models
 DOPA_synparams_ex['vt'] = nest.Create('volume_transmitter')[0]
@@ -140,11 +140,11 @@ connect_generator(vta[vta_DA0], 400., 600., rate=250, coef_part=1)
 
 
 logger.debug("* * * Attaching spikes detector")
-for part in getAllParts():
+for part in get_all_parts():
     connect_detector(part)
 
 logger.debug("* * * Attaching multimeters")
-for part in getAllParts():
+for part in get_all_parts():
     connect_multimeter(part)
 
 del generate_neurons, add_connection, connect_generator, connect_detector, connect_multimeter
@@ -153,4 +153,4 @@ endbuild = datetime.datetime.now()
 
 simulate()
 get_log(startbuild, endbuild)
-save(GUI=gui_enabled)
+save(GUI=create_images)
