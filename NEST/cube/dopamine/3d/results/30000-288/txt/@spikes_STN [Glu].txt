@@ -1,4 +1,0 @@
-Name: STN [Glu], Title: Raster plot from device '30076', Hist: False
-225.1 :    2 : [480, 480]
-265.2 :    3 : [486, 486, 486]
-265.9 :    2 : [482, 482]

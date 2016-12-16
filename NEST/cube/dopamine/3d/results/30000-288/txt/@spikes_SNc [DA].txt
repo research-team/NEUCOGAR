@@ -1,6 +1,0 @@
-Name: SNc [DA], Title: Raster plot from device '30071', Hist: False
-221.4 :    1 : [189]
-224.0 :    1 : [189]
-258.6 :    1 : [186]
-277.4 :    1 : [185]
-306.5 :    1 : [188]
