@@ -1,3 +1,5 @@
+# Review of dopamine pathway in a rat brain
+
 1. **[Nigrostriatal](#nigrostriatal-pathway)**
 2. **[Mesocorticolimbic](#mesocorticolimbic-pathway)**
 3. **[Integration](#integration)**
@@ -30,52 +32,40 @@ Prefix description:
 - **ACh** - acetylcholine
 - **DA** - dopamine
 
-### About dopamine
+## About dopamine
 
-### Dopamine synapse and effects
+## Dopamine synapse and effects
 
-**Advanced scheme**  
-<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/support%20files/dopa_synapse.png"  width="80%"/>
+**Advanced schema of dopamine synapse**  
+<img src="support files/dopa_synapse.png"  width="80%"/>
 
 
 ========================
 
 
-### Nigrostriatal pathway
+## Nigrostriatal pathway
 
 <table>
 	<tr align="center">
 		<td width="33%">
-<<<<<<< Updated upstream
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/step_1/doc/BG_generators.png" />
+			<img src="/NEST/cube/dopamine/nigrostriatal/step_1/doc/BG_generators.png" />
 		<td width="33%">
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/step_2/doc/Striatum_D1_D2.png" />
+			<img src="/NEST/cube/dopamine/nigrostriatal/step_2/doc/Striatum_D1_D2.png" />
 		<td width="33%">
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/step_3/doc/Basal-ganglia-advanced.jpg" />
-=======
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/step_1/doc/BG_generators.png" />
-		<td width="33%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/step_2/doc/Striatum_D1_D2.png" />
-		<td width="33%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/step_3/doc/Basal-ganglia-advanced.jpg" />
->>>>>>> Stashed changes
+			<img src="/NEST/cube/dopamine/nigrostriatal/step_3/doc/Basal-ganglia-advanced.jpg" />
+	</tr>
 	<tr align="center">
 		<td>
-			<b>
-				<a href="https://github.com/research-team/NEUCOGAR/tree/master/nest/dopamine/nigrostriatal/step_1"> Step 1 </a>
+			<b><a href="/NEST/cube/dopamine/nigrostriatal/step_1"> Step 1 </a></b>
 		<td>
-			<b>
-				<a href="https://github.com/research-team/NEUCOGAR/tree/master/nest/dopamine/nigrostriatal/step_2"> Step 2 </a>
+			<b><a href="/NEST/cube/dopamine/nigrostriatal/step_2"> Step 2 </a></b>
 		<td>
-			<b>
-				<a href="https://github.com/research-team/NEUCOGAR/tree/master/nest/dopamine/nigrostriatal/step_3"> Step 3 </a>
+			<b><a href="/NEST/cube/dopamine/nigrostriatal/step_3"> Step 3 </a></b>
+	</tr>
 	<tr align="center">
 		<td colspan="3">
-<<<<<<< Updated upstream
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/doc/diagram.png" width="70%" />
-=======
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/doc/diagram.png" width="70%" />
->>>>>>> Stashed changes
+			<img src="/NEST/cube/dopamine/nigrostriatal/doc/diagram.png" width="70%" />
+	</tr>
 </table>
 
 
@@ -110,39 +100,38 @@ Prefix description:
 	<tr align="center">
 		<td>
 			<img src="support files/mesocorticolimbic.png" width="40%"/>  
+	</tr>
 	<tr align="center">
 		<td>
 			<a href="https://www.researchgate.net/publication/6656868_Janhunen_S_Ahtee_L_Differential_nicotinic_regulation_of_the_nigrostriatal_and_mesolimbic_dopaminergic_pathways_implications_for_drug_development_Neurosci_Biobehav_Rev_31_287-314">Source</a>
 			p291
+	</tr>
 	<tr>
 		<td colspan="3" align="center">
-<<<<<<< Updated upstream
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/mesocorticolimbic/doc/diagram.png" width="60%" />
-=======
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/mesocorticolimbic/doc/diagram.png" width="60%" />
->>>>>>> Stashed changes
+			<img src="/NEST/cube/dopamine/mesocorticolimbic/doc/diagram.png" width="60%" />
+	</tr>
 </table>
 
-| Source    | Destination | Connection        |
-|----------:|-------------|-------------------|
-|PFC[Glu1]  | NAc[GABA1]  | Glutamatergic     |
-|PFC[Glu1]  | VTA[GABA2]  | Glutamatergic     |
-|PFC[Glu0]  | VTA[DA0]    | Glutamatergic     |
-|NAc[Ach]   | NAc[GABA1]  | Acetylcholinergic |
-|NAc[GABA0] | NAc[GABA1]  | GABAergic         |
-|NAc[GABA1] | VTA[GABA2]  | GABAergic         |
-|VTA[GABA0] | PFC         | GABAergic         |
-|VTA[GABA0] | PPtg[GABA0] | GABAergic         |
-|VTA[DA0]   | PFC         | Dopaminergic      |
-|VTA[GABA1] | VTA[DA0]    | GABAergic         |
-|VTA[GABA1] | VTA[DA1]    | GABAergic         |
-|VTA[DA1]   | NAc[GABA1]  | Dopaminergic      |
-|VTA[GABA2] | NAc[GABA1]  | GABAergic         |
-|PPTg[GABA] | VTA[GABA0]  | GABAergic         |
-|PPTg[Ach]  | VTA[GABA0]  | Acetylcholinergic |
-|PPTg[Ach]  | VTA[DA1]    | Acetylcholinergic |
-|PPTg[GLu]  | VTA[GABA0]  | Glutamatergic     |
-|PPTg[Glu]  | VTA[DA1]    | Glutamatergic     |
+| Source    | Destination | Connection	|
+|----------:|-------------|-------------|
+|PFC[Glu1]  | NAc[GABA1]  | Glu     	|
+|PFC[Glu1]  | VTA[GABA2]  | Glu     	|
+|PFC[Glu0]  | VTA[DA0]    | Glu     	|
+|NAc[Ach]   | NAc[GABA1]  | ACh 		|
+|NAc[GABA0] | NAc[GABA1]  | GABA    	|
+|NAc[GABA1] | VTA[GABA2]  | GABA    	|
+|VTA[GABA0] | PFC         | GABA    	|
+|VTA[GABA0] | PPtg[GABA0] | GABA    	|
+|VTA[DA0]   | PFC         | Dopamine	|
+|VTA[GABA1] | VTA[DA0]    | GABA    	|
+|VTA[GABA1] | VTA[DA1]    | GABA    	|
+|VTA[DA1]   | NAc[GABA1]  | Dopamine	|
+|VTA[GABA2] | NAc[GABA1]  | GABA    	|
+|PPTg[GABA] | VTA[GABA0]  | GABA    	|
+|PPTg[Ach]  | VTA[GABA0]  | ACh 		|
+|PPTg[Ach]  | VTA[DA1]    | ACh 		|
+|PPTg[GLu]  | VTA[GABA0]  | Glu     	|
+|PPTg[Glu]  | VTA[DA1]    | Glu     	|
 
 
 ========================
@@ -153,19 +142,14 @@ Prefix description:
 <table>
 	<tr align="center">
 		<td width="25%">
-<<<<<<< Updated upstream
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/nigrostriatal/doc/diagram.png" />
+			<img src="/NEST/cube/dopamine/nigrostriatal/doc/diagram.png" />
 		<td width="25%">
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/mesocorticolimbic/doc/diagram.png" />
-=======
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/nigrostriatal/doc/diagram.png" />
-		<td width="25%">
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/mesocorticolimbic/doc/diagram.png" />
->>>>>>> Stashed changes
+			<img src="/NEST/cube/dopamine/mesocorticolimbic/doc/diagram.png" />
 		<td width="25%">
 			<img src="support files/scheme2.png"/> 
 		<td width="25%">
 			<img src="https://www.researchgate.net/profile/Dan_Stein3/publication/264427777/figure/fig1/AS:202931598041088@1425394071011/Nigrostriatal-mesocortical-and-mesolimbic-pathways-When-cortical-neurons-activate-the.png"/>
+	</tr>
 	<tr align="center">
 		<td>
 			<a href="#nigrostriatal-pathway">Nigrostriatal</a>
@@ -177,13 +161,11 @@ Prefix description:
 		<td>
 			<a href="https://www.researchgate.net/publication/264427777_The_neurobiology_of_methamphetamine_induced_psychosis">Source</a>
 			p3
+	</tr>
 	<tr align="center">
 		<td colspan="4">
-<<<<<<< Updated upstream
-			<img src="https://raw.githubusercontent.com/research-team/NEUCOGAR/master/nest/dopamine/integrated/doc/diagram.png"/>
-=======
-			<img src="https://github.com/research-team/NEUCOGAR/blob/master/nest/dopamine/integrated/doc/diagram.png"/>
->>>>>>> Stashed changes
+			<img src="/NEST/cube/dopamine/integrated/doc/diagram.png"/>
+	</tr>
 </table>
 
  Source    	| Destination 	| Connection        
@@ -263,7 +245,6 @@ Sagittal | Coronal    | Horizontal
 
 
 **Functions**  
-
 
 
 #### 2. Ventral striatum
@@ -451,6 +432,14 @@ Recent research has discovered that the PPN is involved in the planning of movem
 
 
 ### ▼ Amygdala
+
+**Description**  
+
+
+**Projections**  
+
+
+**Functions**  
 
 Full table of neuron number
 
