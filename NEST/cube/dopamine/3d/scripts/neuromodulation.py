@@ -8,7 +8,7 @@ startbuild = datetime.datetime.now()
 
 nest.ResetKernel()
 nest.SetKernelStatus({'overwrite_files': True,
-                      'local_num_threads': 4,
+                      'local_num_threads': number_of_threads,
                       'resolution': 0.1})
 
 generate_neurons(NN)
@@ -153,4 +153,4 @@ endbuild = datetime.datetime.now()
 
 simulate()
 get_log(startbuild, endbuild)
-save(GUI=create_images)
+save(create_images)

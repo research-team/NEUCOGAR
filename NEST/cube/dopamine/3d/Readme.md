@@ -1,5 +1,9 @@
 # Integrated dopamine with 3D layers
 
+## How to run
+
+`python neuromodulation.py -t <number of NEST threads> -n <number of neurons>`
+
 ## File structure
 All the scripts are located in `./scripts/`
 
