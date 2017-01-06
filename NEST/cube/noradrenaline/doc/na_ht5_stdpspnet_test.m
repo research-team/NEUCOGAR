@@ -33,6 +33,7 @@ ST=0;           % level of serotonine (5-HT)
 NA=0;           % level of noradrenaline
 ST_lim_fade_rate = 0.999;
 ST_fade_rate = 0.999; 
+NA_fade_rate = 0.999; 
 DAnST_t = zeros(1000*T,3); % DA and ST of time
 rew=[];
 pun=[];
@@ -75,6 +76,7 @@ for sec=1:T                             % simulation in seconds
         
         DA=DA*0.995;
         ST=ST*ST_fade_rate;
+	NA=NA*NA_fade_rate;
         if (mod(t,10)==0) % each 10 s
             s(1:Ne,:)=max(0, min(sm,s(1:Ne,:)+(0.002+DA)*sd(1:Ne,:)+(0.002+ST)*sd(1:Ne,:))); %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%!!!!!!!!!!!!!!!!!
             sd=0.99*sd;
