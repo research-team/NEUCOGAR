@@ -30,9 +30,10 @@ firings=[-D 0];                         % spike timings
 T=100;           % the duration of experiment
 DA=0;           % level of dopamine above the baseline
 ST=0;           % level of serotonine (5-HT)
+NA=0;           % level of noradrenaline
 ST_lim_fade_rate = 0.999;
 ST_fade_rate = 0.999; 
-DAnST_t = zeros(1000*T,2); % DA and ST of time
+DAnST_t = zeros(1000*T,3); % DA and ST of time
 rew=[];
 pun=[];
 
@@ -90,7 +91,7 @@ for sec=1:T                             % simulation in seconds
                 pun=[pun,sec*1000+t+1000+ceil(2000*rand)];
             end;
         end
-	Pnov = 0.5 % check
+      Pnov = 0.5 % check
 	Ppun = 0.5 % check
         if any(rew==sec*1000+t)
             DA=DA+0.5; % why 0.5
@@ -109,7 +110,7 @@ for sec=1:T                             % simulation in seconds
         %ST = max(0, ST);
         
         SnSd_t(sec*1000+t,:) = [s(n1,syn), sd(n1,syn)]; % SnSd_t = [s, sd]
-        DAnST_t(sec*1000+t,:) = [DA, max(0, ST)];
+        DAnST_t(sec*1000+t,:) = [DA, max(0, ST), NA];
         % where s = synaptic weight, sd = eligibility trace
         
     end;
@@ -127,9 +128,10 @@ for sec=1:T                             % simulation in seconds
         0.001*(1:(sec*1000+t)), SnSd_t(1:sec*1000+t,2), 'g--', ...
         0.001*(1:(sec*1000+t)), DAnST_t(1:sec*1000+t,1), 'm', ...
         0.001*(1:(sec*1000+t)), DAnST_t(1:sec*1000+t,2), 'c', ...
+        0.001*(1:(sec*1000+t)), DAnST_t(1:sec*1000+t,3), 'r', ...
         0.001*rew, 0*rew, 'r^', ...         
         0.001*pun, 0*pun, 'ko', 'MarkerFaceColor', [1 0 0]);
-    legend('synaptic weight', 'eligibility trace', 'DA', 'ST', 'rew', 'pun');
+    legend('synaptic weight', 'eligibility trace', 'DA', 'ST', 'NA', 'rew', 'pun');
     grid on
     
     drawnow;
