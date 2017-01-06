@@ -95,15 +95,18 @@ for sec=1:T                             % simulation in seconds
         end
       Pnov = 0.5 % check
 	Ppun = 0.5 % check
+	Prew = 0.5 % check
         if any(rew==sec*1000+t)
             DA=DA+0.5; % why 0.5
             ST=ST+0.5;
-	    NA=(DA+ST)*Pnov;
+	    %NA=(DA+ST)*Pnov;
+	    NA = NA + Prew*Pnov;
             %ST_fade_rate = ST_fade_rate + 0.01 %
         end;
         if any(pun==sec*1000+t)
             %ST_fade_rate = ST_fade_rate - 0.01 %
-	    NA=ST*Ppun*Pnov;
+	    %NA=ST*Ppun*Pnov;
+	    NA = NA + Ppun*Pnov;
             ST = ST-0.5;
 
         end;
