@@ -7,6 +7,340 @@
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
     <owl:Ontology rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Object Properties
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#influences -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#influences"/>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isProducedIn -->
+
+    <owl:ObjectProperty rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isProducedIn"/>
+    
+
+
+    <!-- 
+    ///////////////////////////////////////////////////////////////////////////////////////
+    //
+    // Classes
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////
+     -->
+
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Amygdala -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Amygdala">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Neuromodulation"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Motivation"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Reinforcement"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Reward"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isProducedIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#VTA"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Hypothalamus -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Hypothalamus">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Hyppocampus -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Hyppocampus">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Inner_strength -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Inner_strength">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Insula -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Insula">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Medula_oblongata -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Medula_oblongata">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Motivation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Motivation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#NAcc -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#NAcc">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Neuromodulation -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Neuromodulation">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Pleasure"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Pain"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#PFC -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#PFC">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Pain -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Pain"/>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Pleasure -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Pleasure"/>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Raphe_nuclei -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Raphe_nuclei">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Reinforcement -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Reinforcement">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Reward -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Reward">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SN -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SN">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SNc -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SNc">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SN"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SNr -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SNr">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#SN"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Satisfaction -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Satisfaction">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Self_confidence -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Self_confidence">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Psychology"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Serotonin -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Serotonin">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Neuromodulation"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Inner_strength"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Satisfaction"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isAssociatedWith"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Self_confidence"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#isProducedIn"/>
+                <owl:someValuesFrom rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Raphe_nuclei"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Serotonin_pathway -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Serotonin_pathway">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Serotonin"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Striatum -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Striatum">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Thalamus -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Thalamus">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Brain"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Nociception"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#VTA -->
+
+    <owl:Class rdf:about="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#VTA">
+        <rdfs:subClassOf rdf:resource="http://www.semanticweb.org/maxtalanov/ontologies/2017/1/pain-pleasure#Dopamine_pathway"/>
+    </owl:Class>
 </rdf:RDF>
 
 
