@@ -143,18 +143,18 @@ delta = [1.0, 1.5, 0.38, 0.8, 0.33]
 k = 100.
 
 for i in xrange(len(delta)):
-    connect_generator(motor[motor_Glu0], k, k + 15., rate=300, coef_part=5)
+    connect_generator(motor[motor_Glu0], k, k + 12., rate=300, coef_part=1)
 
-    connect_generator(pptg[pptg_GABA], k, k + 15., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_Glu], k, k + 15., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_ACh], k, k + 15., rate=250, coef_part=1)
+    connect_generator(pptg[pptg_GABA], k, k + 12., rate=250, coef_part=1)
+    connect_generator(pptg[pptg_Glu], k, k + 12., rate=250, coef_part=1)
+    connect_generator(pptg[pptg_ACh], k, k + 12., rate=250, coef_part=1)
 
-    connect_generator(vta[vta_DA0], k, k + 15., rate=250, coef_part=1,
-                      weight=float((delta[i] + 2) * 6))
-    connect_generator(amygdala[amygdala_Glu], k, k + 15., rate=250, coef_part=1)
+    connect_generator(vta[vta_DA0], k, k + 12., rate=250, coef_part=1,
+                      weight=float((delta[i] + 2) * 5))
+    connect_generator(amygdala[amygdala_Glu], k, k + 12., rate=250, coef_part=1)
 
-    connect_generator(snc[snc_DA], k, k + 15., rate=250, coef_part=1,
-                      weight=float((delta[i] + 2) * 6))
+    connect_generator(snc[snc_DA], k, k + 12., rate=250, coef_part=1,
+                      weight=float((delta[i] + 2) * 5))
     k += 100.
 
 

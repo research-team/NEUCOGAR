@@ -283,12 +283,12 @@ def connect_detector(part):
     number = part[k_NN] if part[k_NN] < N_detect else N_detect
 
     source = part[k_inner_ids] + part[k_outer_ids]
-
+    #ToDo check changes of Connect method
     conn_dict = {'rule': 'fixed_indegree',
                  'indegree': number}
 
     g.spike_detectors[name] = nest.Create('spike_detector', params=detector_param)
-    nest.Connect(source, g.spike_detectors[name], conn_spec=conn_dict)
+    nest.Connect(source, g.spike_detectors[name])  # , conn_spec=conn_dict)
     # Show data of new detector
     logger.debug("Detector => {0}. Tracing {1} neurons".format(name, number))
 
