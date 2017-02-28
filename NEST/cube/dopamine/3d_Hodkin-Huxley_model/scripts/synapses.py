@@ -3,23 +3,14 @@ from simulation_params import *
 import nest
 import numpy.random as random
 # Neuron parameters
-iaf_neuronparams = {'E_L': -70.,            # Resting membrane potential in mV
-                    'V_th': -50.,           # Spike threshold in mV
-                    'V_reset': -67.,        # Reset membrane potential after a spike in mV
-                    'C_m': 2.,              # Capacity of the membrane in pF
-                    't_ref': 2.,            # Duration of refractory period (V_m = V_reset) in ms
-                    'V_m': -60.,            # Membrane potential in mV at start
-                    'tau_syn_ex': 1.,       # Time constant of postsynaptic excitatory currents in ms
-                    'tau_syn_in': 1.33}     # Time constant of postsynaptic inhibitory currents in ms
-
-hh_neuronparams = {'E_L': -70.,            # Resting membrane potential in mV
-                    # 'V_th': -50.,           # Spike threshold in mV
-                    # 'V_reset': -67.,        # Reset membrane potential after a spike in mV
-                    'C_m': 2.,              # Capacity of the membrane in pF
-                    # 't_ref': 2.,            # Duration of refractory period (V_m = V_reset) in ms
-                    'V_m': -60.,            # Membrane potential in mV at start
-                    'tau_syn_ex': 1.,       # Time constant of postsynaptic excitatory currents in ms
-                    'tau_syn_in': 1.33}     # Time constant of postsynaptic inhibitory currents in ms
+hh_neuronparams = {'E_L': -70.,          # Resting membrane potential in mV
+                   'V_T': -63.,          # Voltage offset that controls dynamics.
+                                         # -63mV results in a threshold around -50mV.
+                   'C_m': 2.,            # Capacity of the membrane in pF 1
+                   't_ref': 2.,          # Duration of refractory period (V_m = V_reset) in ms
+                   'tau_syn_ex': 5.,       # Time constant of postsynaptic excitatory currents in ms
+                   'tau_syn_in': 10.      # Time constant of postsynaptic inhibitory currents in ms
+                   }
 
 # Synapse common parameters
 STDP_synapseparams = {
