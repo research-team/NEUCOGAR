@@ -10,7 +10,7 @@ nest.SetKernelStatus({'overwrite_files': True,
                       'local_num_threads': 8,
                       'resolution': 0.1})
 
-generate_neurons(20000)
+generate_neurons(100000)
 
 # Init parameters of our synapse models
 DOPA_synparams_ex['vt'] = nest.Create('volume_transmitter')[0]
@@ -27,68 +27,70 @@ nest.CopyModel('stdp_dopamine_synapse', dopa_synapse_in, DOPA_synparams_in)
 nest.CopyModel('stdp_serotonine_synapse', sero_synapse_ex, SERO_synparams_ex)
 nest.CopyModel('stdp_serotonine_synapse', sero_synapse_in, SERO_synparams_in)
 nest.CopyModel('stdp_dopamine_synapse', nora_synapse_ex, NORA_synparams_ex)
-## - my
+## - my .50
 logger.debug("* * * Start connection initialisation")
+wse = 0.001
+wsi = 0.5
 # * * * AFFERENT PROJECTIONS * *
-connect(basal_ganglia[basal_ganglia_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(basal_ganglia[basal_ganglia_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(basal_ganglia[basal_ganglia_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(basal_ganglia[basal_ganglia_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(vta[vta_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(septum[septum_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(septum[septum_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(prefrontal[pfc_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(prefrontal[pfc_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(pons[pons_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(hypothalamus[hypothalamus_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(hypothalamus[hypothalamus_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(periaqueductal_gray[periaqueductal_gray_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(periaqueductal_gray[periaqueductal_gray_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(bed_nucleus_of_the_stria_terminalis[bed_nucleus_of_the_stria_terminalis_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(reticular_formation[reticular_formation_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(reticular_formation[reticular_formation_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(reticular_formation[reticular_formation_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(amygdala[amygdala_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(amygdala[amygdala_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(hippocampus[hippocampus_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=0.005)
+connect(basal_ganglia[basal_ganglia_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(basal_ganglia[basal_ganglia_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(basal_ganglia[basal_ganglia_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(basal_ganglia[basal_ganglia_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(vta[vta_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(septum[septum_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(septum[septum_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(prefrontal[pfc_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(prefrontal[pfc_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(pons[pons_5HT], mnr[mnr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(hypothalamus[hypothalamus_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(hypothalamus[hypothalamus_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(periaqueductal_gray[periaqueductal_gray_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(periaqueductal_gray[periaqueductal_gray_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(bed_nucleus_of_the_stria_terminalis[bed_nucleus_of_the_stria_terminalis_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(reticular_formation[reticular_formation_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(reticular_formation[reticular_formation_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(reticular_formation[reticular_formation_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(amygdala[amygdala_5HT], rpa[rpa_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(amygdala[amygdala_5HT], rmg[rmg_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(hippocampus[hippocampus_5HT], dr[dr_5HT], syn_type=SERO_ex, weight_coef=wse)
 
 # * * * EFFERENT PROJECTIONS * * *
-connect(dr[dr_5HT], basal_ganglia[basal_ganglia_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], striatum[striatum_5HT], syn_type=SERO_in, weight_coef=0.005) #!!!
-connect(dr[dr_5HT], nac[nac_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], snr[snr_GABA], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], septum[septum_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=0.008) #? tune weights
-connect(dr[dr_5HT], lateral_cortex[lateral_cortex_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], entorhinal_cortex[entorhinal_cortex_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], prefrontal[pfc_5HT], syn_type=SERO_in, weight_coef=0.005) #!!!
-connect(dr[dr_5HT], lateral_tegmental_area[lateral_tegmental_area_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], locus_coeruleus[locus_coeruleus_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], bed_nucleus_of_the_stria_terminalis[bed_nucleus_of_the_stria_terminalis_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], hippocampus[hippocampus_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(dr[dr_5HT], amygdala[amygdala_5HT], syn_type=SERO_in, weight_coef=0.005)
+connect(dr[dr_5HT], basal_ganglia[basal_ganglia_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], striatum[striatum_5HT], syn_type=SERO_in, weight_coef=wsi) #!!!
+connect(dr[dr_5HT], nac[nac_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], snr[snr_GABA], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], septum[septum_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=wsi) #? tune weights
+connect(dr[dr_5HT], lateral_cortex[lateral_cortex_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], entorhinal_cortex[entorhinal_cortex_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], prefrontal[pfc_5HT], syn_type=SERO_in, weight_coef=wsi) #!!!
+connect(dr[dr_5HT], lateral_tegmental_area[lateral_tegmental_area_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], locus_coeruleus[locus_coeruleus_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], bed_nucleus_of_the_stria_terminalis[bed_nucleus_of_the_stria_terminalis_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], hippocampus[hippocampus_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(dr[dr_5HT], amygdala[amygdala_5HT], syn_type=SERO_in, weight_coef=wsi)
 
-connect(mnr[mnr_5HT], vta[vta_5HT], syn_type=SERO_in, weight_coef=0.005) #!!! 0.005
-connect(mnr[mnr_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=0.005) #? tune weights 0.005
-connect(mnr[mnr_5HT], cerebral_cortex[cerebral_cortex_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(mnr[mnr_5HT], insular_cortex[insular_cortex_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(mnr[mnr_5HT], medial_cortex[medial_cortex_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(mnr[mnr_5HT], neocortex[neocortex_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(mnr[mnr_5HT], hypothalamus[hypothalamus_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(mnr[mnr_5HT], hippocampus[hippocampus_5HT], syn_type=SERO_in, weight_coef=0.005)
+connect(mnr[mnr_5HT], vta[vta_5HT], syn_type=SERO_in, weight_coef=wsi) #!!! 0.005
+connect(mnr[mnr_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=wsi) #? tune weights 0.005
+connect(mnr[mnr_5HT], cerebral_cortex[cerebral_cortex_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(mnr[mnr_5HT], insular_cortex[insular_cortex_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(mnr[mnr_5HT], medial_cortex[medial_cortex_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(mnr[mnr_5HT], neocortex[neocortex_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(mnr[mnr_5HT], hypothalamus[hypothalamus_5HT], syn_type=SERO_in, weight_coef=wsi)
+connect(mnr[mnr_5HT], hippocampus[hippocampus_5HT], syn_type=SERO_in, weight_coef=wsi)
 
 # * * * THALAMOCORTICAL PATHWAY * * *
-connect(thalamus[thalamus_5HT], cerebral_cortex[cerebral_cortex_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(cerebral_cortex[cerebral_cortex_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=0.005)
-connect(cerebral_cortex[cerebral_cortex_5HT], thalamus[thalamus_5HT], syn_type=SERO_ex, weight_coef=0.005)
-connect(cerebral_cortex[cerebral_cortex_5HT], basal_ganglia[basal_ganglia_5HT], syn_type=SERO_ex, weight_coef=0.005)
+connect(thalamus[thalamus_5HT], cerebral_cortex[cerebral_cortex_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(cerebral_cortex[cerebral_cortex_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=wsi) # main was 0.005
+#connect(cerebral_cortex[cerebral_cortex_5HT], thalamus[thalamus_5HT], syn_type=SERO_ex, weight_coef=wse)
+connect(cerebral_cortex[cerebral_cortex_5HT], basal_ganglia[basal_ganglia_5HT], syn_type=SERO_ex, weight_coef=wse)
 
 # * * * DOPAMINE INTERACTION * * *
-connect(prefrontal[pfc_5HT], prefrontal[pfc_DA], syn_type=SERO_ex, weight_coef=0.005)
+connect(prefrontal[pfc_5HT], prefrontal[pfc_DA], syn_type=SERO_ex, weight_coef=wse)
 connect(prefrontal[pfc_DA], vta[vta_5HT], syn_type=DA_in, weight_coef=0.005)
 connect(prefrontal[pfc_DA], vta[vta_DA2], syn_type=DA_in, weight_coef=0.005)
 #connect(vta[vta_5HT], vta[vta_DA2], syn_type=SERO_in, weight_coef=0.005)
-connect(vta[vta_5HT], vta[vta_DA2], syn_type=SERO_ex, weight_coef=0.005)
+connect(vta[vta_5HT], vta[vta_DA2], syn_type=SERO_ex, weight_coef=wse)
 connect(vta[vta_DA2], prefrontal[pfc_5HT], syn_type=DA_ex, weight_coef=0.005)
 connect(vta[vta_DA2], prefrontal[pfc_DA], syn_type=DA_ex, weight_coef=0.005)
 #connect(vta[vta_DA2], striatum[striatum_5HT], syn_type=DOPA_in, weight_coef=0.005)
@@ -100,21 +102,21 @@ connect(vta[vta_DA2], nac[nac_5HT], syn_type=DA_ex, weight_coef=0.005)
 #connect(vta[vta_DA], nac[nac_DA], syn_type=DOPA_in, weight_coef=0.005)
 connect(vta[vta_DA2], nac[nac_DA], syn_type=DA_ex, weight_coef=0.005)
 #connect(striatum[striatum_5HT], striatum[striatum_DA], syn_type=SERO_in, weight_coef=0.005)
-connect(striatum[striatum_5HT], striatum[striatum_DA], syn_type=SERO_ex, weight_coef=0.005)
+connect(striatum[striatum_5HT], striatum[striatum_DA], syn_type=SERO_ex, weight_coef=wse)
 #connect(striatum[striatum_DA],  snr[snr_GABA], syn_type=DOPA_in, weight_coef=0.005)
 connect(striatum[striatum_DA], snr[snr_GABA], syn_type=DA_ex, weight_coef=0.005)
 #connect(striatum[striatum_DA],  snc[snc_DA], syn_type=DOPA_in, weight_coef=0.005)
 connect(striatum[striatum_DA], snc[snc_GABA], syn_type=DA_ex, weight_coef=0.005)
 connect(striatum[striatum_DA], snc[snc_DA], syn_type=DA_ex, weight_coef=0.005)
-connect(nac[nac_5HT], nac[nac_DA], syn_type=SERO_ex, weight_coef=0.005)
-connect(snr[snr_GABA], snc[snc_DA], syn_type=SERO_in, weight_coef=0.005)
+connect(nac[nac_5HT], nac[nac_DA], syn_type=SERO_ex, weight_coef=wse)
+connect(snr[snr_GABA], snc[snc_DA], syn_type=SERO_in, weight_coef=wsi)
 connect(snc[snc_GABA], striatum[striatum_5HT], syn_type=DA_in, weight_coef=0.005) #?
 connect(snc[snc_DA], striatum[striatum_5HT], syn_type=DA_in, weight_coef=0.005)
 connect(snc[snc_DA], striatum[striatum_DA], syn_type=DA_in, weight_coef=0.005)
 connect(snc[snc_DA], nac[nac_5HT], syn_type=DA_in, weight_coef=0.005)
 connect(snc[snc_DA], nac[nac_DA], syn_type=DA_in, weight_coef=0.005)
-connect(locus_coeruleus[locus_coeruleus_5HT], locus_coeruleus[locus_coeruleus_DA], syn_type=SERO_ex, weight_coef=0.005)
-connect(locus_coeruleus[locus_coeruleus_DA], dr[dr_5HT], syn_type=DA_ex, weight_coef=0.005)
+#connect(locus_coeruleus[locus_coeruleus_5HT], locus_coeruleus[locus_coeruleus_DA], syn_type=SERO_ex, weight_coef=0.005)
+#connect(locus_coeruleus[locus_coeruleus_DA], dr[dr_5HT], syn_type=DA_ex, weight_coef=0.005)
 
 # * * * NORADRENALINE INTERACTION * * *
 ##xonnect(locus_coeruleus[locus_coeruleus_5HT], locus_coeruleus[locus_coeruleus_NA], syn_type=SERO_in, weight_coef=0.005)
@@ -130,11 +132,12 @@ connect(locus_coeruleus[locus_coeruleus_DA], dr[dr_5HT], syn_type=DA_ex, weight_
 connect(motor[motor_Glu0], striatum[D1], syn_type=Glu, weight_coef=0.005)
 connect(motor[motor_Glu0], snc[snc_DA], syn_type=Glu, weight_coef=0.000005)
 connect(motor[motor_Glu0], striatum[D2], syn_type=Glu, weight_coef=0.05)
-connect(motor[motor_Glu0], thalamus[thalamus_Glu], syn_type=Glu, weight_coef=0.008)
+connect(motor[motor_Glu0], thalamus[thalamus_Glu], syn_type=Glu, weight_coef=0.003) #0.0008
+connect(motor[motor_Glu0], cerebral_cortex[cerebral_cortex_5HT], syn_type=Glu, weight_coef=0.003)
 connect(motor[motor_Glu0], stn[stn_Glu], syn_type=Glu, weight_coef=7)
 connect(motor[motor_Glu1], striatum[D1], syn_type=Glu)
 connect(motor[motor_Glu1], striatum[D2], syn_type=Glu)
-connect(motor[motor_Glu1], thalamus[thalamus_Glu], syn_type=Glu)
+#connect(motor[motor_Glu1], thalamus[thalamus_Glu], syn_type=Glu)
 connect(motor[motor_Glu1], stn[stn_Glu], syn_type=Glu)
 connect(motor[motor_Glu1], nac[nac_GABA0])
 
@@ -157,8 +160,8 @@ connect(stn[stn_Glu], gpi[gpi_GABA], syn_type=Glu, weight_coef=20)
 connect(stn[stn_Glu], gpe[gpe_GABA], syn_type=Glu, weight_coef=0.3)
 #connect(stn[stn_Glu], snc[snc_DA], syn_type=Glu, weight_coef=0.000001)
 
-connect(gpi[gpi_GABA], thalamus[thalamus_Glu], weight_coef=3)
-connect(snr[snr_GABA], thalamus[thalamus_Glu], weight_coef=3)
+connect(gpi[gpi_GABA], thalamus[thalamus_Glu], weight_coef=1) # weight_coef=3)
+connect(snr[snr_GABA], thalamus[thalamus_Glu], weight_coef=1) # weight_coef=3)
 
 connect(thalamus[thalamus_Glu], motor[motor_Glu1], syn_type=Glu)
 #connect(thalamus[thalamus_Glu], stn[stn_Glu], syn_type=Glu, weight_coef=1) #005

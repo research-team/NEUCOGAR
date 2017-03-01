@@ -145,6 +145,7 @@ def simulate():
     global startsimulate, endsimulate, SAVE_PATH
     begin = 0
     SAVE_PATH = "../results/output-{0}/".format(NEURONS)
+    #SAVE_PATH = "../Res/4/".format(NEURONS)
     if not os.path.exists(SAVE_PATH):
         os.makedirs(SAVE_PATH)
     nest.PrintNetwork()

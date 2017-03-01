@@ -37,7 +37,7 @@ DOPA_synparams_ex = dict({'delay': 1.,
 # Dopamine inhibitory synapse
 DOPA_synparams_in = dict({'delay': 1.,
                           'weight': w_DA_in,
-                          'Wmax': -100.})
+                          'Wmin': -100.})
 # Noradrinaline inhibitory synapse
 NORA_synparams_ex = dict({'delay': 1.,
                           'weight': w_NA_ex,
@@ -49,7 +49,7 @@ SERO_synparams_ex = dict({'delay': 1.,
 # Serotanine inhibitory synapse
 SERO_synparams_in = dict({'delay': 1.,
                           'weight': w_SERO_in,
-                          'Wmax': -100.})
+                          'Wmin': -100.})
 
 # Dictionary of synapses with keys and their parameters
 synapses = {GABA:  (gaba_synapse,    w_GABA ),
@@ -70,7 +70,7 @@ static_syn = {
 
 # Device parameters
 multimeter_param = {'to_memory': True,
-                    'to_file': False,
+                    'to_file': True,
                     'withtime': True,
                     'interval': 0.1,
                     'record_from': ['V_m'],
@@ -79,6 +79,6 @@ multimeter_param = {'to_memory': True,
 detector_param = {'label': 'spikes',
                   'withtime': True,
                   'withgid': True,
-                  'to_file': False,
+                  'to_file': True,
                   'to_memory': True,
                   'scientific': True}
