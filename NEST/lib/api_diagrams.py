@@ -1,34 +1,42 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.0"
-__tested___ = "17.03.2017"
+__version__ = "1.2"
+__tested___ = "22.03.2017"
 
 import os
 import numpy
 import pylab
+import logging
 from collections import defaultdict
-from globals import *
 
+logging.basicConfig(format='%(name)s::%(funcName)s %(message)s', level=logging.INFO)
+logger = logging.getLogger('api_diagrams')
 
-def BuildSpikeDiagrams():
+def BuildSpikeDiagrams(txt_path=None):
     """
     Function for making spike diagrams
-    :param path:
     :return:
     """
-    path = "{0}/out".format(current_path)
+    img_path = "img"
 
-    if not os.path.exists(path):
-        os.makedirs(path)
+    if not txt_path:
+        import api_globals as glob
+        txt_path = glob.current_path
 
-    for spikes_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(path) if name.endswith(".gdf")])):
+    if txt_path and not os.path.exists(txt_path):
+        os.makedirs(txt_path)
+
+    if not os.path.exists(img_path):
+        os.makedirs(img_path)
+
+    for spikes_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(txt_path) if name.endswith(".gdf")])):
         meta = spikes_file.split('-')
         gids = list()
         times = list()
         # take data of the same files (but another thread)
-        for merge_file in [filename for filename in os.listdir(path) if filename.startswith(spikes_file) and filename.endswith(".gdf")]:
+        for merge_file in [filename for filename in os.listdir(txt_path) if filename.startswith(spikes_file) and filename.endswith(".gdf")]:
             # if file is not empty take data
-            if os.stat(path + merge_file).st_size > 0:
-                with open(path + merge_file, 'r') as f:
+            if os.stat("{0}/{1}".format(txt_path, merge_file)).st_size > 0:
+                with open("{0}/{1}".format(txt_path, merge_file), 'r') as f:
                     for line in f:
                         # split by whitespace: gid time
                         data = line.split()
@@ -38,38 +46,44 @@ def BuildSpikeDiagrams():
         if len(times) == 0:
             print spikes_file, "no recorded data"
         else:
-            __make_spikes_diagram(times, gids, meta[0] + meta[1], path)
+            __make_spikes_diagram(times, gids, "{0} {1}".format(meta[0], meta[1]), img_path)
             print spikes_file, "diagram created"
         del meta, times, gids
 
 
-def BuildVoltageDiagrams():
+def BuildVoltageDiagrams(txt_path=None):
     """
     Function for making voltage diagrams
-    :param path: (str)
     :return:
     """
-    path = "{0}/out".format(current_path)
 
-    if not os.path.exists(path):
-        os.makedirs(path)
+    img_path = "img"
 
-    for voltage_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(path) if name.endswith(".dat")])):
+    if not txt_path:
+        import api_globals as glob
+        txt_path = glob.current_path
+
+    if txt_path and not os.path.exists(txt_path):
+        os.makedirs(txt_path)
+
+    if not os.path.exists(img_path):
+        os.makedirs(img_path)
+
+    for voltage_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(txt_path) if name.endswith(".dat")])):
         meta = voltage_file.split('-')
         times = defaultdict(list)
         voltages = defaultdict(list)
         # take data of the same files (but another thread)
-        for merge_file in [filename for filename in os.listdir(path) if filename.startswith(voltage_file) and filename.endswith(".dat")]:
-            with open(path + merge_file, 'r') as f:
+        for merge_file in [filename for filename in os.listdir(txt_path) if filename.startswith(voltage_file) and filename.endswith(".dat")]:
+            with open("{0}/{1}".format(txt_path, merge_file), 'r') as f:
                 for line in f:
                     # split by whitespace: gid time voltage
                     data = line.split()
                     times[data[0]].append(float(data[1]))
                     voltages[data[0]].append(float(data[2]))
-
-        __make_voltage_diagram(dict(times), dict(voltages), meta[0] + meta[1], path)
+        __make_voltage_diagram(dict(times), dict(voltages), "{0} {1}".format(meta[0], meta[1]), img_path)
         print voltage_file, "diagram created"
-        del meta, times, voltages, gid
+        del meta, times, voltages
 
 
 def Heatmap():
@@ -111,7 +125,7 @@ def __make_spikes_diagram(ts, gids, name, path):
     pylab.title(name)
     pylab.xlim(xlim)
     pylab.draw()
-    pylab.savefig("{0}{1}.png".format(path, name), dpi=dpi_n, format='png')
+    pylab.savefig("{0}/{1}.png".format(path, name), dpi=120, format='png')
     pylab.close()
 
 
@@ -137,17 +151,18 @@ def __make_voltage_diagram(times, voltages, name, path):
     pylab.ylabel("Membrane potential (mV)")
     pylab.xlabel("Time (ms)")
     pylab.legend(loc="best")
-    pylab.title("Voltage" + name)
+    pylab.title("Voltage " + name)
     pylab.grid(True)
     pylab.draw()
-    pylab.savefig("{0}{1}.png".format(path, name), dpi=dpi_n, format='png')
+    pylab.savefig("{0}/{1}.png".format(path, name), dpi=120, format='png')
     pylab.close()
 
 '''
-СТАРТОВАЯ ТОЧКА, ОТКУДА БРАТЬ ПУТЬ
+START POINT, WHERE I CAN FIND PATH
 '''
 
 # As independent script
 if __name__ == '__main__':
     folder = raw_input("Enter path to the results: ")
-    start(folder + "/" if folder[-1:] != "/" else folder)
+    BuildSpikeDiagrams(folder)
+    BuildVoltageDiagrams(folder)
