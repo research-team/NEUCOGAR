@@ -44,6 +44,7 @@ NN_minimal = 10
 
 # Additional settings
 noradrenaline_flag = True     # noradrenaline modulation flag
+generator_flag = True
 create_images = True
 
 MaxSynapses = 4000      # max synapses
