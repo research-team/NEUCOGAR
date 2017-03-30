@@ -75,7 +75,7 @@ logger.debug("* * * Attaching spike generators...")
 if generator_flag:
 
     connect_generator(lc[locus_coeruleus], rate=300, coef_part=1)
-    connect_generator(motor[motor_cortex], rate=300, coef_part=1)
+   # connect_generator(motor[motor_cortex], rate=300, coef_part=1)
    # connect_generator(pptg[pptg_GABA], 400., 600., rate=250, coef_part=1)
    # connect_generator(pptg[pptg_Glu], 400., 600., rate=250, coef_part=1)
    # connect_generator(pptg[pptg_ACh], 400., 600., rate=250, coef_part=1)
@@ -90,7 +90,9 @@ k = 100.
 for i in xrange(len(delta)):
 	connect_generator(lc[locus_coeruleus], k, k + 12., rate=250, coef_part=1,
                       weight=float((delta[i] + 2) * 5))
-	connect_generator(vta[ventral_tegmental_area], k, k + 12., rate=250, coef_part=1,
+	connect_generator(nts[nts_a1], k, k + 12., rate=250, coef_part=1,
+                      weight=float((delta[i] + 2) * 5))
+	connect_generator(nts[nts_a2], k, k + 12., rate=250, coef_part=1,
                       weight=float((delta[i] + 2) * 5))
 	k += 100.
 
