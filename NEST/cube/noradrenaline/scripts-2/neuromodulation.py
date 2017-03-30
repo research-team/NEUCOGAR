@@ -65,52 +65,34 @@ if noradrenaline_flag:
 
     add_connection(vta[ventral_tegmental_area], lc[lc_D1], syn_type=NA_in, weight_coef=0.005)
     add_connection(vta[ventral_tegmental_area], lc[lc_D2], syn_type=NA_in, weight_coef=0.005)
-    '''
-    # Connect the volume transmitter to the parts
-    vt_ex = nest.Create('volume_transmitter')
-    vt_in = nest.Create('volume_transmitter')
-    NORA_synparams_ex['vt'] = vt_ex[0]
-    NORA_synparams_in['vt'] = vt_in[0]
-    nest.CopyModel('stdp_dopamine_synapse', nora_model_ex, NORA_synparams_ex)
-    nest.CopyModel('stdp_dopamine_synapse', nora_model_in, NORA_synparams_in)
-    nest.Connect(snc[snc_DA][k_IDs], vt_ex)
-    nest.Connect(snc[snc_DA][k_IDs], vt_in)
-    nest.Connect(vta[vta_DA0][k_IDs], vt_ex)
-    nest.Connect(vta[vta_DA1][k_IDs], vt_ex)
-    # NIGROSTRIATAL
-    connect(snc[snc_DA], striatum[D1], syn_type=NR_ex)
-    connect(snc[snc_DA], gpe[gpe_GABA], syn_type=NR_ex)
-    connect(snc[snc_DA], stn[stn_Glu], syn_type=NR_ex)
-    connect(snc[snc_DA], nac[nac_GABA0], syn_type=NR_ex)
-    connect(snc[snc_DA], nac[nac_GABA1], syn_type=NR_ex)
-    connect(snc[snc_DA], striatum[D2], syn_type=DA_in)
-    connect(snc[snc_DA], striatum[tan], syn_type=DA_in)
-    # MESOCORTICOLIMBIC
-    connect(vta[vta_DA0], striatum[D1], syn_type=NR_ex)
-    connect(vta[vta_DA0], striatum[D2], syn_type=DA_in)
-    connect(vta[vta_DA0], prefrontal[pfc_Glu0], syn_type=NR_ex)
-    connect(vta[vta_DA0], prefrontal[pfc_Glu1], syn_type=NR_ex)
-    connect(vta[vta_DA1], nac[nac_GABA0], syn_type=NR_ex)
-    connect(vta[vta_DA1], nac[nac_GABA1], syn_type=NR_ex)
-'''
-
 
 
 logger.debug("* * * Creating connectivity")
 connect_all()
 
 
-logger.debug("* * * Creating spike generators...")
-#if generator_flag:
-'''
-    connect_generator(motor[motor_Glu0], rate=300, coef_part=1)
-    connect_generator(pptg[pptg_GABA], 400., 600., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_Glu], 400., 600., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_ACh], 400., 600., rate=250, coef_part=1)
-    connect_generator(amygdala[amygdala_Glu], 400., 600., rate=250, coef_part=1)
-    connect_generator(snc[snc_DA], 400., 600., rate=250, coef_part=1)
-    connect_generator(vta[vta_DA0], 400., 600., rate=250, coef_part=1)
-'''
+logger.debug("* * * Attaching spike generators...")
+if generator_flag:
+
+    connect_generator(lc[locus_coeruleus], rate=300, coef_part=1)
+    connect_generator(motor[motor_cortex], rate=300, coef_part=1)
+   # connect_generator(pptg[pptg_GABA], 400., 600., rate=250, coef_part=1)
+   # connect_generator(pptg[pptg_Glu], 400., 600., rate=250, coef_part=1)
+   # connect_generator(pptg[pptg_ACh], 400., 600., rate=250, coef_part=1)
+   # connect_generator(amygdala[amygdala_Glu], 400., 600., rate=250, coef_part=1)
+   # connect_generator(snc[snc_DA], 400., 600., rate=250, coef_part=1)
+   # connect_generator(vta[vta_DA0], 400., 600., rate=250, coef_part=1)
+
+# EXPERIMENT
+delta = [1.0, 1.5, 0.38, 0.8, 0.33]
+k = 100.
+
+for i in xrange(len(delta)):
+	connect_generator(lc[locus_coeruleus], k, k + 12., rate=250, coef_part=1,
+                      weight=float((delta[i] + 2) * 5))
+	connect_generator(vta[ventral_tegmental_area], k, k + 12., rate=250, coef_part=1,
+                      weight=float((delta[i] + 2) * 5))
+	k += 100.
 
 logger.debug("* * * Attaching spikes detector")
 for part in get_all_parts():
