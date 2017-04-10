@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.2"
-__tested___ = "22.03.2017"
+__version__ = "1.3"
+__tested___ = "10.04.2017 NEST 2.12.0"
 
 import nest
 import logging
@@ -25,7 +25,7 @@ k_name = 'Name'
 k_model = 'Model'
 
 """ Brain parts """
-brain = {}
+all_parts = []
 
 """Synapse models"""
 # Storage dict {NTransmitter : (model, basic_weight)}
@@ -82,3 +82,7 @@ STDP_MODEL      = 'stdp_synapse'
 STDP_DOPA_MODEL = 'stdp_dopamine_synapse'
 STDP_SERO_MODEL = 'stdp_serotonin_synapse'
 STDP_NORA_MODEL = 'stdp_noradrenaline_synapse'
+
+
+multapses = True
+autapses = False

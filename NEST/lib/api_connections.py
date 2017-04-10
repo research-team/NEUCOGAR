@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.5"
-__tested___ = "22.03.2017"
+__version__ = "1.7"
+__tested___ = "10.04.2017 NEST 2.12.0"
 
 import api_globals as glob
 
@@ -13,16 +13,22 @@ def SetSynapseMaxNumber(maximal, part=None):
     else:
         glob.max_synapses = maximal
 
-def Connect(pre, post, neurotransmitter=glob.GABA, weight_coef=1, conn_prob=1.):
+
+def Connect(pre, post, neurotransmitter=glob.GABA, conc_coef=1., conn_prob=1.):
+    """
+    Establish a connection between two nodes or lists of nodes
+    
+    Description:
+        Redefine weight, connection number with limit checking, setup parameters and invoke nest origin method
+    
+    Args:
+        pre (list): neurons GIDs of origin part
+        post (list): neurons GIDs of target part
+        neurotransmitter (int): key of a neurotrasmitter
+        conc_coef (float): coeficient of transmitter concetration (weight)
+        conn_prob (float): connection probability (from 0 to 1)
     """
 
-    :param pre:
-    :param post:
-    :param neurotransmitter:
-    :param weight_coef:
-    :param conn_prob:
-    :return:
-    """
     '''
     if type(pre) is dict:
         if glob.k_IDs in pre:
@@ -31,8 +37,9 @@ def Connect(pre, post, neurotransmitter=glob.GABA, weight_coef=1, conn_prob=1.):
         if glob.k_IDs in post:
             post = tuple(post[glob.k_IDs])
     '''
+
     # Set new weight value (weight_coef * basic weight)
-    new_weight = weight_coef * glob.synapse_models[neurotransmitter][glob.basic_weight]
+    new_weight = conc_coef * glob.synapse_models[neurotransmitter][glob.basic_weight]
     glob.nest.SetDefaults(glob.synapse_models[neurotransmitter][glob.model], dict(weight=new_weight))
 
     # Correlate number of synapses
@@ -47,60 +54,81 @@ def Connect(pre, post, neurotransmitter=glob.GABA, weight_coef=1, conn_prob=1.):
     # Create dictionary of connection rules
     conn_spec = {'rule': 'fixed_outdegree',
                  'outdegree': current_synapses,
-                 'multapses': True,  # multiple connections between a pair of nodes
-                 'autapses': False}  # self-connections
+                 'multapses': glob.multapses,  # multiple connections between a pair of nodes
+                 'autapses': glob.autapses}  # self-connections
 
     # Connect neurons
     glob.nest.Connect(pre[glob.k_IDs], post[glob.k_IDs], conn_spec=conn_spec, syn_spec=glob.synapse_models[neurotransmitter][glob.model])
 
     # Show data of a new connection
-    logger.info('{0} to {1} W={2} P_conn={3}% ({4}/{5})'.format(
+    logger.info('{0} to {1} W={2}(x{3}) P_conn={4}% ({5}/{6})'.format(
         pre[glob.k_name],
         post[glob.k_name],
         #glob.nest.GetDefaults(glob.synapse_models[neurotransmitter][glob.model])['weight'],
         new_weight,
+        conc_coef,
         conn_prob * 100,
         current_synapses, post[glob.k_NN]))
 
+def ConnectVolumeTransmitters(*args):
+    for part in args:
 
-def ConnectPoissonGenerator(part, startTime=1, stopTime=glob.T, rate=250, coef_part=1, weight=None):
+        print part[glob.k_name]
+
+def ConnectPoissonGenerator(part, start=1, stop=glob.T, rate=250, prob=1., weight=None):
     """
-    Create and connect Poisson generator
-    :param part: (dict) brain part
-    :param startTime: (float) start spiking
-    :param stopTime: (float) stop spiking
-    :param rate: (float) frequency
-    :param coef_part: (float) percent of connection probability
-    :param weight: (float) strength of a signal
-    :return:
+    Poisson_generator - simulate neuron firing with Poisson processes statistics.
+    
+    Description:    
+        The poisson_generator simulates a neuron that is firing with Poisson statistics, i.e. exponentially 
+        distributed interspike intervals. It will generate a _unique_ spike train for each of it's targets. 
+        If you do not want this behavior and need the same spike train for all targets, you have to use a  
+        parrot neuron inbetween the poisson generator and the targets.  
+  
+    Args:
+        part         (array): IDs of neurons 
+        start       (double): begin of device application with resp. to origin in ms  
+        stop	    (double): end of device application with resp. to origin in ms
+        rate	    (double): mean firing rate in Hz  
+        probability (double): percent of connection probability
+        weight      (double): strength of a signal (nS)
     """
-    outdegree = int(part[glob.k_NN] * coef_part)
+
+    outdegree = int(part[glob.k_NN] * prob)
 
     generator = glob.nest.Create('poisson_generator', 1, {'rate' : float(rate),
-                                                          'start': float(startTime),
-                                                          'stop' : float(stopTime)})
+                                                          'start': float(start),
+                                                          'stop' : float(stop)})
     conn_spec = {'rule': 'fixed_outdegree',
                  'outdegree': outdegree}
     syn_spec = {
         'weight': float(weight),
-        'delay': float(glob.pg_delay)}   #FixMe change to standard or delete
+        'delay': float(glob.pg_delay)}
 
     glob.nest.Connect(generator, part[glob.k_IDs], conn_spec=conn_spec, syn_spec=syn_spec)
 
-    logger.info("(ID:{0}) to {1} ({2} of {3})".format(
+    logger.info("(ID:{0}) to {1} ({2} of {3}) Interval: {4}-{5}ms".format(
         generator[0],
         part[glob.k_name],
         outdegree,
-        part[glob.k_NN]))
+        part[glob.k_NN],
+        start,
+        stop
+    ))
 
 
 def ConnectDetector(part, detect=glob.N_detect):
     """
-
-    :param part: (dict) brain part
-    :param detect: (int) number of neurons which will be under detector watching
-    :return:
+    bla bla
+    
+    Description:
+        blabla
+    
+    Args:
+        part (array): brain part
+        detect (int): number of neurons which will be under detector watching
     """
+
     name = part[glob.k_name]
     detector_param = {'label': name,
                       'withgid': True,
@@ -116,10 +144,18 @@ def ConnectDetector(part, detect=glob.N_detect):
 
 def ConnectMultimeter(part, **kwargs):
     """
-
-    :param part:
-    :return:
+    la bla
+    
+    Description:
+        blalala
+    
+    Args:
+        part (array): neurons GIDs of a brain part
+        ....
+        ....
+        ....
     """
+
     multimeter_param = {'label': part[glob.k_name],
                         'withgid': True,
                         'withtime': True,
@@ -130,4 +166,4 @@ def ConnectMultimeter(part, **kwargs):
     tracing_ids = part[glob.k_IDs][:glob.N_volt]
     multimeter = glob.nest.Create('multimeter', params=multimeter_param)  # ToDo add count of multimeters
     glob.nest.Connect(multimeter, tracing_ids)
-    logger.debug("Connected Multimeter(ID:{0}) to {1}. Tracing {2} of {3} neurons".format(multimeter[0], part[glob.k_name], len(tracing_ids), part[glob.k_NN]))
+    logger.info("(ID:{0}) to {1}. Tracing {2} of {3} neurons".format(multimeter[0], part[glob.k_name], len(tracing_ids), part[glob.k_NN]))

@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.3"
-__tested___ = "22.03.2017"
+__version__ = "1.8"
+__tested___ = "10.04.2017 NEST 2.12.0"
 
 import os
 import datetime
@@ -10,35 +10,76 @@ logger = glob.logging.getLogger('api_initialisation')
 
 def ResetKernel():
     """
-    Simply function of reset kernel
-    :return: None
+    Put the simulation kernel back to its initial state.
+ 
+    Description:
+        This function re-initializes the simulation kernel, returning it to the same state as 
+        after NEST has started.  
+        In particular,  
+    	    - all network nodes  
+    	    - all connections  
+    	    - all user-defined neuron and synapse models  
+        are deleted, and  
+        	- time  
+        	- random generators  
+        are reset. The only exception is that dynamically loaded modules are not unloaded. This may 
+        change in a future version of NEST. The SLI interpreter is not affected by ResetKernel.
     """
+
     glob.nest.ResetKernel()
 
 
 def SetKernelStatus(**kwargs):
     """
-    Set kernel status with available property
-    :param kwargs:
-        data_path               (string) - a
-        local_num_threads       (int)    - a
-        off_grid_spiking        (bool)   - a
-        print_time              (bool)   - a
-        time                    (float)  - a
-        num_processes           (int)    - a
-        overwrite_files         (bool)   - a
-        total_num_virtual_procs (int)    - a
-        tics_per_ms             (float)  - a
-        data_prefix             (string) - a
-        resolution              (float)  - a
-    :return: None
+    Global properties of the simulation kernel. Global properties of the simulation kernel.  
+    
+    Args:
+        Time and resolution  
+            resolution      (double): The resolution of the simulation (in ms)  
+            time	        (double): The current simulation time  
+            max_delay	    (double): The maximum delay in the network  
+            min_delay	    (double): The minimum delay in the network  
+            ms_per_tic	    (double): The number of milliseconds per tic  
+            tics_per_ms	    (double): The number of tics per millisecond  
+            tics_per_step	   (int): The number of tics per simulation time step  
+    
+        Parallel processing  
+            total_num_virtual_procs (int): The total number of virtual processes  
+            local_num_threads	    (int): The local number of threads  
+            num_rec_processes	    (int): The number of MPI processes reserved for recording spikes  
+            num_sim_processes	    (int): The number of MPI processes reserved for simulating neurons  
+    
+        Random number generators  
+            grng_seed     (int): Seed for global random number generator used  synchronously by all virtual 
+                                 processes to  create, e.g., fixed fan-out connections  (write only).  
+            rng_seeds   (array): Seeds for the per-virtual-process random number generators used for most 
+                                 purposes. Array with one integer per virtual process, all must be unique and 
+                                 differ from grng_seed (write only).  
+
+        Output  
+            data_path     (string): A path, where all data is written to (default is the current directory)  
+            data_prefix	  (string): A common prefix for all data files  
+            overwrite_files (bool): Whether to overwrite existing data files  
+            print_time      (bool): Whether to print progress information during the simulation  
+    
+        Waveform relaxation method (wfr)  
+            use_wfr	               (bool): Whether to use waveform relaxation method  
+            wfr_comm_interval	 (double): Desired waveform relaxation communication interval  
+            wfr_tol	             (double): Convergence tolerance of waveform relaxation method  
+            wfr_max_iterations	    (int): Maximal number of iterations used for waveform relaxation  
+            wfr_interpolation_order (int): Interpolation order of polynomial used in wfr iterations  
+    
+        Miscellaneous  
+            dict_miss_is_error	   (bool): Whether missed dictionary entries are treated as errors  
     """
-    # Reset old kernel
+
     glob.nest.ResetKernel()
     # List of available parameters for kernel
-    available_param = ['data_path', 'local_num_threads', 'off_grid_spiking', 'print_time', 'time',
-                      'num_processes', 'overwrite_files', 'total_num_virtual_procs', 'tics_per_ms',
-                      'data_prefix', 'resolution']
+    available_param = ['resolution', 'time', 'max_delay', 'min_delay', 'ms_per_tic',
+                       'tics_per_ms', 'tics_per_step', 'total_num_virtual_procs', 'local_num_threads',
+                       'num_rec_processes', 'num_sim_processes', 'grng_seed', 'rng_seeds', 'data_path',
+                       'data_prefix', 'overwrite_files', 'print_time', 'use_wfr', 'wfr_comm_interval',
+                       'wfr_tol', 'wfr_max_iterations', 'wfr_interpolation_order', 'dict_miss_is_error']
 
     # Dict for user parameters with default parameters
     user_property = dict(overwrite_files=True,
@@ -49,7 +90,6 @@ def SetKernelStatus(**kwargs):
     for key in kwargs:
         if key in available_param:
             user_property[key] = kwargs[key]
-
         else:
             raise ValueError("Key {0} is not recognized".format(key))
 
@@ -68,28 +108,46 @@ def SetKernelStatus(**kwargs):
 
 
 def InitNeuronModel(nest_model, user_model, params):
+    """
+    Initialize neuron model
+    
+    Descrition:
+        Copy the existing NEST neuron to the new user model 
+        
+    Args:
+        nest_model (string): Name of the NEST model 
+        user_model (string): Name of the user model
+        params       (dict): Params for the neuron
+    """
+
     glob.nest.CopyModel(nest_model, user_model, params)
     logger.info("'{0}' from '{1}'".format(user_model, nest_model))
 
 
-def InitSynapseModel(synapse_key, synapse_nest, params, vt=False):
+def InitSynapseModel(neurotransmitter, synapse_nest, params, vt=False):
+    """
+    Initialize synapse model
+    
+    Descrition:
+        Copy the existing NEST synapse model to the new user model 
+        
+    Args:
+        neurotransmitter  (int): key of neurotransmitter
+        synapse_nest      (str): name of model
+        params:          (dict): parameters for new model
+        vt               (bool): volume transmitter flag
     """
 
-    :param synapse_key:
-    :param synapse_nest:
-    :param params:
-    :param vt: volume transmitter
-    :return:
-    """
     build_params = dict()
 
     if vt:
         build_params['vt'] = glob.nest.Create('volume_transmitter')[0]
+
     build_params.update(params)
 
-    user_model = '{0}_{1}'.format(synapse_nest, synapse_key)
+    user_model = '{0}_{1}'.format(synapse_nest, neurotransmitter)
     glob.nest.CopyModel(synapse_nest, user_model, build_params)
-    glob.synapse_models[synapse_key] = (user_model, params['weight'])
+    glob.synapse_models[neurotransmitter] = (user_model, params['weight'])
     logger.info("'{0}'{1} from '{2}'".format(user_model, "[+vt]" if vt else "", synapse_nest))
 
     del build_params
@@ -97,12 +155,18 @@ def InitSynapseModel(synapse_key, synapse_nest, params, vt=False):
 
 def Create(part, model=None, number=None):
     """
-
-    :param part:
-    :param model:
-    :param number:
-    :return:
+    Create neurons
+    
+    Description:
+        Generates 'number' new neurons of the supplied 'model' type. If 'number' is not given, a 'min_neurons' 
+        node is created. The objects are added as children of the current working node
+   
+    Args:
+        part  (tuple):  neurons GIDs of a brain part
+        model   (str):  model name
+        number  (int):  neuron number
     """
+
     if model:
        part[glob.k_model] = model
 
@@ -116,30 +180,45 @@ def Create(part, model=None, number=None):
         part[glob.k_IDs][0],
         part[glob.k_IDs][-1],
         part[glob.k_name]
-        ))
+    ))
 
 
 def SetModel(part, model):
     """
+    Set model name for bran part 
+    
+    Description: 
+        Set new model to the part dict by k_model key
 
-    :param part:
-    :param model:
-    :return:
+    Args:
+        part (tuple): GIDs of neurons
+        model  (str): model name
+
     """
     part[glob.k_model] = model
 
 
 def SetNeuronNumber(part, number):
     """
-    Can init nuerons number fewer than min_neurons
-    :param part:
-    :param number:
-    :return:
+    Set neuron number for brain part
+    
+    Description: 
+        Set new number to the part dict by k_NN key. Can init nuerons number fewer than min_neurons!
+
+    Args:
+        part (tuple): GIDs of neurons
+        number (int): neuron number
     """
     part[glob.k_NN] = number
 
 
 def Simulate():
+    """
+    Start simulation
+        
+    Description:
+        Set stopwatches and invoke 'Simulate' method
+    """
     glob.startsimulate = datetime.datetime.now()
     glob.nest.Simulate(glob.T)
     glob.endsimulate = glob.startsimulate - datetime.datetime.now()

@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.2"
-__tested___ = "22.03.2017"
+__version__ = "1.3"
+__tested___ = "10.04.2017 NEST 2.12.0"
 
 import os
 import numpy
@@ -13,9 +13,15 @@ logger = logging.getLogger('api_diagrams')
 
 def BuildSpikeDiagrams(txt_path=None):
     """
-    Function for making spike diagrams
-    :return:
+    Function for building spike diagrams
+    
+    Description:
+        Init save path, get data from files and invoke method for drawing
+
+    Args:
+        txt_path (str): path for txt results
     """
+
     img_path = "img"
 
     if not txt_path:
@@ -44,17 +50,22 @@ def BuildSpikeDiagrams(txt_path=None):
                         times.append(float(data[1]))
         # if no recorded data
         if len(times) == 0:
-            print spikes_file, "no recorded data"
+            logger.info("no recorded data from '{0}'".format(spikes_file))
         else:
             __make_spikes_diagram(times, gids, "{0} {1}".format(meta[0], meta[1]), img_path)
-            print spikes_file, "diagram created"
+            logger.info("diagram created from '{0}'".format(spikes_file))
         del meta, times, gids
 
 
 def BuildVoltageDiagrams(txt_path=None):
     """
-    Function for making voltage diagrams
-    :return:
+    Function for building voltage diagrams
+
+    Description:
+        Init save path, get data from files and invoke method for drawing
+
+    Args:
+        txt_path (str): path for txt results
     """
 
     img_path = "img"
@@ -70,6 +81,7 @@ def BuildVoltageDiagrams(txt_path=None):
         os.makedirs(img_path)
 
     for voltage_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(txt_path) if name.endswith(".dat")])):
+        broken = 0
         meta = voltage_file.split('-')
         times = defaultdict(list)
         voltages = defaultdict(list)
@@ -79,10 +91,13 @@ def BuildVoltageDiagrams(txt_path=None):
                 for line in f:
                     # split by whitespace: gid time voltage
                     data = line.split()
-                    times[data[0]].append(float(data[1]))
-                    voltages[data[0]].append(float(data[2]))
+                    if len(data) == 3:
+                        times[data[0]].append(float(data[1]))
+                        voltages[data[0]].append(float(data[2]))
+                    else:
+                        broken+=1
         __make_voltage_diagram(dict(times), dict(voltages), "{0} {1}".format(meta[0], meta[1]), img_path)
-        print voltage_file, "diagram created"
+        logger.info("{0} diagram created. Broken lines {1}".format(voltage_file, broken))
         del meta, times, voltages
 
 
@@ -90,15 +105,20 @@ def Heatmap():
     pass
 
 
-def __make_spikes_diagram(ts, gids, name, path):
+def __make_spikes_diagram(times, gids, name, path):
     """
-    Build diagram
-    :param ts:   (list) times
-    :param gids: (list) global IDs of neurons
-    :param name: (str) name of brain part
-    :param path: (str) path to save results
-    :return: None
+    Draw spike diagram
+    
+    Description:
+        Set parameters, include data, draw and save
+        
+    Args:
+        times (list): times
+        gids  (list): global IDs of neurons
+        name   (str): name of brain part
+        path   (str): path to save results
     """
+
     pylab.figure()
     color_marker = "."
     color_bar = "blue"
@@ -106,13 +126,13 @@ def __make_spikes_diagram(ts, gids, name, path):
     ylabel = "Neuron ID"
     hist_binwidth = 5.0
     location = pylab.axes([0.1, 0.3, 0.85, 0.6])
-    pylab.plot(ts, gids, color_marker)
+    pylab.plot(times, gids, color_marker)
     pylab.ylabel(ylabel)
     xlim = pylab.xlim()
     pylab.xticks([])
     pylab.axes([0.1, 0.1, 0.85, 0.17])
-    t_bins = numpy.arange(numpy.amin(ts), numpy.amax(ts), hist_binwidth)
-    n, bins = pylab.histogram(ts, bins=t_bins)
+    t_bins = numpy.arange(numpy.amin(times), numpy.amax(times), hist_binwidth)
+    n, bins = pylab.histogram(times, bins=t_bins)
     num_neurons = len(numpy.unique(gids))
     heights = (1000 * n / (hist_binwidth * num_neurons))
     # FixMe t_bins[:-1] should work without cutting the end value
@@ -131,13 +151,18 @@ def __make_spikes_diagram(ts, gids, name, path):
 
 def __make_voltage_diagram(times, voltages, name, path):
     """
-    Build diagram
-    :param times:    (dict) times
-    :param voltages: (dict) voltages
-    :param name:     (str) name of brain part
-    :param path:     (str) path to save diagram
-    :return: None
+    Draw voltage diagram
+
+    Description:
+        Set parameters, include data, draw and save
+
+    Args:
+        times    (list, dict): time data of neuron (if list) and neurons (if dict)
+        voltages (list, dict): voltage data of neuron (if list) and neurons (if dict)
+        name            (str): name of brain part
+        path            (str): path to save results
     """
+
     pylab.figure()
     line_style = ""
 
@@ -151,15 +176,12 @@ def __make_voltage_diagram(times, voltages, name, path):
     pylab.ylabel("Membrane potential (mV)")
     pylab.xlabel("Time (ms)")
     pylab.legend(loc="best")
-    pylab.title("Voltage " + name)
+    pylab.title(name)
     pylab.grid(True)
     pylab.draw()
     pylab.savefig("{0}/{1}.png".format(path, name), dpi=120, format='png')
     pylab.close()
 
-'''
-START POINT, WHERE I CAN FIND PATH
-'''
 
 # As independent script
 if __name__ == '__main__':
