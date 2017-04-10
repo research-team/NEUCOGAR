@@ -38,17 +38,20 @@ w_GABA = -w_Glu * 2
 w_ACh = 8.
 w_NA_ex = 13.
 w_NA_in = -w_NA_ex
+w_DA_ex = 13.
+w_DA_in = -w_DA_ex
+
 
 # Minimal number of neurons
 NN_minimal = 10
 
 # Additional settings
 noradrenaline_flag = True     # noradrenaline modulation flag
+dopamine_flag = True    # dopamine modulation flag
 generator_flag = True
 create_images = True
 
 MaxSynapses = 4000      # max synapses
 
 BOUND = 0.2  # outer bound of rectangular 3d layer
-R = .25      # radius of connectivity sphere of a neuron
-
+R = .25 # radius of connectivity sphere of a neuron

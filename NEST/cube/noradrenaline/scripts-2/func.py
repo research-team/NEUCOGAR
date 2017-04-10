@@ -46,13 +46,18 @@ def generate_neurons(nn):
     """
     logger.debug("* * * Start generate neurons")
 
+    ##################################dopa###############
 
-    parts_no_nora = pgi + prh + (lc[lc_D1], lc[lc_D2], ldt[laterodorsal_tegmentum], vta[ventral_tegmental_area])
+    parts_no_dopa = gpe + gpi + stn + amygdala + vta + striatum + motor + prefrontal + nac + pptg + thalamus + snr
+    parts_with_dopa = snc
 
-    parts_with_nora = pf + motor + nts + (lc[locus_coeruleus], ldt[LDT_a1], ldt[LDT_a2], vta[vta_a1]) + striatum + \
-                      bnst + rn
-    
-    g.all_parts = tuple(sorted(parts_no_nora + parts_with_nora))
+    ##################################dopa###############
+
+    parts_no_nora = pgi + prh + ldt + vta
+
+    parts_with_nora = nts + lc + bnst + rn + pvn
+
+    g.all_parts = tuple(sorted(parts_no_nora + parts_with_nora + parts_with_dopa + parts_no_dopa))
 
     NN_coef = float(nn) / sum(item[k_NN] for item in g.all_parts)
 
@@ -66,9 +71,15 @@ def generate_neurons(nn):
     nest.SetDefaults('hh_cond_exp_traub', hh_neuronparams)
 
     # Parts without dopamine
-    for part in parts_no_nora:
+    for part in parts_no_dopa:
         part[k_model] = 'hh_cond_exp_traub'
     # Parts with dopamine
+    for part in parts_with_dopa:
+        part[k_model] = 'hh_cond_exp_traub'
+    # Parts without noradrenaline
+    for part in parts_no_nora:
+        part[k_model] = 'hh_cond_exp_traub'
+    # Parts with noradrenaline
     for part in parts_with_nora:
         part[k_model] = 'hh_cond_exp_traub'
 
@@ -101,7 +112,7 @@ def generate_neurons(nn):
                                                                  part[k_outer][0], part[k_inner][0], part[k_NN]))
 
 
-def add_connection(pre, post, syn_type=GABA, weight_coef=1, params=None):
+def add_connection(pre, post, syn_type, weight_coef=1, params=None):
     """
     Adds connection to dictionary for further connecting
     Args:
@@ -123,7 +134,7 @@ def add_connection(pre, post, syn_type=GABA, weight_coef=1, params=None):
     })
 
 
-def connect(pre, post, syn_type=GABA, weight_coef=1, params=None):
+def connect(pre, post, syn_type, weight_coef=1, params=None):
     """
     Connect outer parts of two 3d layers
     Args:
@@ -272,7 +283,7 @@ def connect_detector(part):
     number = part[k_NN] if part[k_NN] < N_detect else N_detect
 
     source = part[k_inner_ids] + part[k_outer_ids]
-    #ToDo check changes of Connect method
+    # ToDo check changes of Connect method
     conn_dict = {'rule': 'fixed_indegree',
                  'indegree': number}
 
@@ -299,11 +310,12 @@ def simulate():
     Returns: None
     """
     begin = 0
-    set_paths("../results/{0}-{1}/".format(g.NEURONS, int(time()) % 10000))
+    set_paths("/home/tobias/Desktop/results/{0}-{1}/".format(g.NEURONS, int(time()) % 10000))
     nest.PrintNetwork()
     logger.debug('* * * Simulating')
-    g.startsimulate = datetime.datetime.now()
 
+
+    g.startsimulate = datetime.datetime.now()
     for t in np.arange(0, T, dt):
         print "SIMULATING [{0}, {1}]".format(t, t + dt)
         nest.Simulate(dt)

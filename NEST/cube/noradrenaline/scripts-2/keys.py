@@ -5,6 +5,9 @@ ACh = 2
 NA_ex = 3
 NA_in = 4
 
+DA_ex = 3
+DA_in = 4
+
 # Keys for synapse models
 model = 0
 basic_weight = 1
@@ -29,3 +32,6 @@ ach_synapse      = 'ach_synapse'
 nora_synapse_ex  = 'nora_synapse_ex'
 nora_synapse_in  = 'nora_synapse_in'
 gen_static_syn   = 'noise_conn'
+#########dopa
+dopa_synapse_ex  = 'dopa_synapse_ex'
+dopa_synapse_in = 'dopa_synapse_in'

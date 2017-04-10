@@ -10,4 +10,4 @@ all_parts = tuple()
 SYNAPSES = 0  # synapse number
 NEURONS = 0  # neurons number
 
-times = []  # store time simulatio
+times = [] # store time simulation

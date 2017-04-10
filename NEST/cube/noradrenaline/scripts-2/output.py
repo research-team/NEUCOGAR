@@ -10,8 +10,8 @@ import globals as g
 
 import nest
 
-txt_result_path = "../results/"    # path for txt results
-save_path = "../results"
+txt_result_path = "/home/tobias/Desktop/"    # path for txt results
+save_path = "/home/tobias/Desktop/"
 
 logging.basicConfig(format='%(name)s.%(levelname)s: %(message)s.', level=logging.DEBUG)
 logger = logging.getLogger('function')

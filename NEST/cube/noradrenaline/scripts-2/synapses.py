@@ -40,12 +40,23 @@ NORA_synparams_in = dict({'delay': 1.,
                           'weight': w_NA_in,
                           'Wmax': -100.})
 
+# Dopamine excitatory synapse
+DOPA_synparams_ex = dict({'delay': 1.,
+                          'weight': w_DA_ex,
+                          'Wmax': 100.})
+# Dopamine inhibitory synapse
+DOPA_synparams_in = dict({'delay': 1.,
+                          'weight': w_DA_in,
+                          'Wmax': -100.})
+
 # Dictionary of synapses with keys and their parameters
 synapses = {GABA:  (gaba_synapse,    w_GABA ),
             Glu:   (glu_synapse,     w_Glu  ),
             ACh:   (ach_synapse,     w_ACh  ),
             NA_ex: (nora_synapse_ex, w_NA_ex),
-            NA_in: (nora_synapse_in, w_NA_in)
+            NA_in: (nora_synapse_in, w_NA_in),
+	DA_ex: (dopa_synapse_ex, w_DA_ex),
+            DA_in: (dopa_synapse_in, w_DA_in)
 }
 
 # Parameters for generator
@@ -67,4 +78,4 @@ detector_param = {'label': 'spikes',
                   'withgid': True,
                   'to_file': False,
                   'to_memory': True,
-                  'scientific': True}
+'scientific': True}
