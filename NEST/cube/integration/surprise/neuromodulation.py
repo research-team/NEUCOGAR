@@ -10,7 +10,7 @@ nest.SetKernelStatus({'overwrite_files': True,
                       'local_num_threads': 8,
                       'resolution': 0.1})
 
-generate_neurons(150000)
+generate_neurons(100000)
 
 # Init parameters of our synapse models
 DOPA_synparams_ex['vt'] = nest.Create('volume_transmitter')[0]
@@ -38,22 +38,22 @@ logger.debug("* * * Start connection initialisation")
 connect(ldt[ldt_Ach],thalamus[thalamus_Glu], syn_type=ACh, weight_coef=0.005)
 connect(ldt[ldt_Ach], bnst[bnst_Ach], syn_type=ACh, weight_coef=0.005)
 connect(ldt[ldt_Ach], lc[lc_N0], syn_type=ACh, weight_coef=0.005)
-#connect(ldt[ldt_Ach], prefrontal[pfc_Glu], syn_type=ACh, weight_coef=0.005)
+connect(ldt[ldt_Ach], prefrontal[pfc_Glu0], syn_type=ACh, weight_coef=0.005)
 connect(thalamus[thalamus_Glu], motor[motor_Glu0], syn_type=Glu, weight_coef=0.005)
 connect(thalamus[thalamus_Glu], motor[motor_Glu1], syn_type=Glu, weight_coef=0.005)
 connect(motor[motor_Glu0], lc[lc_N0], syn_type=Glu, weight_coef=0.5)
 connect(motor[motor_Glu1], lc[lc_N0], syn_type=Glu, weight_coef=0.5)
 
-#connect(prefrontal[pfc_Glu], lc[lc_N0], syn_type=Glu, weight_coef=0.005)
-#connect(prefrontal[pfc_Glu], bnst[bnst_Glu], syn_type=Glu, weight_coef=0.005)
+connect(prefrontal[pfc_Glu0], lc[lc_N0], syn_type=Glu, weight_coef=0.005)
+connect(prefrontal[pfc_Glu0], bnst[bnst_Glu], syn_type=Glu, weight_coef=0.005)
 connect(bnst[bnst_Glu], bnst[bnst_GABA], syn_type=Glu, weight_coef=0.005)
-#connect(bnst[bnst_Ach], amygdala[amygdala_Ach], syn_type=ACh, weight_coef=0.005)
+connect(bnst[bnst_Ach], amygdala[amygdala_Ach], syn_type=ACh, weight_coef=0.005)
 connect(bnst[bnst_GABA], pvn[pvn_n], syn_type=GABA, weight_coef=0.005)
 connect(amygdala[amygdala_Ach], lc[lc_Ach], syn_type=ACh, weight_coef=0.005)
 connect(amygdala[amygdala_GABA], bnst[bnst_GABA], syn_type=GABA, weight_coef=0.005)
 connect(amygdala[amygdala_Glu], striatum[D1], syn_type=Glu, weight_coef=0.005)
 connect(amygdala[amygdala_Glu], striatum[D2], syn_type=Glu, weight_coef=0.005)
-#connect(amygdala[amygdala_Glu], striatum[tan], syn_type=Glu, weight_coef=0.005)
+connect(amygdala[amygdala_Glu], striatum[tan], syn_type=Glu, weight_coef=0.005)
 connect(pvn[pvn_n], motor[motor_Glu0], syn_type=GABA, weight_coef=0.005)
 connect(pvn[pvn_n], motor[motor_Glu1], syn_type=GABA, weight_coef=0.005)
 
@@ -75,7 +75,7 @@ connect(pgi[pgi_GABA], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
 connect(prh[prh_GABA], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
 connect(striatum[tan], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
 connect(vta[vta_D0], lc[lc_D1], syn_type=DA_ex, weight_coef=0.005)
-#connect(vta[vta_D0], prefrontal[pfc_Glu], syn_type=DA_ex, weight_coef=0.005)
+connect(vta[vta_D0], prefrontal[pfc_Glu1], syn_type=DA_ex, weight_coef=0.005)
 connect(vta[vta_D0], lc[lc_D2], syn_type=DA_in, weight_coef=0.005)
 connect(vta[vta_D1], striatum[tan], syn_type=DA_ex, weight_coef=0.005)
 
@@ -98,7 +98,7 @@ connect(motor[motor_Glu0], motor[motor_5HT], syn_type=Glu, weight_coef=0.003)
 connect(motor[motor_Glu0], stn[stn_Glu], syn_type=Glu, weight_coef=7)
 connect(motor[motor_Glu1], striatum[D1], syn_type=Glu)
 connect(motor[motor_Glu1], striatum[D2], syn_type=Glu)
-#connect(motor[motor_Glu1], thalamus[thalamus_Glu], syn_type=Glu)
+connect(motor[motor_Glu1], thalamus[thalamus_Glu], syn_type=Glu)
 connect(motor[motor_Glu1], stn[stn_Glu], syn_type=Glu)
 connect(motor[motor_Glu1], nac[nac_GABA0])
 
@@ -125,13 +125,13 @@ connect(gpi[gpi_GABA], thalamus[thalamus_Glu], weight_coef=1) # weight_coef=3)
 connect(snr[snr_GABA], thalamus[thalamus_Glu], weight_coef=1) # weight_coef=3)
 
 connect(thalamus[thalamus_Glu], motor[motor_Glu1], syn_type=Glu)
-#connect(thalamus[thalamus_Glu], stn[stn_Glu], syn_type=Glu, weight_coef=1) #005
-#connect(thalamus[thalamus_Glu], striatum[D1], syn_type=Glu, weight_coef=0.0001)
-#connect(thalamus[thalamus_Glu], striatum[D2], syn_type=Glu, weight_coef=0.0001)
-#connect(thalamus[thalamus_Glu], striatum[tan], syn_type=Glu, weight_coef=0.0001)
-#connect(thalamus[thalamus_Glu], nac[nac_GABA0], syn_type=Glu)
-#connect(thalamus[thalamus_Glu], nac[nac_GABA1], syn_type=Glu)
-#connect(thalamus[thalamus_Glu], nac[nac_ACh], syn_type=Glu)
+connect(thalamus[thalamus_Glu], stn[stn_Glu], syn_type=Glu, weight_coef=1) #005
+connect(thalamus[thalamus_Glu], striatum[D1], syn_type=Glu, weight_coef=0.0001)
+connect(thalamus[thalamus_Glu], striatum[D2], syn_type=Glu, weight_coef=0.0001)
+connect(thalamus[thalamus_Glu], striatum[tan], syn_type=Glu, weight_coef=0.0001)
+connect(thalamus[thalamus_Glu], nac[nac_GABA0], syn_type=Glu)
+connect(thalamus[thalamus_Glu], nac[nac_GABA1], syn_type=Glu)
+connect(thalamus[thalamus_Glu], nac[nac_ACh], syn_type=Glu)
 
 # * * * MESOCORTICOLIMBIC PATHWAY * * *
 connect(nac[nac_ACh], nac[nac_GABA1], syn_type=ACh)
@@ -167,7 +167,7 @@ connect(amygdala[amygdala_Glu], nac[nac_GABA1], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_ACh], syn_type=Glu)
 connect(amygdala[amygdala_Glu], striatum[D1], syn_type=Glu, weight_coef=0.3)
 connect(amygdala[amygdala_Glu], striatum[D2], syn_type=Glu, weight_coef=0.3)
-#connect(amygdala[amygdala_Glu], striatum[tan], syn_type=Glu, weight_coef=0.3)
+connect(amygdala[amygdala_Glu], striatum[tan], syn_type=Glu, weight_coef=0.3)
 
 if serotonin_flag:
         # * * * AFFERENT PROJECTIONS * *
@@ -278,13 +278,15 @@ if noradrenaline_flag:
     connect(lc[lc_N0], dr[dr_5HT], syn_type=NA_ex, weight_coef=0.005)
     connect(lc[lc_N1], motor[mnr_5HT], syn_type=NA_ex, weight_coef=0.005)
 
-    #connect(lc[lc_N0], prefrontal[pfc_Glu], syn_type=NA_ex, weight_coef=0.005)
+    connect(lc[lc_N0], prefrontal[pfc_Glu1], syn_type=NA_ex, weight_coef=0.005)
     connect(lc[lc_N0], vta[vta_a1], syn_type=NA_ex, weight_coef=0.005)
     connect(lc[lc_N0], ldt[ldt_a1], syn_type=NA_ex, weight_coef=0.005)
     connect(lc[lc_N0], ldt[ldt_a2], syn_type=NA_ex, weight_coef=0.005)
     connect(lc[lc_N1], striatum[tan], syn_type=NA_ex, weight_coef=0.005)
-    connect(lc[lc_N1], rn[rn_a1], syn_type=NA_ex, weight_coef=0.005)
-    connect(lc[lc_N1], rn[rn_a2], syn_type=NA_ex, weight_coef=0.005)
+    #connect(lc[lc_N1], rn[rn_a1], syn_type=NA_ex, weight_coef=0.005)
+    #connect(lc[lc_N1], rn[rn_a2], syn_type=NA_ex, weight_coef=0.005)
+    #connect(lc[lc_N1], dr[dr_5HT], syn_type=NA_ex, weight_coef=0.005)
+    #connect(lc[lc_N1], mnr[mnr_5HT], syn_type=NA_ex, weight_coef=0.005)
 
     # MESOLIMBIC PATHWAY (NA part which wasn't described earlier)
     #based on "Brain Norepinephrine: Neurobiology and Therapeutics"
@@ -363,6 +365,8 @@ connect_generator(ldt[ldt_Ach], 400., 600., rate=250, coef_part=1)
 
 connect_generator(prefrontal[pfc_5HT], 300., 600., rate=250, coef_part=1)
 connect_generator(motor[motor_5HT], 300., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_Glu0], 300., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_Glu1], 300., 600., rate=250, coef_part=1)
 connect_generator(dr[dr_5HT], 300., 600., rate=250, coef_part=1)
 connect_generator(mnr[mnr_5HT], 300., 600., rate=250, coef_part=1)
 

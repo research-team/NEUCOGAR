@@ -60,7 +60,7 @@ sero_synapse_in  = 'sero_synapse_in'
 gen_static_syn   = 'noise_conn'
 
 # Additional setings
-dopamine_flag = False     # dopamine modulation flag
+dopamine_flag = True     # dopamine modulation flag
 noradrenaline_flag = True     # noradrenaline modulation flag
 serotonin_flag = True  # serotonin modulation flag
 status_gui = True        # True - GUI is on | False - is off

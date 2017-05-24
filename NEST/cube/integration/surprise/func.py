@@ -39,19 +39,14 @@ def generate_neurons(NNumber):
                     thalamus[thalamus_Glu],
                     prefrontal[pfc_Glu0], prefrontal[pfc_Glu1],
                     nac[nac_ACh], nac[nac_GABA0], nac[nac_GABA1],
-                    vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2],
                     amygdala[amygdala_Glu], amygdala[amygdala_Ach], amygdala[amygdala_GABA],
                     snc[snc_GABA]) + \
         motor + pptg + snr + gpe + gpi + stn
 
-    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], vta[vta_DA2], snc[snc_DA], nac[nac_DA],
-                       striatum[striatum_DA], prefrontal[pfc_DA],
-                       lc[lc_D1],
-                       lc[lc_D2])
+    parts_with_dopa = (snc[snc_DA], nac[nac_DA],  striatum[striatum_DA], prefrontal[pfc_DA])
 
     parts_with_5HT = (striatum[striatum_5HT], thalamus[thalamus_5HT], prefrontal[pfc_5HT],
-                      nac[nac_5HT], vta[vta_5HT], amygdala[amygdala_5HT],
-                      lc[lc_5HT], bnst[bnst_5HT]) + \
+                      nac[nac_5HT], amygdala[amygdala_5HT]) + \
         medial_cortex + cerebral_cortex + neocortex + lateral_cortex + \
         entorhinal_cortex + septum + pons + lateral_tegmental_area + \
         dr + mnr + reticular_formation + periaqueductal_gray + hippocampus + hypothalamus + \
@@ -62,6 +57,11 @@ def generate_neurons(NNumber):
     NN_coef = float(NNumber) / sum(item[k_NN] for item in all_parts)
 
     NEURONS = sum(item[k_NN] for item in all_parts)
+
+
+    for item in all_parts:
+	print item[k_name]
+	print item[k_NN]
 
     logger.debug('Initialized: {0} neurons'.format(NEURONS))
 
@@ -81,7 +81,9 @@ def generate_neurons(NNumber):
         part[k_NN] = NN_minimal if int(part[k_NN] * NN_coef) < NN_minimal else int(part[k_NN] * NN_coef)
         part[k_IDs] = nest.Create(part[k_model], part[k_NN])
         logger.debug("{0} [{1}, {2}] {3} neurons".format(part[k_name], part[k_IDs][0], part[k_IDs][-1:][0], part[k_NN]))
-
+    for item in all_parts:
+	print item[k_name]
+	print item[k_NN]
 
 def log_connection(pre, post, syn_type, weight):
     global SYNAPSES
