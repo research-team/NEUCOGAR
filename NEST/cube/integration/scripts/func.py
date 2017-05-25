@@ -51,24 +51,24 @@ def generate_neurons(nn):
     parts_with_nora = nts + lc + bnst
 
     parts_simple = (thalamus[thalamus_Glu],
-                    prefrontal[pfc_Glu0], prefrontal[pfc_Glu1],
-                    nac[nac_ACh], nac[nac_GABA0], nac[nac_GABA1], nac[nac_NA],
+                    prefrontal[pfc_Glu0], prefrontal[pfc_Glu1],prefrontal[pfc_NA],
+                    nac[nac_Ach], nac[nac_GABA0], nac[nac_GABA1], nac[nac_NA],
                     vta[vta_GABA0], vta[vta_GABA1], vta[vta_GABA2],
                     amygdala[amygdala_Glu], amygdala[amygdala_Ach], amygdala[amygdala_GABA],
                     snc[snc_GABA]) + \
         motor + pptg + snr + gpe + gpi + stn + pgi + prh + ldt + vta
 
-    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], vta[vta_DA2], snc[snc_DA], nac[nac_DA],
+    parts_with_dopa = (vta[vta_DA0], vta[vta_DA1], snc[snc_DA], nac[nac_DA],
                        prefrontal[pfc_DA])
 
     parts_with_5HT = (thalamus[thalamus_5HT], prefrontal[pfc_5HT],
                       nac[nac_5HT], vta[vta_5HT], amygdala[amygdala_5HT]) + \
         medial_cortex + neocortex + lateral_cortex + \
-        entorhinal_cortex + septum + pons + lateral_tegmental_area + \
+        entorhinal_cortex + septum + lateral_tegmental_area + \
         periaqueductal_gray + hippocampus + hypothalamus + \
         insular_cortex + rn + striatum
 
-    g.all_parts = tuple(sorted(parts_simple + parts_with_dopa + parts_with_5HT + parts_no_nora + parts_with_nora))
+    g.all_parts = tuple(sorted(parts_simple + parts_with_dopa + parts_with_5HT + parts_with_nora))
 
     NN_coef = float(nn) / sum(item[k_NN] for item in g.all_parts)
 
@@ -83,15 +83,13 @@ def generate_neurons(nn):
 
 
 
-  # Parts without dopamine and 5HT
-    for part in parts_simple + parts_no_nora + parts_with_nora:
+  # Parts without dopamine and 5HT and nora
+    for part in parts_simple:
         part[k_model] = 'hh_cond_exp_traub'
-    # Parts with dopamine
+    # Parts with dopamine and 5HT
     for part in parts_with_dopa + parts_with_5HT:
         part[k_model] = 'hh_cond_exp_traub'
-    # Parts without noradrenaline
-    for part in parts_no_nora:
-        part[k_model] = 'hh_cond_exp_traub'
+    
     # Parts with noradrenaline
     for part in parts_with_nora:
         part[k_model] = 'hh_cond_exp_traub'
@@ -323,7 +321,7 @@ def simulate():
     Returns: None
     """
     begin = 0
-    set_paths("/home/mariya/Desktop/results/{0}-{1}/".format(g.NEURONS, int(time()) % 10000))
+    set_paths("/home/tobias/Desktop/results/{0}-{1}/".format(g.NEURONS, int(time()) % 10000))
     nest.PrintNetwork()
     logger.debug('* * * Simulating')
     g.startsimulate = datetime.datetime.now()
