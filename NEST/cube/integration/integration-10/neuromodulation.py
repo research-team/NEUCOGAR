@@ -32,7 +32,10 @@ logger.debug("* * * Start connection initialisation")
 
 
 
+
 ####################################################################
+
+
 # * * * ventral pathway * * *
 connect(ldt[ldt_Ach],thalamus[thalamus_Glu], syn_type=ACh, weight_coef=0.005)
 connect(ldt[ldt_Ach], bnst[bnst_Ach], syn_type=ACh, weight_coef=0.005)
@@ -61,7 +64,7 @@ connect(amygdala[amygdala_Glu], nac[nac_GABA1], syn_type=Glu, weight_coef=0.005)
 connect(amygdala[amygdala_Glu], nac[nac_GABA0], syn_type=Glu, weight_coef=0.005)
 connect(amygdala[amygdala_Glu], nac[nac_5HT], syn_type=Glu, weight_coef=0.005)
 connect(amygdala[amygdala_Glu], nac[nac_NA], syn_type=Glu, weight_coef=0.005)
-connect(amygdala[amygdala_Glu], nac[nac_ACh], syn_type=Glu, weight_coef=0.005)
+connect(amygdala[amygdala_Glu], nac[nac_Ach], syn_type=Glu, weight_coef=0.005)
 connect(amygdala[amygdala_Glu], nac[nac_DA], syn_type=Glu, weight_coef=0.005)
 connect(hypothalamus[hypothalamus_pvn_GABA], motor[motor_Glu0], syn_type=GABA, weight_coef=0.005)
 connect(hypothalamus[hypothalamus_pvn_GABA], motor[motor_Glu1], syn_type=GABA, weight_coef=0.005)
@@ -83,11 +86,11 @@ connect(pgi[pgi_Glu], lc[lc_N0], syn_type=Glu, weight_coef=0.005)
 connect(pgi[pgi_Glu], lc[lc_N1], syn_type=Glu, weight_coef=0.005)
 connect(pgi[pgi_GABA], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
 connect(prh[prh_GABA], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
-connect(striatum[tan], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
-connect(vta[vta_D0], lc[lc_D1], syn_type=DA_ex, weight_coef=0.005)
-connect(vta[vta_D0], lc[lc_D2], syn_type=DA_in, weight_coef=0.005)
-connect(vta[vta_D1], striatum[striatum_tan], syn_type=DA_ex, weight_coef=0.005)
-connect(vta[vta_D1], striatum[striatum_GABA], syn_type=DA_ex, weight_coef=0.005)
+connect(striatum[striatum_tan], lc[lc_GABA], syn_type=GABA, weight_coef=0.005)
+connect(vta[vta_DA0], lc[lc_D1], syn_type=DA_ex, weight_coef=0.005)
+connect(vta[vta_DA0], lc[lc_D2], syn_type=DA_in, weight_coef=0.005)
+connect(vta[vta_DA1], striatum[striatum_tan], syn_type=DA_ex, weight_coef=0.005)
+connect(vta[vta_DA1], striatum[striatum_GABA], syn_type=DA_ex, weight_coef=0.005)
 
 wse = 0.001
 wsi = 0.5
@@ -140,7 +143,7 @@ connect(thalamus[thalamus_Glu], striatum[striatum_GABA], syn_type=Glu, weight_co
 connect(thalamus[thalamus_Glu], striatum[striatum_5HT], syn_type=Glu, weight_coef=0.001)
 connect(thalamus[thalamus_Glu], nac[nac_GABA0], syn_type=Glu)
 connect(thalamus[thalamus_Glu], nac[nac_GABA1], syn_type=Glu)
-connect(thalamus[thalamus_Glu], nac[nac_ACh], syn_type=Glu)
+connect(thalamus[thalamus_Glu], nac[nac_Ach], syn_type=Glu)
 connect(thalamus[thalamus_Glu], nac[nac_DA], syn_type=Glu)
 connect(thalamus[thalamus_Glu], nac[nac_5HT], syn_type=Glu)
 connect(thalamus[thalamus_Glu], nac[nac_NA], syn_type=Glu)
@@ -153,7 +156,7 @@ connect(prefrontal[pfc_Glu1], nac[nac_GABA1], syn_type=Glu)
 
 connect(amygdala[amygdala_Glu], nac[nac_GABA0], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_GABA1], syn_type=Glu)
-connect(amygdala[amygdala_Glu], nac[nac_ACh], syn_type=Glu)
+connect(amygdala[amygdala_Glu], nac[nac_Ach], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_DA], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_5HT], syn_type=Glu)
 connect(amygdala[amygdala_Glu], nac[nac_NA], syn_type=Glu)
@@ -168,21 +171,22 @@ connect(amygdala[amygdala_Glu], striatum[striatum_GABA], syn_type=Glu, weight_co
    
 
 # * * * MESOCORTICOLIMBIC PATHWAY * * *
-connect(nac[nac_ACh], nac[nac_GABA1], syn_type=ACh)
+connect(nac[nac_Ach], nac[nac_GABA1], syn_type=ACh)
 connect(nac[nac_GABA0], nac[nac_GABA1],syn_type=GABA,)
 connect(nac[nac_GABA1], vta[vta_GABA2],syn_type=GABA,)
+
 connect(vta[vta_GABA0], prefrontal[pfc_Glu0],syn_type=GABA,)
 connect(vta[vta_GABA0], pptg[pptg_GABA],syn_type=GABA,)
-connect(vta[vta_GABA1], vta[vta_D0],syn_type=GABA,)
-connect(vta[vta_GABA1], vta[vta_D1],syn_type=GABA,)
+connect(vta[vta_GABA1], vta[vta_DA0],syn_type=GABA,)
+connect(vta[vta_GABA1], vta[vta_DA1],syn_type=GABA,)
 connect(vta[vta_GABA2], nac[nac_GABA1],syn_type=GABA,)
 
 connect(pptg[pptg_GABA], vta[vta_GABA0],syn_type=GABA,)
 connect(pptg[pptg_GABA], snc[snc_GABA], syn_type=GABA,weight_coef=0.005)
 connect(pptg[pptg_ACh], vta[vta_GABA0], syn_type=ACh)
-connect(pptg[pptg_ACh], vta[vta_D1], syn_type=ACh)
+connect(pptg[pptg_ACh], vta[vta_DA1], syn_type=ACh)
 connect(pptg[pptg_Glu], vta[vta_GABA0], syn_type=Glu)
-connect(pptg[pptg_Glu], vta[vta_D1], syn_type=Glu)
+connect(pptg[pptg_Glu], vta[vta_DA1], syn_type=Glu)
 connect(pptg[pptg_ACh], striatum[striatum_D1], syn_type=ACh, weight_coef=0.3)
 connect(pptg[pptg_ACh], snc[snc_GABA], syn_type=ACh, weight_coef=0.005)
 connect(pptg[pptg_Glu], snc[snc_DA], syn_type=Glu, weight_coef=0.005)
@@ -191,10 +195,11 @@ if noradrenaline_flag:
 
     logger.debug("* * * Making neuromodulating connections...")
 
-    vt_ex = nest.Create('volume_transmitter')
-    vt_in = nest.Create('volume_transmitter')
-    NORA_synparams_ex['vt'] = vt_ex[0]
-    NORA_synparams_in['vt'] = vt_in[0]
+
+    #vt_ex = nest.Create('volume_transmitter')
+    #vt_in = nest.Create('volume_transmitter')
+    #NORA_synparams_ex['vt'] = vt_ex[0]
+    #NORA_synparams_in['vt'] = vt_in[0]
 
     connect(nts[nts_a1], lc[lc_N0], syn_type=NA_ex, weight_coef=0.005)
     connect(nts[nts_a1], bnst[bnst_Glu], syn_type=NA_ex, weight_coef=0.005)
@@ -222,7 +227,7 @@ if noradrenaline_flag:
     connect(rn[rn_a2], rn[rn_rpa], syn_type=NA_ex, weight_coef=0.005)
     connect(rn[rn_a2], rn[rn_rmg], syn_type=NA_ex, weight_coef=0.005)
 
-    connect(vta[vta_a1], vta[vta_D1], syn_type=NA_in, weight_coef=0.005)
+    #connect(vta[vta_a1], vta[vta_DA1], syn_type=NA_in, weight_coef=0.005)
 
 if serotonin_flag:
         # * * * AFFERENT PROJECTIONS * *
@@ -231,15 +236,11 @@ if serotonin_flag:
     connect(septum[septum_5HT], rn[rn_mnr], syn_type=SERO_ex, weight_coef=wse)
     connect(prefrontal[pfc_5HT], rn[rn_dr], syn_type=SERO_ex, weight_coef=wse)
     connect(prefrontal[pfc_5HT], rn[rn_mnr], syn_type=SERO_ex, weight_coef=wse)
-    connect(pons[pons_5HT], rn[rn_mnr], syn_type=SERO_ex, weight_coef=wse)
     connect(hypothalamus[hypothalamus_5HT], rn[rn_rmg], syn_type=SERO_ex, weight_coef=wse)
     connect(hypothalamus[hypothalamus_5HT], rn[rn_rpa], syn_type=SERO_ex, weight_coef=wse)
     connect(periaqueductal_gray[periaqueductal_gray_5HT], rn[rn_rmg], syn_type=SERO_ex, weight_coef=wse)
     connect(periaqueductal_gray[periaqueductal_gray_5HT], rn[rn_rpa], syn_type=SERO_ex, weight_coef=wse)
     connect(bnst[bnst_5HT], rn[rn_rpa], syn_type=SERO_ex, weight_coef=wse)
-    connect(reticular_formation[reticular_formation_5HT], rn[rn_dr], syn_type=SERO_ex, weight_coef=wse)
-    connect(reticular_formation[reticular_formation_5HT], rn[rn_rpa], syn_type=SERO_ex, weight_coef=wse)
-    connect(reticular_formation[reticular_formation_5HT], rn[rn_rmg], syn_type=SERO_ex, weight_coef=wse)
     connect(amygdala[amygdala_5HT], rn[rn_rpa], syn_type=SERO_ex, weight_coef=wse)
     connect(amygdala[amygdala_5HT], rn[rn_rmg], syn_type=SERO_ex, weight_coef=wse)
     connect(hippocampus[hippocampus_5HT], rn[rn_dr], syn_type=SERO_ex, weight_coef=wse)
@@ -301,9 +302,6 @@ if serotonin_flag:
     connect(thalamus[thalamus_5HT], motor[motor_Glu0], syn_type=SERO_ex, weight_coef=wse)
     connect(prefrontal[pfc_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=wsi) # main was 0.005
     connect(motor[motor_5HT], thalamus[thalamus_5HT], syn_type=SERO_in, weight_coef=wsi) # main was 0.005
-    connect(prefrontal[pfc_5HT], basal_ganglia[basal_ganglia_5HT], syn_type=SERO_ex, weight_coef=wse)
-    connect(motor[motor_5HT], basal_ganglia[basal_ganglia_5HT], syn_type=SERO_ex, weight_coef=wse)
-
 
 if dopamine_flag:
     logger.debug("* * * Making neuromodulating connections...")
@@ -318,82 +316,100 @@ if dopamine_flag:
     connect(snc[snc_DA], striatum[striatum_tan], syn_type=DA_in)
 
     # MESOCORTICOLIMBIC
-    connect(vta[vta_D0], striatum[striatum_D1], syn_type=DA_ex)
-    connect(vta[vta_D0], striatum[striatum_D2], syn_type=DA_in)
-    connect(vta[vta_D0], prefrontal[pfc_Glu0], syn_type=DA_ex)
-    connect(vta[vta_D0], prefrontal[pfc_Glu1], syn_type=DA_ex)
-    connect(vta[vta_D1], nac[nac_GABA0], syn_type=DA_ex)
-    connect(vta[vta_D1], nac[nac_GABA1], syn_type=DA_ex)
+    connect(vta[vta_DA0], striatum[striatum_D1], syn_type=DA_ex)
+    connect(vta[vta_DA0], striatum[striatum_D2], syn_type=DA_in)
+    connect(vta[vta_DA0], prefrontal[pfc_Glu0], syn_type=DA_ex)
+    connect(vta[vta_DA0], prefrontal[pfc_Glu1], syn_type=DA_ex)
+    connect(vta[vta_DA1], nac[nac_GABA0], syn_type=DA_ex)
+    connect(vta[vta_DA1], nac[nac_GABA1], syn_type=DA_ex)
 
 if dopamine_flag and serotonin_flag and noradrenaline_flag:
     # * * * DOPAMINE INTERACTION * * *
     connect(prefrontal[pfc_5HT], prefrontal[pfc_DA], syn_type=SERO_ex, weight_coef=wse)
     connect(prefrontal[pfc_DA], vta[vta_5HT], syn_type=DA_in, weight_coef=0.005)
-    connect(prefrontal[pfc_DA], vta[vta_DA2], syn_type=DA_in, weight_coef=0.005)
-    #connect(vta[vta_5HT], vta[vta_DA2], syn_type=SERO_in, weight_coef=0.005)
-    connect(vta[vta_5HT], vta[vta_DA2], syn_type=SERO_ex, weight_coef=wse)
-    connect(vta[vta_DA2], prefrontal[pfc_5HT], syn_type=DA_ex, weight_coef=0.005)
-    connect(vta[vta_DA2], prefrontal[pfc_DA], syn_type=DA_ex, weight_coef=0.005)
-    #connect(vta[vta_DA2], striatum[striatum_5HT], syn_type=DOPA_in, weight_coef=0.005)
-    connect(vta[vta_DA2], striatum[striatum_5HT], syn_type=DA_ex, weight_coef=0.005)
-    #connect(vta[vta_DA2], striatum[striatum_DA], syn_type=DOPA_in, weight_coef=0.005)
-    connect(vta[vta_DA2], striatum[striatum_DA], syn_type=DA_ex, weight_coef=0.005)
-    #connect(vta[vta_DA], nac[nac_5HT], syn_type=DOPA_in, weight_coef=0.005)
-    connect(vta[vta_DA2], nac[nac_5HT], syn_type=DA_ex, weight_coef=0.005)
-    #connect(vta[vta_DA], nac[nac_DA], syn_type=DOPA_in, weight_coef=0.005)
-    connect(vta[vta_DA2], nac[nac_DA], syn_type=DA_ex, weight_coef=0.005)
+    connect(prefrontal[pfc_DA], vta[vta_DA1], syn_type=DA_in, weight_coef=0.005)
+    #connect(vta[vta_5HT], vta[vta_DA1], syn_type=SERO_in, weight_coef=0.005)
+    connect(vta[vta_5HT], vta[vta_DA1], syn_type=SERO_ex, weight_coef=wse)
+    connect(vta[vta_DA1], prefrontal[pfc_5HT], syn_type=DA_ex, weight_coef=0.005)
+    connect(vta[vta_DA1], prefrontal[pfc_DA], syn_type=DA_ex, weight_coef=0.005)
+    #connect(vta[vta_DA1], striatum[striatum_5HT], syn_type=DOPA_in, weight_coef=0.005)
+    connect(vta[vta_DA1], striatum[striatum_5HT], syn_type=DA_ex, weight_coef=0.005)
+    #connect(vta[vta_DA1], striatum[striatum_DA], syn_type=DOPA_in, weight_coef=0.005)
+    connect(vta[vta_DA1], striatum[striatum_D1], syn_type=DA_ex, weight_coef=0.005)
+    #connect(vta[vta_DA1], nac[nac_5HT], syn_type=DOPA_in, weight_coef=0.005)
+    connect(vta[vta_DA1], nac[nac_5HT], syn_type=DA_ex, weight_coef=0.005)
+    #connect(vta[vta_DA1], nac[nac_DA], syn_type=DOPA_in, weight_coef=0.005)
+    connect(vta[vta_DA1], nac[nac_DA], syn_type=DA_ex, weight_coef=0.005)
     #connect(striatum[striatum_5HT], striatum[striatum_DA], syn_type=SERO_in, weight_coef=0.005)
-    connect(striatum[striatum_5HT], striatum[striatum_DA], syn_type=SERO_ex, weight_coef=wse) #??????????????????????????????????? D1, D2?
+    connect(striatum[striatum_5HT], striatum[striatum_D1], syn_type=SERO_ex, weight_coef=wse) #??????????????????????????????????? D1, D2?
     #connect(striatum[striatum_DA],  snr[snr_GABA], syn_type=DOPA_in, weight_coef=0.005)
-    connect(striatum[striatum_DA], snr[snr_GABA], syn_type=DA_ex, weight_coef=0.005)
+    connect(striatum[striatum_D1], snr[snr_GABA], syn_type=DA_ex, weight_coef=0.005)
     #connect(striatum[striatum_DA],  snc[snc_DA], syn_type=DOPA_in, weight_coef=0.005)
-    connect(striatum[striatum_DA], snc[snc_GABA], syn_type=DA_ex, weight_coef=0.005)
-    connect(striatum[striatum_DA], snc[snc_DA], syn_type=DA_ex, weight_coef=0.005)
+    connect(striatum[striatum_D1], snc[snc_GABA], syn_type=DA_ex, weight_coef=0.005)
+    connect(striatum[striatum_D1], snc[snc_DA], syn_type=DA_ex, weight_coef=0.005)
     connect(nac[nac_5HT], nac[nac_DA], syn_type=SERO_ex, weight_coef=wse)
     connect(snr[snr_GABA], snc[snc_DA], syn_type=SERO_in, weight_coef=wsi)
     connect(snc[snc_GABA], striatum[striatum_5HT], syn_type=DA_in, weight_coef=0.005) #?
     connect(snc[snc_DA], striatum[striatum_5HT], syn_type=DA_in, weight_coef=0.005)
-    connect(snc[snc_DA], striatum[striatum_DA], syn_type=DA_in, weight_coef=0.005)
+    connect(snc[snc_DA], striatum[striatum_D1], syn_type=DA_in, weight_coef=0.005)
     connect(snc[snc_DA], nac[nac_5HT], syn_type=DA_in, weight_coef=0.005)
     connect(snc[snc_DA], nac[nac_DA], syn_type=DA_in, weight_coef=0.005)
     connect(lc[lc_5HT], lc[lc_D1], syn_type=SERO_ex, weight_coef=0.005)
-    connect(lc[lc_D1], dr[dr_5HT], syn_type=DA_ex, weight_coef=0.005)
+    connect(lc[lc_D1], rn[rn_dr], syn_type=DA_ex, weight_coef=0.005)
 
     # * * * NORADRENALINE INTERACTION * * *
     connect(lc[lc_5HT], lc[lc_N0], syn_type=SERO_in, weight_coef=0.005)
     connect(lc[lc_5HT], lc[lc_N1], syn_type=SERO_in, weight_coef=0.005)
 
-logger.debug("* * * Creating connectivity")
-connect_all()
 
 
 logger.debug("* * * Attaching spike generators...")
-if generator_flag:
 
-    connect_generator(nts[nts_a1], 400., 600., rate=250, coef_part=1)
-    connect_generator(nts[nts_a2], 400., 600., rate=250, coef_part=1)
-    connect_generator(prh[prh_GABA], 400., 600., rate=250, coef_part=1)
-    connect_generator(pgi[pgi_GABA], 400., 600., rate=250, coef_part=1)
-    connect_generator(pgi[pgi_Glu], 400., 600., rate=250, coef_part=1)
-    connect_generator(ldt[ldt_a1], 400., 600., rate=250, coef_part=1)
-    connect_generator(ldt[ldt_a2], 400., 600., rate=250, coef_part=1)
-    connect_generator(ldt[ldt_Ach], 400., 600., rate=250, coef_part=1)
-    connect_generator(lc[lc_N0], 400., 600., rate=250, coef_part=1)
-    #connect_generator(lc[lc_N1], 400., 600., rate=250, coef_part=1)
+connect_generator(nts[nts_a1], 400., 600., rate=250, coef_part=1)
+connect_generator(nts[nts_a2], 400., 600., rate=250, coef_part=1)
+connect_generator(prh[prh_GABA], 400., 600., rate=250, coef_part=1)
+connect_generator(pgi[pgi_GABA], 400., 600., rate=250, coef_part=1)
+connect_generator(pgi[pgi_Glu], 400., 600., rate=250, coef_part=1)
+connect_generator(ldt[ldt_a1], 400., 600., rate=250, coef_part=1)
+connect_generator(ldt[ldt_a2], 400., 600., rate=250, coef_part=1)
+connect_generator(ldt[ldt_Ach], 400., 600., rate=250, coef_part=1)
+connect_generator(lc[lc_N0], 400., 600., rate=250, coef_part=1)
+#connect_generator(lc[lc_N1], 400., 600., rate=250, coef_part=1)
 
-    connect_generator(prefrontal[pfc_5HT], 300., 600., rate=250, coef_part=1)
-    connect_generator(motor[motor_5HT], 300., 600., rate=250, coef_part=1)
-    connect_generator(dr[dr_5HT], 300., 600., rate=250, coef_part=1)
-    connect_generator(mnr[mnr_5HT], 300., 600., rate=250, coef_part=1)
+connect_generator(prefrontal[pfc_5HT], 400., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_5HT], 400., 600., rate=250, coef_part=1)
+connect_generator(rn[rn_dr], 400., 600., rate=250, coef_part=1)
+connect_generator(rn[rn_mnr], 400., 600., rate=250, coef_part=1)
 
-    connect_generator(motor[motor_Glu0], 200., 600., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_GABA], 200., 600., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_Glu], 200., 600., rate=250, coef_part=1)
-    connect_generator(pptg[pptg_ACh], 200., 600., rate=250, coef_part=1)
-    connect_generator(amygdala[amygdala_Glu], 200., 600., rate=250, coef_part=1)
-    connect_generator(snc[snc_DA], 200., 600., rate=250, coef_part=1)
-    connect_generator(vta[vta_DA0], 200., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_Glu0], 400., 600., rate=250, coef_part=1)
+connect_generator(pptg[pptg_GABA], 400., 600., rate=250, coef_part=1)
+connect_generator(pptg[pptg_Glu], 400., 600., rate=250, coef_part=1)
+connect_generator(pptg[pptg_ACh], 400., 600., rate=250, coef_part=1)
+connect_generator(amygdala[amygdala_Glu], 400., 600., rate=250, coef_part=1)
+connect_generator(snc[snc_DA], 400., 600., rate=250, coef_part=1)
+connect_generator(vta[vta_DA0], 400., 600., rate=250, coef_part=1)
 
+
+#################################surprise
+"""
+connect_generator(nts[nts_a1], 400., 600., rate=250, coef_part=1)
+connect_generator(nts[nts_a2], 400., 600., rate=250, coef_part=1)
+connect_generator(prh[prh_GABA], 400., 600., rate=250, coef_part=1)
+connect_generator(pgi[pgi_GABA], 400., 600., rate=250, coef_part=1)
+connect_generator(pgi[pgi_Glu], 400., 600., rate=250, coef_part=1)
+connect_generator(ldt[ldt_a1], 400., 600., rate=250, coef_part=1)
+connect_generator(ldt[ldt_a2], 400., 600., rate=250, coef_part=1)
+connect_generator(ldt[ldt_Ach], 400., 600., rate=250, coef_part=1)
+#connect_generator(lc[lc_N0], 400., 600., rate=250, coef_part=1)
+#connect_generator(lc[lc_N1], 400., 600., rate=250, coef_part=1)
+
+connect_generator(prefrontal[pfc_5HT], 300., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_5HT], 300., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_Glu0], 300., 600., rate=250, coef_part=1)
+connect_generator(motor[motor_Glu1], 300., 600., rate=250, coef_part=1)
+connect_generator(dr[dr_5HT], 300., 600., rate=250, coef_part=1)
+connect_generator(mnr[mnr_5HT], 300., 600., rate=250, coef_part=1)
+"""
 
 """
 ############################anger/rage

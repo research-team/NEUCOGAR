@@ -64,7 +64,7 @@ def generate_neurons(NNumber):
     # Init neuron models with our parameters
 #    nest.SetDefaults('iaf_psc_exp',   iaf_neuronparams)
 #    nest.SetDefaults('iaf_psc_alpha', iaf_neuronparams)
-    nest.SetDefaults('hh_cond_exp_traub', hh_neuronparams)
+    #nest.SetDefaults('hh_cond_exp_traub', hh_neuronparams)
   # Parts without dopamine and 5HT and nora
     for part in parts_simple:
         part[k_model] = 'hh_cond_exp_traub'
