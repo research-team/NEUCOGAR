@@ -23,7 +23,7 @@ k_NN    = 'NN'
 k_model = 'Model'
 
 # T - simulation time | dt - simulation pause step
-T = 1000.
+T = 1400.
 dt = 10.
 
 # Neurons number for spike detector
