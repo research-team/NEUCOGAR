@@ -345,8 +345,8 @@ if dopamine_flag and serotonin_flag and noradrenaline_flag:
     #connect(striatum[striatum_DA],  snr[snr_GABA], syn_type=DOPA_in, weight_coef=0.005)
     connect(striatum[striatum_D1], snr[snr_GABA], syn_type=DA_ex, weight_coef=0.005)
     #connect(striatum[striatum_DA],  snc[snc_DA], syn_type=DOPA_in, weight_coef=0.005)
-    connect(striatum[striatum_D1], snc[snc_GABA], syn_type=DA_ex, weight_coef=0.005)
-    connect(striatum[striatum_D1], snc[snc_DA], syn_type=DA_ex, weight_coef=0.005)
+    # connect(striatum[striatum_D1], snc[snc_GABA], syn_type=DA_ex, weight_coef=0.005)
+    # connect(striatum[striatum_D1], snc[snc_DA], syn_type=DA_ex, weight_coef=0.005)
     connect(nac[nac_5HT], nac[nac_DA], syn_type=SERO_ex, weight_coef=wse)
     connect(snr[snr_GABA], snc[snc_DA], syn_type=SERO_in, weight_coef=wsi)
     connect(snc[snc_GABA], striatum[striatum_5HT], syn_type=DA_in, weight_coef=0.005) #?
