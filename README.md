@@ -23,6 +23,8 @@ The complete description of experimental approach could be found [here](neucogar
 
 ## Breakthrough
 
+**AI and robotics**: New architectures of robotic systems, will be significantly different from the existing computers/robots. The proposed architecture of new generation of robots will be capable of self learning and will not be using traditional software approaches making software development obsolete.
+
 **Affective computing** - first time the bio-plausible implementation of psycho-emotional states mapped to computational processes will be demonstrated. 
 
 **Cognitive architectures and robotics** - first time the bio-plausible emotional drives will be implemented to form behavioral strategies of an artificial system. We have already demonstrated: "fear-like" and "disgust-like" states.
