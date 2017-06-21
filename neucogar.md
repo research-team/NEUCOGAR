@@ -61,3 +61,5 @@ Please use trello in SCRUM way to track and implement tasks: https://trello.com/
 
 1. http://en.wikipedia.org/wiki/Neuromodulation
 1. http://en.wikipedia.org/wiki/Dopamine
+1. https://en.wikipedia.org/wiki/Norepinephrine
+1. https://en.wikipedia.org/wiki/Serotonin
