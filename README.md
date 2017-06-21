@@ -11,4 +11,14 @@ We have selected the ["cube of emotions"](https://en.wikipedia.org/wiki/L%C3%B6v
 
 ![Extended "cube of emotions"](cube.png)
 
+More specifically, the computational system parameters taken into account are as follows:
+
+1. **Computing utilization** is a metric to quantify how busy the processing resources of the system are. It is expressed by the average value of all the single processing resources' utilization.
+1. **Computing distribution** quantifies the load balancing among processing resources. It is expressed as the variance of single resources' utilization.
+1. **Memory distribution** is associated with the amount of memory allocated to the processing resources. It is quantified by the variance of the amount of memory per single resource.
+1. **Storage volume** is an index related to the the amount of data and information used by the system. 
+1. **Storage bandwidth** quantifies the number of connections between resources, i.e. processing and data nodes.
+
+The complete description of experimental approach could be found [here](neucogar.md).
+
 ## Breakthrough
