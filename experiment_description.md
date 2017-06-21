@@ -7,7 +7,7 @@
 Idea is based on basal ganglia dopamine neuromodulation described:
 
 1. https://en.wikipedia.org/wiki/Basal_ganglia#Circuit_connections
-1. https://github.com/max-talanov/1/blob/master/computational%20emotional%20thinking%20course/neurotransmission.md#emotional-loop
+1. https://github.com/max-talanov/1/blob/master/affective_computing_course/neurotransmission.md#emotional-loop
 
 In short:
 
