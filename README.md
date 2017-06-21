@@ -19,7 +19,7 @@ More specifically, the computational system parameters taken into account are as
 1. **Storage volume** is an index related to the the amount of data and information used by the system. 
 1. **Storage bandwidth** quantifies the number of connections between resources, i.e. processing and data nodes.
 
-The complete description of experimental approach could be found [here](neucogar.md).
+The researcher guide of and experimental approach could be found [here](neucogar.md).
 
 ## Breakthrough
 
