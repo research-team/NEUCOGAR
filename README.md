@@ -22,3 +22,7 @@ More specifically, the computational system parameters taken into account are as
 The complete description of experimental approach could be found [here](neucogar.md).
 
 ## Breakthrough
+
+**Affective computing** - first time the bio-plausible implementation of psycho-emotional states mapped to computational processes will be demonstrated. 
+
+**Cognitive architectures and robotics** - first time the bio-plausible emotional drives will be implemented to form behavioral strategies of an artificial system. We have already demonstrated: "fear-like" and "disgust-like" states.
