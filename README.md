@@ -23,15 +23,15 @@ The researcher guide of and experimental approach could be found [here](neucogar
 
 ## Dopamine pathways
 
-![Dopamine subsystem](da.png)
+![Dopamine subsystem](diagrams/da.png)
 
 ## Noradrenaline pathways
 
-![Noradrenaline subsystem](na.png)
+![Noradrenaline subsystem](diagrams/na.png)
 
 ## Serotonin pathways
 
-![Serotonin subsystem](5ht.png)
+![Serotonin subsystem](diagrams/5ht.png)
 
 ## Breakthrough
 
