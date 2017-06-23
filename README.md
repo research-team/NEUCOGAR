@@ -39,9 +39,13 @@ We have implemented three subsystems of three monoamines neuromodulators that ar
 
 ![Fear like state](results/da.png)
 
+At the 400 ms we increase the level of the DA placing the simulated brain in the "fear-like" state later at 410 ms we register the increased activity of the motor cortex (green bars) and the thalamus (blue bars) at the same time we could register the increased computational capacity orange graph.
+
 ## Disgust like state 
 
-![Fear like state](results/da_5ht.png)
+![Fear and disgust like states](results/da_5ht.png)
+
+At the 200 ms we increase the level of the 5HT placing the simulated brain in the "disgust-like" state later we register the decreased activity of the motor cortex (blue bars) at the same time we could register the decreased computational capacity orange graph. At the 400 ms we reproduce the experiment with the DA described above.
 
 ## Breakthrough
 
