@@ -21,6 +21,18 @@ More specifically, the computational system parameters taken into account are as
 
 The researcher guide of and experimental approach could be found [here](neucogar.md).
 
+## Dopamine pathways
+
+![Dopamine subsystem](da.png)
+
+## Noradrenaline pathways
+
+![Noradrenaline subsystem](na.png)
+
+## Serotonin pathways
+
+![Serotonin subsystem](5ht.png)
+
 ## Breakthrough
 
 **AI and robotics**: New architectures of robotic systems, will be significantly different from the existing computers/robots. The proposed architecture of new generation of robots will be capable of self learning and will not be using traditional software approaches making software development obsolete.
