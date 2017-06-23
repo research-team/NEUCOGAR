@@ -21,6 +21,8 @@ More specifically, the computational system parameters taken into account are as
 
 The researcher guide of and experimental approach could be found [here](neucogar.md).
 
+We have implemented three subsystems of three monoamines neuromodulators that are represented below in neurosimulator [NEST](http://www.nest-simulator.org/community/) and run the seres of experiments implementing all 8 affects. Two examples of experiments are represented below.
+
 ## Dopamine pathways
 
 ![Dopamine subsystem](diagrams/da.png)
@@ -32,6 +34,14 @@ The researcher guide of and experimental approach could be found [here](neucogar
 ## Serotonin pathways
 
 ![Serotonin subsystem](diagrams/5ht.png)
+
+## Fear like state
+
+![Fear like state](results/da.png)
+
+## Disgust like state 
+
+![Fear like state](results/da_5ht.png)
 
 ## Breakthrough
 
