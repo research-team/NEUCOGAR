@@ -1,9 +1,11 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.3"
-__tested___ = "10.04.2017 NEST 2.12.0"
+__version__ = "1.3.1"
+__tested___ = "14.08.2017 NEST 2.12.0 Python 3"
 
 import nest
 import logging
+
+
 
 logging.basicConfig(format='%(name)s::%(funcName)s %(message)s', level=logging.INFO)
 
@@ -12,11 +14,11 @@ static = 0
 Glu = 1
 GABA = 2
 ACh = 3
-DA_ex = 4
-DA_in = 5
+DOPA_ex = 4
+DOPA_in = 5
 SERO_ex = 6
 SERO_in = 7
-NA = 8
+NORA_ex = 8
 
 # Available keys for dicts
 k_NN = 'NN'
@@ -32,7 +34,6 @@ all_parts = []
 # Keys for synapse models
 model = 0
 basic_weight = 1
-
 
 neuron_models = {}
 synapse_models = {}
@@ -51,8 +52,7 @@ endbuild = 0
 
 """ Simulation """
 # T - simulation time | dt - simulation pause step
-T = 1000.
-dt = 10.
+T = 50.
 
 current_path = '.'
 
@@ -72,9 +72,9 @@ max_synapses = 999999
 min_synapses = 10
 
 # Neuron models
-IAF_NEURON    = 'iaf_neuron'
 IAF_PSC_EXP   = 'iaf_psc_exp'
 IAF_PSC_ALPHA = 'iaf_psc_alpha'
+HH_PSC_ALPHA = 'hh_psc_alpha'
 
 # Synapse models
 STATIC_MODEL    = 'static_synapse'

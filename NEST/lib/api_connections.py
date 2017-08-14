@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.7"
-__tested___ = "10.04.2017 NEST 2.12.0"
+__version__ = "1.7.1"
+__tested___ = "14.08.2017 NEST 2.12.0 Python 3"
 
 import api_globals as glob
 
@@ -14,7 +14,7 @@ def SetSynapseMaxNumber(maximal, part=None):
         glob.max_synapses = maximal
 
 
-def Connect(pre, post, neurotransmitter=glob.GABA, conc_coef=1., conn_prob=1.):
+def Connect(pre, post, neurotransmitter=glob.GABA, weight_coef=1., conn_percent=100):
     """
     Establish a connection between two nodes or lists of nodes
     
@@ -25,8 +25,8 @@ def Connect(pre, post, neurotransmitter=glob.GABA, conc_coef=1., conn_prob=1.):
         pre (list): neurons GIDs of origin part
         post (list): neurons GIDs of target part
         neurotransmitter (int): key of a neurotrasmitter
-        conc_coef (float): coeficient of transmitter concetration (weight)
-        conn_prob (float): connection probability (from 0 to 1)
+        weight_coef (float): coeficient of transmitter concetration (weight)
+        conn_percent (float): connection probability (from 0 to 1)
     """
 
     '''
@@ -39,11 +39,11 @@ def Connect(pre, post, neurotransmitter=glob.GABA, conc_coef=1., conn_prob=1.):
     '''
 
     # Set new weight value (weight_coef * basic weight)
-    new_weight = conc_coef * glob.synapse_models[neurotransmitter][glob.basic_weight]
+    new_weight = weight_coef * glob.synapse_models[neurotransmitter][glob.basic_weight]
     glob.nest.SetDefaults(glob.synapse_models[neurotransmitter][glob.model], dict(weight=new_weight))
 
     # Correlate number of synapses
-    current_synapses = int(post[glob.k_NN] * conn_prob)
+    current_synapses = int(post[glob.k_NN] * float(conn_percent) / 100)
     if current_synapses > glob.max_synapses:
         current_synapses = glob.max_synapses
     elif current_synapses < glob.min_synapses:
@@ -61,19 +61,22 @@ def Connect(pre, post, neurotransmitter=glob.GABA, conc_coef=1., conn_prob=1.):
     glob.nest.Connect(pre[glob.k_IDs], post[glob.k_IDs], conn_spec=conn_spec, syn_spec=glob.synapse_models[neurotransmitter][glob.model])
 
     # Show data of a new connection
-    logger.info('{0} to {1} W={2}(x{3}) P_conn={4}% ({5}/{6})'.format(
-        pre[glob.k_name],
-        post[glob.k_name],
-        #glob.nest.GetDefaults(glob.synapse_models[neurotransmitter][glob.model])['weight'],
-        new_weight,
-        conc_coef,
-        conn_prob * 100,
-        current_synapses, post[glob.k_NN]))
+    logger.info('{0} ({1}/{2}) to {3} ({4}/{5}. {6:.2f} per nrn). Weight={7} (x{8}). P_conn={9}%'.format(
+        pre[glob.k_name],                   # 0
+        pre[glob.k_NN],                     # 1
+        pre[glob.k_NN],                     # 2
+        post[glob.k_name],                  # 3
+        current_synapses * pre[glob.k_NN],  # 4
+        post[glob.k_NN],                    # 5
+        current_synapses,                   # 6
+        new_weight,                         # 7
+        weight_coef,                          # 8
+        conn_percent                     # 9
+    ))
 
 def ConnectVolumeTransmitters(*args):
     for part in args:
-
-        print part[glob.k_name]
+        print(part[glob.k_name])
 
 def ConnectPoissonGenerator(part, start=1, stop=glob.T, rate=250, prob=1., weight=None):
     """
@@ -107,7 +110,7 @@ def ConnectPoissonGenerator(part, start=1, stop=glob.T, rate=250, prob=1., weigh
 
     glob.nest.Connect(generator, part[glob.k_IDs], conn_spec=conn_spec, syn_spec=syn_spec)
 
-    logger.info("(ID:{0}) to {1} ({2} of {3}) Interval: {4}-{5}ms".format(
+    logger.info("(ID:{0}) to {1} ({2}/{3}). Interval: {4}-{5}ms".format(
         generator[0],
         part[glob.k_name],
         outdegree,
@@ -139,7 +142,7 @@ def ConnectDetector(part, detect=glob.N_detect):
     tracing_ids = part[glob.k_IDs][:number]
     detector = glob.nest.Create('spike_detector', params=detector_param)
     glob.nest.Connect(tracing_ids, detector)
-    logger.info("(ID:{0}) to {1}. Tracing {2} of {3} neurons".format(detector[0], name, len(tracing_ids), part[glob.k_NN]))
+    logger.info("(ID:{0}) to {1} ({2}/{3})".format(detector[0], name, len(tracing_ids), part[glob.k_NN]))
 
 
 def ConnectMultimeter(part, **kwargs):
@@ -155,8 +158,8 @@ def ConnectMultimeter(part, **kwargs):
         ....
         ....
     """
-
-    multimeter_param = {'label': part[glob.k_name],
+    name = part[glob.k_name]
+    multimeter_param = {'label': name,
                         'withgid': True,
                         'withtime': True,
                         'to_file': True,
@@ -166,4 +169,4 @@ def ConnectMultimeter(part, **kwargs):
     tracing_ids = part[glob.k_IDs][:glob.N_volt]
     multimeter = glob.nest.Create('multimeter', params=multimeter_param)  # ToDo add count of multimeters
     glob.nest.Connect(multimeter, tracing_ids)
-    logger.info("(ID:{0}) to {1}. Tracing {2} of {3} neurons".format(multimeter[0], part[glob.k_name], len(tracing_ids), part[glob.k_NN]))
+    logger.info("(ID:{0}) to {1} ({2}/{3})".format(multimeter[0], name, len(tracing_ids), part[glob.k_NN]))

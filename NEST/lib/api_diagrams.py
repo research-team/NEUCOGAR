@@ -1,15 +1,17 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.3"
-__tested___ = "10.04.2017 NEST 2.12.0"
+__version__ = "1.3.1"
+__tested___ = "14.08.2017 NEST 2.12.0 Python 3"
 
 import os
 import numpy
 import pylab
 import logging
+import api_globals as glob
 from collections import defaultdict
 
 logging.basicConfig(format='%(name)s::%(funcName)s %(message)s', level=logging.INFO)
 logger = logging.getLogger('api_diagrams')
+successed = 0
 
 def BuildSpikeDiagrams(txt_path=None):
     """
@@ -22,19 +24,17 @@ def BuildSpikeDiagrams(txt_path=None):
         txt_path (str): path for txt results
     """
 
-    img_path = "img"
-
     if not txt_path:
-        import api_globals as glob
         txt_path = glob.current_path
 
     if txt_path and not os.path.exists(txt_path):
         os.makedirs(txt_path)
 
-    if not os.path.exists(img_path):
-        os.makedirs(img_path)
+    logger.info("results path '{0}/img'".format(txt_path))
 
-    for spikes_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(txt_path) if name.endswith(".gdf")])):
+    files_gdf = sorted(set([name[:name.rfind("-")] for name in os.listdir(txt_path) if name.endswith(".gdf")]))
+
+    for spikes_file in files_gdf:
         meta = spikes_file.split('-')
         gids = list()
         times = list()
@@ -48,13 +48,15 @@ def BuildSpikeDiagrams(txt_path=None):
                         data = line.split()
                         gids.append(int(data[0]))
                         times.append(float(data[1]))
-        # if no recorded data
         if len(times) == 0:
-            logger.info("no recorded data from '{0}'".format(spikes_file))
+            err_msg = "ERROR. No recorded data"
         else:
-            __make_spikes_diagram(times, gids, "{0} {1}".format(meta[0], meta[1]), img_path)
-            logger.info("diagram created from '{0}'".format(spikes_file))
+            err_msg = __make_spikes_diagram(times, gids, "{0} {1}".format(meta[0], meta[1]), txt_path)
+
+        logger.info("{0}... {1}".format(spikes_file, err_msg))
         del meta, times, gids
+
+    logger.info("Successfully created {0}/{1}\n".format(successed, len(files_gdf)))
 
 
 def BuildVoltageDiagrams(txt_path=None):
@@ -68,17 +70,11 @@ def BuildVoltageDiagrams(txt_path=None):
         txt_path (str): path for txt results
     """
 
-    img_path = "img"
-
     if not txt_path:
-        import api_globals as glob
         txt_path = glob.current_path
 
     if txt_path and not os.path.exists(txt_path):
         os.makedirs(txt_path)
-
-    if not os.path.exists(img_path):
-        os.makedirs(img_path)
 
     for voltage_file in sorted(set([name[:name.rfind("-")] for name in os.listdir(txt_path) if name.endswith(".dat")])):
         broken = 0
@@ -96,8 +92,8 @@ def BuildVoltageDiagrams(txt_path=None):
                         voltages[data[0]].append(float(data[2]))
                     else:
                         broken+=1
-        __make_voltage_diagram(dict(times), dict(voltages), "{0} {1}".format(meta[0], meta[1]), img_path)
-        logger.info("{0} diagram created. Broken lines {1}".format(voltage_file, broken))
+        __make_voltage_diagram(dict(times), dict(voltages), "{0} {1}".format(meta[0], meta[1]), txt_path)
+        logger.info("{0}. Broken lines {1}".format(voltage_file, broken))
         del meta, times, voltages
 
 
@@ -118,6 +114,12 @@ def __make_spikes_diagram(times, gids, name, path):
         name   (str): name of brain part
         path   (str): path to save results
     """
+    global successed
+
+    path += "/img"
+
+    if not os.path.exists(path):
+        os.makedirs(path)
 
     pylab.figure()
     color_marker = "."
@@ -132,6 +134,9 @@ def __make_spikes_diagram(times, gids, name, path):
     pylab.xticks([])
     pylab.axes([0.1, 0.1, 0.85, 0.17])
     t_bins = numpy.arange(numpy.amin(times), numpy.amax(times), hist_binwidth)
+    if len(t_bins) == 0:
+        pylab.close()
+        return "t_bins for {0} is empty".format(name)
     n, bins = pylab.histogram(times, bins=t_bins)
     num_neurons = len(numpy.unique(gids))
     heights = (1000 * n / (hist_binwidth * num_neurons))
@@ -148,6 +153,9 @@ def __make_spikes_diagram(times, gids, name, path):
     pylab.savefig("{0}/{1}.png".format(path, name), dpi=120, format='png')
     pylab.close()
 
+    successed += 1
+    return "OK"
+
 
 def __make_voltage_diagram(times, voltages, name, path):
     """
@@ -162,6 +170,11 @@ def __make_voltage_diagram(times, voltages, name, path):
         name            (str): name of brain part
         path            (str): path to save results
     """
+
+    path += "/img"
+
+    if not os.path.exists(path):
+        os.makedirs(path)
 
     pylab.figure()
     line_style = ""
@@ -185,6 +198,6 @@ def __make_voltage_diagram(times, voltages, name, path):
 
 # As independent script
 if __name__ == '__main__':
-    folder = raw_input("Enter path to the results: ")
+    folder = input("Enter path to the results: ")
     BuildSpikeDiagrams(folder)
     BuildVoltageDiagrams(folder)

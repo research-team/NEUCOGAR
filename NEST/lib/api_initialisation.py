@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.8"
-__tested___ = "10.04.2017 NEST 2.12.0"
+__version__ = "1.8.1"
+__tested___ = "14.08.2017 NEST 2.12.0 Python 3"
 
 import os
 import datetime
@@ -45,7 +45,8 @@ def SetKernelStatus(**kwargs):
     
         Parallel processing  
             total_num_virtual_procs (int): The total number of virtual processes  
-            local_num_threads	    (int): The local number of threads  
+            local_num_threads	    (int): The local number of threads
+            num_processes (read)
             num_rec_processes	    (int): The number of MPI processes reserved for recording spikes  
             num_sim_processes	    (int): The number of MPI processes reserved for simulating neurons  
     
@@ -104,7 +105,15 @@ def SetKernelStatus(**kwargs):
     glob.nest.SetKernelStatus(user_property)
 
     for key in user_property:
-        logger.info("{0} > {1}".format(key, user_property[key]))
+        logger.info("{0} = {1}".format(key, user_property[key]))
+
+
+def CheckDuplicates(parts):
+    part_names = [part for part in parts[0][glob.k_name]]
+
+    if len(part_names) != len(set(part_names)):
+        ValueError('The tuple has duplicates, please delete them!')
+    return tuple(sorted(parts, key=lambda x: x[glob.k_name]))
 
 
 def InitNeuronModel(nest_model, user_model, params):
@@ -212,14 +221,14 @@ def SetNeuronNumber(part, number):
     part[glob.k_NN] = number
 
 
-def Simulate():
+def Simulate(T):
     """
     Start simulation
         
     Description:
         Set stopwatches and invoke 'Simulate' method
     """
-    glob.startsimulate = datetime.datetime.now()
-    glob.nest.Simulate(glob.T)
-    glob.endsimulate = glob.startsimulate - datetime.datetime.now()
-    logger.info('Simulation was completed successfully')
+    startsimulate = datetime.datetime.now()
+    glob.nest.Simulate(float(T))
+    endsimulate = datetime.datetime.now()
+    logger.info('... Success. {0}'.format(endsimulate - startsimulate))

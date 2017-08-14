@@ -1,6 +1,6 @@
 __author__  = "Alexey Panzer"
-__version__ = "1.1"
-__tested___ = "29.06.2017 NEST 2.12.0"
+__version__ = "1.1.1"
+__tested___ = "14.08.2017 NEST 2.12.0 Python 3"
 
 import os
 import re
@@ -38,7 +38,7 @@ def forward_btn(self):
     global iteration
     if 0 <= iteration < total_interval_num:
         iteration += 1
-        print iteration
+        print(iteration)
         forward(self)
         plt.gcf().clear()
         heatmap_builder(iteration, width_x=5)
@@ -57,7 +57,7 @@ def back_btn(self):
     global iteration
     if 0 <= iteration < total_interval_num:
         iteration -= 1
-        print iteration
+        print(iteration)
         back(self)
         plt.gcf().clear()
         heatmap_builder(iteration, width_x=5)
@@ -106,9 +106,9 @@ def __collapse_data(dt):
     global max_spike_num
 
     dt *= 10    # correlate dt (without floating comma)
-    print "=================================="
+    print("==================================")
     for column_number, data in heatmap_full_data.items():
-        print column_number, data
+        print(column_number, data)
 
         # If data is empty (equal 0) then fill by zeros
         if type(data) is int:
@@ -122,10 +122,6 @@ def __collapse_data(dt):
 
             while interval_index < total_interval_num - 1 and data_index != len(data):
                 if data[data_index] <= end_interval_value:
-                    #print "{} <= {}. Index {} of {}".format(data[data_index],
-                    #                                    end_interval_value,
-                    #                                    interval_index,
-                    #                                    interval_number-1)
                     spikes_for_interval[interval_index] += 1
                     data_index += 1
                 else:
@@ -140,18 +136,18 @@ def __collapse_data(dt):
             # Delete
             del spikes_for_interval
 
-    print "============= A F T E R ====================="
-    print '      ',
+    print("============= A F T E R =====================")
+    print('      ', end='')
     for i in range(total_interval_num):
-        print "{0:<4}".format(i),
-    print
+        print("{0:<4}".format(i), end=' ')
+    print()
 
     # After collapsing
     for column_number, data in sorted(heatmap_full_data.items()):
-        print column_number,
+        print (column_number, end=' ')
         for elem in data:
-            print "{0:<4}".format(elem),
-        print
+            print("{0:<4}".format(elem), end=' ')
+        print()
 
 
 colorbar = None
@@ -182,7 +178,7 @@ def heatmap_builder(interval_index, width_x=5):
             heatmap_for_gui.append(line_values)
             # Clear list
             line_values = []
-    print heatmap_for_gui
+    print(heatmap_for_gui)
 
     # Init the figure
     sns.set()
