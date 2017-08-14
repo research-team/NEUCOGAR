@@ -9,12 +9,9 @@ fi
 
 
 # Save parameters
-echo "THIS JOB WILL BE EXECUTED IN cluster-manager"
-echo "               WARNING!                     "
-echo "Number of OpenMP threads and requested CPU's must be the same!"
 read -p "1. Job name       : " job
 read -p "2. Neuron number  : " neurons
-read -p "3. OpenMP threads : " omp
+read -p "3. MPI tasks: " tasks
 
 # Create work directory
 today=$(date "+%d-%m_%H:%M")
@@ -28,7 +25,7 @@ err="$HOME/log/$1/%J($job).err"
 out="$HOME/log/$1/%J($job).out"
 
 export OMP_NUM_THREADS=1
-bsub -J ${job} -o ${out} -e ${err} -n ${omp} -a openmp -m cluster-manager /shared/NEST-2.12.0/bin/python3.6 ${script_path} ${neurons} ${omp}
+bsub -J ${job} -o ${out} -e ${err} -n ${tasks} -m cluster-manager /shared/NEST-2.12.0/bin/python3.6 ${script_path} ${neurons} ${tasks}
 
 # Delete broken clone of directory
 cd "$HOME/results/$1/"

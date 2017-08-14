@@ -18,7 +18,7 @@ read -p "4. OpenMP threads number       : " omp
 today=$(date "+%d-%m_%H:%M")
 script_path="$HOME/scripts/$1/neuromodulation.py"
 new_dir="results/$1/%J_${job}_${today}"
-mkdir $new_dir && cd $new_dir
+mkdir ${new_dir} && cd ${new_dir}
 
 echo "Created and moved to $new_dir"
 echo
@@ -27,7 +27,7 @@ err="$HOME/log/$1/%J($job).err"
 out="$HOME/log/$1/%J($job).out"
 res=$(($omp * $nodes))
 
-bsub -J $job -e $err -o $out -n $res -R "span[ptile=$omp]" -a openmp -m "$(cat "$HOME/hostfile")" mpirun -np $nodes -rr -f $HOME/hosts -print-rank-map /shared/NEST-2.10.0/bin/python $script_path $neurons
+bsub -J ${job} -e ${err} -o ${out} -n ${res} -R "span[ptile=$omp]" -a openmp -m "$(cat "$HOME/hostfile")" mpirun -np ${nodes} -rr -f $HOME/hosts -print-rank-map /shared/NEST-2.12.0/bin/python3.6 ${script_path} ${neurons}
 
 # Delete broken clone of directory
 cd "$HOME/results/$1/"
