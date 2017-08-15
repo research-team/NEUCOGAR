@@ -1,12 +1,14 @@
 import nest
 import pylab
-import nest.voltage_trace
 import numpy
+import nest.raster_plot
+import nest.voltage_trace
 
 nest.ResetKernel()
 
-path = "../Results"
-dpi_n = 130
+path = "../results/"
+dpi_n = 120
+check = 'V_m'
 
 sysParams = ['synaptic_elements',
              'consistent_integration',
@@ -64,29 +66,48 @@ allModels = ['aeif_cond_alpha',
              # 'pp_pop_psc_delta',           procces hangs on the inh neurons
              'pp_psc_delta']
 
+
+
+
 for model in allModels:
+    nest.SetDefaults('hh_cond_exp_traub', {
+        'C_m': 134.0,
+        't_ref': 2.,
+        'V_m': -70.0,
+        'E_L': -70.0,
+        'E_K': -77.0,
+        'g_Na': 12000.0,
+        'g_K': 3600.0,
+        'g_L': 30.0,
+        'tau_syn_ex': 0.2,
+        'tau_syn_in': 2.0
+    })
+
+    print(model)
     neuron = nest.Create(model)
-    print("\n", model)
-    multimeter = nest.Create('multimeter', params={'withtime': True, 'interval': 0.1, 'record_from': ['V_m']})
-    generator_ex = nest.Create("spike_generator", params={"spike_times": numpy.array([20.0, 50.0, 58.0]),
-                                                          "spike_weights": numpy.array([400., 500., 500.])})
+
+    multimeter = nest.Create('multimeter', params=dict(withtime=True, interval=0.1, record_from=[check]))
+    s_detector = nest.Create('spike_detector', params=dict(label=model, withgid=True, to_memory=True))
+    s_generator = nest.Create("spike_generator", params=dict(spike_times=[20.,60.], spike_weights=[500., 300.]))
+
     nest.Connect(multimeter, neuron)
-    nest.Connect(generator_ex, neuron)
+    nest.Connect(neuron, s_detector)
+    nest.Connect(s_generator, neuron)
 
     nest.Simulate(100.)
 
-    events = nest.GetStatus(multimeter)[0]['events']
-    t = events['times']
-
     pylab.figure()
     pylab.subplot(111)
+    spikes = nest.GetStatus(s_detector)[0]['events']['times']
+    pylab.plot(spikes, [-70. for _ in spikes], ".", color='r')
+
+    events = nest.GetStatus(multimeter)[0]['events']
+    pylab.plot(events['times'], events[check], color='b')
     pylab.title(model)
-    pylab.plot(t, events['V_m'])
-    pylab.ylabel('Membrane potential [mV]')
+    pylab.xlabel("Time (ms)")
+    pylab.ylabel(check)
     pylab.draw()
     pylab.savefig(path + model + ".png", dpi=dpi_n, format='png')
     pylab.close()
 
-    # nest.voltage_trace.from_device(multimeter)
-    # nest.voltage_trace.show()
     nest.ResetKernel()
