@@ -1,5 +1,3 @@
-import random
-
 nrn_parameters = {'t_ref': [2.5, 4.0],		# Refractory period
 				  'V_m': -70.0,				#
 				  'E_L': -70.0,				#

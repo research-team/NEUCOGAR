@@ -7,9 +7,10 @@ import sys
 import numpy
 import pylab
 from collections import defaultdict
-from neucogar import api_globals
 
-logger = api_globals.log.getLogger('api_diagrams')
+import neucogar.api_kernel as api
+
+logger = api.log.getLogger('api_diagrams')
 
 
 def __create_result_dir(txt_path):
@@ -29,11 +30,15 @@ def BuildSpikeDiagrams(results_folder=None, hist_binwidth=5.0):
 
 	# Set txt results of simulation from standard data path
 	if results_folder is None:
-		results_folder = api_globals.NEST.GetKernelStatus()['data_path']
+		results_folder = api.NEST.GetKernelStatus()['data_path']
 	# Create folder if not exists
 	__create_result_dir(results_folder)
+
+
 	# Get list of .gdf files
 	spike_files = sorted([name for name in os.listdir(results_folder) if name.endswith(".gdf")])
+
+	print(spike_files)
 
 	logger.info("scan folder for '.gdf'... {0} {1}".format(len(spike_files),
 	                                                       "OK" if spike_files else "No .gdf fiels!"))
@@ -58,10 +63,10 @@ def BuildSpikeDiagrams(results_folder=None, hist_binwidth=5.0):
 						gids.append(int(data[0]))
 						times.append(float(data[1]))
 			# Run diagram builder with these data
-			err_msg = __make_spikes_diagram(times, gids, spike_file, results_folder, hist_binwidth)
+			__make_spikes_diagram(times, gids, spike_file, results_folder, hist_binwidth)
 		else:
-			err_msg = "ERROR. File is empty (no recorded data)"
-		logger.info("{0}... {1}".format(spike_file, err_msg))
+			logger.info("No recorded data")
+		logger.info("{0}...".format(spike_file))
 	#logger.info("Successfully created {0}/{1}\n".format(successed, len(files_gdf)))
 
 
@@ -75,26 +80,28 @@ def BuildVoltageDiagrams(results_folder=None):
 
 	# Set txt results of simulation from standard data path
 	if results_folder is None:
-		results_folder = api_globals.NEST.GetKernelStatus()['data_path']
+		results_folder = api.NEST.GetKernelStatus()['data_path']
 	# Create folder if not exists
 	__create_result_dir(results_folder)
 	# Get list of .gdf files
 	files_dat = sorted([name for name in os.listdir(results_folder) if name.endswith(".dat")])
 
-	logger.info("scan folder for '.gdf'... {0} {1}".format(len(spike_files),
-	                                                       "OK" if spike_files else "No .gdf fiels!"))
+	logger.info("scan folder for '.gdf'... {0} {1}".format(len(files_dat),
+	                                                       "OK" if files_dat else "No .dat fiels!"))
+
+	print(files_dat)
 	# Exit if no files
-	if not spike_files:
+	if not files_dat:
 		return
 
 	logger.info("results path is '{}/img'".format(results_folder))
 
 	for voltage_file in files_dat:
 		broken = 0
-		meta = voltage_file.split('-')
 		times = defaultdict(list)
 		voltages = defaultdict(list)
-		file_path = "{0}/{1}".format(results_folder, spike_file)
+
+		file_path = "{0}/{1}".format(results_folder, voltage_file)
 		# if file is not empty take data
 		if os.stat(file_path).st_size > 0:
 			with open(file_path, 'r') as f:
@@ -107,10 +114,10 @@ def BuildVoltageDiagrams(results_folder=None):
 					else:
 						broken += 1
 			# Run diagram builder with these data
-			err_msg = __make_voltage_diagram(times, gids, spike_file, results_folder, hist_binwidth)
+			__make_voltage_diagram(dict(times), dict(voltages), voltage_file, results_folder)
 		else:
-			err_msg = "ERROR. File is empty (no recorded data)"
-		logger.info("{0}... {1}".format(spike_file, err_msg))
+			logger.info("ERROR. File is empty (no recorded data)")
+		logger.info("{0}... ".format(voltage_file))
 	#logger.info("Successfully created {0}/{1}\n".format(successed, len(files_gdf)))
 
 
@@ -181,7 +188,6 @@ def __make_weight_diagram(conn_dict, txt_path):
 	pylab.savefig("{0}/img/{1}.png".format(txt_path, "STDP_weights"), figsize=(10, 6), dpi=120, format='png')
 	pylab.close()
 
-	return "OK"
 
 
 def __make_spikes_diagram(times, gids, file_name, txt_path, hist_binwidth):
@@ -195,10 +201,12 @@ def __make_spikes_diagram(times, gids, file_name, txt_path, hist_binwidth):
 	:param hist_binwidth: width of one bin in milliseconds
 	:return:
 	"""
+	print("logger.info")
+
 	color_marker = '.'      # spike marker (dots)
 	bar_color = 'green'     # bar color
 	border_color = '#0f1c16'  # border color
-	simulation_time = api_globals.NEST.GetKernelStatus()['time']
+	simulation_time = api.NEST.GetKernelStatus()['time']
 	title = file_name.split(".")[0]
 
 	# Common figure
@@ -216,16 +224,18 @@ def __make_spikes_diagram(times, gids, file_name, txt_path, hist_binwidth):
 	                      stop=numpy.amax(times) + 2 * hist_binwidth,
 	                      step=hist_binwidth)
 	if len(t_bins) == 0:
+		print("GOTCHA!!!! len(t_bins) == 0 ")
 		pylab.close()
-		return "t_bins for {0} is empty".format(file_name)
+		return
 	# Get bins
 	# n -  is the number of counts in each bin of the histogram
 	# bins - is the left hand edge of each bin
 	n, bins = pylab.histogram(times, bins=t_bins)
 	# Check
 	if len(n) == 0:
+		print("GOTCHA!!!! len(n) == 0 ")
 		pylab.close()
-		return "bins for {0} is empty".format(file_name)
+		return
 	# Get neuron numbers by unique gids
 	num_neurons = len(numpy.unique(gids))
 	# Recalculate heights of bins to show rate in Hz of spiking
@@ -242,8 +252,7 @@ def __make_spikes_diagram(times, gids, file_name, txt_path, hist_binwidth):
 	pylab.xlim([0, simulation_time])
 	pylab.draw()
 	pylab.savefig("{0}/img/{1}.png".format(txt_path, title), dpi=120, format='png')
-	pylab.close()
-	return "OK"
+	pylab.close('all')
 
 
 def __make_voltage_diagram(times, voltages, name, path):
@@ -259,7 +268,6 @@ def __make_voltage_diagram(times, voltages, name, path):
 		name			(str): name of brain part
 		path			(str): path to save results
 	"""
-	global successed
 
 	pylab.figure()
 	line_style = ""
@@ -279,9 +287,6 @@ def __make_voltage_diagram(times, voltages, name, path):
 	pylab.draw()
 	pylab.savefig("{0}/img/{1}.png".format(path, name), dpi=120, format='png')
 	pylab.close()
-
-	successed += 1
-	return "OK"
 
 
 # As independent script

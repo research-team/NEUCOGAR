@@ -1,13 +1,13 @@
-import neucogar.api_globals
-from neucogar.CortexLayers import MotorCortexLayers
-from neucogar.CortexLayers import SensoryCortexLayer
-from neucogar.CortexLayers import SpinalCordLayer
+import neucogar.api_kernel
+from neucogar.LayersStructure import MotorCortexLayers
+from neucogar.LayersStructure import SensoryCortexLayer
 import numpy as np
 
 class AbstractColumn:
 	# column index : Layers Objects
 	# {0 : Layer Objects} . . .
 	_columns = {}
+
 	# 0 1 2 3 4
 	# 5 6 7 8 9
 	_column_mapping = []
@@ -100,22 +100,20 @@ class AbstractColumn:
 
 
 class MotorCortexColumns(AbstractColumn):
-	_columns = {}
-	_width_x = 0
-	_height_y = 0
-	_column_mapping = []
-
 	def __init__(self, x, y):
 		"""
 		Args:
 			column_num (int): column number
 		"""
-		self.__X = x
-		self.__Y = y
+		self._columns = {}
+		self._column_mapping = []
+		self._width_x = x
+		self._height_y = y
+
 		for column in range(x * y):
 			self._columns[column] = MotorCortexLayers()
 
-		self._column_mapping = np.arange(self._Y * self._X).reshape((self._Y, self._X))
+		self._column_mapping = np.arange(self._height_y * self._width_x).reshape((self._height_y, self._width_x))
 
 
 	def setConnectomes(self):
@@ -125,10 +123,6 @@ class MotorCortexColumns(AbstractColumn):
 				                                                          synapse=Glu, weight=0.5, conn_prob=L2_to_L2)
 
 
-class SensoryCortexColumns(AbstractLayer):
-	def __init__(self):
-		pass
-
-class SpinalCordColumns(AbstractLayer):
+class SensoryCortexColumns(AbstractColumn):
 	def __init__(self):
 		pass

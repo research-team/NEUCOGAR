@@ -1,4 +1,3 @@
-import neucogar.api_globals
 from neucogar.namespaces import *
 from neucogar.Nucleus import Nucleus
 
@@ -29,6 +28,18 @@ class MotorCortexLayers(AbstractLayer):
 
 	_dict_layers = {}
 
+	__nrn_parameters = {'t_ref': [2.5, 4.0],  # Refractory period
+	                  'V_m': -70.0,  #
+	                  'E_L': -70.0,  #
+	                  'E_K': -77.0,  #
+	                  'g_L': 30.0,  #
+	                  'g_Na': 12000.0,  #
+	                  'g_K': 3600.0,  #
+	                  'C_m': 134.0,  # Capacity of membrane (pF)
+	                  'tau_syn_ex': 0.2,  # Time of excitatory action (ms)
+	                  'tau_syn_in': 2.0  # Time of inhibitory action (ms)
+	                  }
+
 	def __init__(self):
 		"""
 		???
@@ -40,25 +51,25 @@ class MotorCortexLayers(AbstractLayer):
 		self._dict_layers[L5B] = Nucleus("Layer 5B")
 		self._dict_layers[L6] = Nucleus("Layer 6")
 
-		self.layers(L2).addSubNucleus(Glu, number=546, params=nrn_parameters)
-		self.layers(L2).addSubNucleus(GABA, number=107, params=nrn_parameters)
+		self.layers(L2).addSubNucleus(Glu, number=546, params=self.__nrn_parameters)
+		self.layers(L2).addSubNucleus(GABA, number=107, params=self.__nrn_parameters)
 
-		self.layers(L3).addSubNucleus(Glu, number=1145, params=nrn_parameters)
-		self.layers(L3).addSubNucleus(GABA, number=123, params=nrn_parameters)
+		self.layers(L3).addSubNucleus(Glu, number=1145, params=self.__nrn_parameters)
+		self.layers(L3).addSubNucleus(GABA, number=123, params=self.__nrn_parameters)
 
-		self.layers(L4).addSubNucleus(Glu, number=1656, params=nrn_parameters)
-		self.layers(L4).addSubNucleus(GABA, number=140, params=nrn_parameters)
+		self.layers(L4).addSubNucleus(Glu, number=1656, params=self.__nrn_parameters)
+		self.layers(L4).addSubNucleus(GABA, number=140, params=self.__nrn_parameters)
 
-		self.layers(L5A).addSubNucleus(Glu, number=454, params=nrn_parameters)
-		self.layers(L5A).addSubNucleus(GABA, number=90, params=nrn_parameters)
+		self.layers(L5A).addSubNucleus(Glu, number=454, params=self.__nrn_parameters)
+		self.layers(L5A).addSubNucleus(GABA, number=90, params=self.__nrn_parameters)
 
-		self.layers(L5B).addSubNucleus(Glu, number=641, params=nrn_parameters)
-		self.layers(L5B).addSubNucleus(GABA, number=131, params=nrn_parameters)
+		self.layers(L5B).addSubNucleus(Glu, number=641, params=self.__nrn_parameters)
+		self.layers(L5B).addSubNucleus(GABA, number=131, params=self.__nrn_parameters)
 
-		self.layers(L6).addSubNucleus(Glu, number=1288, params=nrn_parameters)
-		self.layers(L6).addSubNucleus(GABA, number=127, params=nrn_parameters)
+		self.layers(L6).addSubNucleus(Glu, number=1288, params=self.__nrn_parameters)
+		self.layers(L6).addSubNucleus(GABA, number=127, params=self.__nrn_parameters)
 
-	
+
 	def setConnectomes(self):
 		"""
 		Set connectomes between layers

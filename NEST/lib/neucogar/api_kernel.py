@@ -2,40 +2,60 @@ __author__  = "Alexey Panzer"
 __version__ = "2.0.0"
 __tested___ = "09.11.2017 NEST 2.12.0 Python 3"
 
-"""
-
-"""
-
-import datetime
 import os
+import sys
+import datetime
+import numpy as np
+import logging as log
 from collections import defaultdict
 
-from neucogar import api_globals as api_globals
+from neucogar.namespaces import *
+from neucogar.Nucleus import Nucleus
+from neucogar.ColumnsStructure import MotorCortexColumns
+from neucogar.ColumnsStructure import SensoryCortexColumns
+
+
+log.basicConfig(format='%(name)s::%(funcName)s %(message)s', level=log.INFO)
+__logger = log.getLogger('api_kernel')
+
+if 'nest' not in sys.modules:
+	import nest as NEST
+	__logger.info("NEST has been imported")
+	NEST.ResetKernel()
+	__logger.info("NEST kernel has been reset")
 
 __all_populations_objects = []
-__logger = api_globals.log.getLogger('api_initialisation')
 
+# Common information
+global_syn_number = 0
+global_real_nrn_number = 0
+global_sim_nrn_number = 0
 
-def ResetKernel():
-	"""
-	Put the simulation kernel back to its initial state.
+nulcei_global_list = []
 
-	This function re-initializes the simulation kernel, returning it to the same state as
-	after NEST has started.
-	In particular,
-		- all network nodes
-		- all connections
-		- all user-defined neuron and synapse models
-	are deleted, and
-		- time
-		- random generators
-	are reset. The only exception is that dynamically loaded modules are not unloaded. This may
-	change in a future version of NEST. The SLI interpreter is not affected by ResetKernel.
-	:return:
-	"""
+start_build = 0
+end_build = 0
 
-	api_globals.NEST.ResetKernel()
+rec_weight_nrn_num = 5
 
+# Neurons number for spike detector
+N_detect = 300
+
+# Neurons number for multimeter
+N_volt = 5
+
+# Generator delay
+pg_delay = 5.
+
+min_neurons = 10
+max_syn_per_nrn = 10000
+
+# Global value of memory usage
+byte2mb = 1024 ** 2
+syn_mem_usage = 0
+nrn_mem_usage = 0
+dev_mem_usage = 0
+__current_path = ""
 
 def SetKernelStatus(**kwargs):
 	"""
@@ -66,6 +86,8 @@ def SetKernelStatus(**kwargs):
 	need leads to decreased performance due to more update calls and communication cycles (small dmin),
 	or increased memory consumption of NEST (large dmax).
 	"""
+	global __current_path
+
 	# List of available parameters for kernel
 	available_param = ['resolution', 'local_num_threads', 'num_rec_processes', 'num_sim_processes',
 	                   'data_path', 'data_prefix', 'overwrite_files', 'print_time', 'use_wfr',
@@ -87,80 +109,32 @@ def SetKernelStatus(**kwargs):
 	# Create data folder
 	data_path = user_property['data_path']
 	if data_path != './':
-		api_globals.__current_path = data_path
+		__current_path = data_path
 		if not os.path.exists(data_path):
 			os.makedirs(data_path)
 	# Set kernel status
-	api_globals.NEST.SetKernelStatus(user_property)
+	NEST.SetKernelStatus(user_property)
 	# Log action
 	for key in user_property:
 		__logger.info("{0} = {1}".format(key, user_property[key]))
 
 
-def CreateNeurons(simulation_neuron_number):
+def CreateNetwork(simulation_neuron_number):
 	"""
 	Calculate coeficient of simulation/real neurons, reduce them in populations and create
 
 	Args:
 		simulation_neuron_number (int): global neuron number for simulation
 	"""
+	global global_sim_nrn_number
 	# Calculate reducing coeficient for simulation with proportions
-	reduce_coef = simulation_neuron_number / api_globals.global_real_nrn_number
+	reduce_coef = simulation_neuron_number / global_real_nrn_number
 	# Reduce and create all neuron populations
-	for population in __all_populations_objects:
-		population.reduceNeuronNumber(reduce_coef)
-		population.generateNeurons()
-		api_globals.global_sim_nrn_number += population.getNeuronNumber()
+	for nucleus in nulcei_global_list:
+		nucleus.reduceNeuronNumber(reduce_coef)
+		nucleus.createNeurons()
+		global_sim_nrn_number += nucleus.getNeuronNumber()
 
-
-def NeuronGroup(brain_part_name, *populations):
-	"""
-	Create the dictionary for the brain part by population neuron objects
-
-	Args:
-		brain_part_name (str):  name of the brain part for which creating
-		*populations (object):  'Population' objects
-
-	Returns:
-		dict: look like {neurotransmitter : object}
-	"""
-	# Organize the objects as the map
-	populations_map = {}
-	# For every population in the brain part
-	for population in populations:
-		# Set name of the brain part for the neuron population object
-		population.setBrainPartName(brain_part_name)
-		# Add population object to the API brain parts list
-		__all_populations_objects.append(population)
-		# Add population to the map by NEUROTRANSMITTER key
-		populations_map[ population.getNeurotransmitter() ] = population
-	return populations_map
-
-
-def CortexLayer(brain_part_name, *populations, columns):
-	"""
-		Create the dictionary for the layer cortex by population neuron objects and columns number
-
-		Args:
-			brain_part_name (str):  name of the brain part for which creating
-			*populations (object):  'Population' objects
-			columns (int): columns number
-
-		Returns:
-			dict: look like {columns: {neurotransmitter : object}}
-		"""
-	# Organize the objects as the map
-	columns_map = {}
-	# For every population in the brain part
-	for column_number in range(columns):
-	for population in populations:
-		# Set name of the brain part for the neuron population object
-		population.setBrainPartName(brain_part_name)
-		# Add population object to the API brain parts list
-		__all_populations_objects.append(population)
-		# Add population to the map by NEUROTRANSMITTER key
-		columns_map[population.getNeurotransmitter()] = population
-	return columns_map
 
 
 def checkParamsFloat(param_dict):
@@ -180,12 +154,12 @@ def checkParamsFloat(param_dict):
 						  "Change value to FLOAT".format(parameter, value))
 
 
-def mergeResultFiles():
+def __mergeResultFiles():
 	"""
 	After simulation merge splitted files by threads and save
 	"""
 	# Get path of txt resutls
-	results_path = api_globals.NEST.GetKernelStatus()['data_path']
+	results_path = NEST.GetKernelStatus()['data_path']
 	# Create structure - the dict of a lists. Main file (string) : child files (list)
 	files_map = defaultdict(list)
 	# Build tree of rough (threaded) files
@@ -200,37 +174,46 @@ def mergeResultFiles():
 		with open("{}/{}".format(results_path, main_file), 'w') as f_main:
 			# Get data from every child files and write to the main file
 			for threaded_file in child_files:
+				print(results_path)
 				with open("{}/{}".format(results_path, threaded_file), 'r') as f_child:
 					for line in f_child:
 						f_main.write(line)
 				# Delete finished needless child file
 				os.remove("{}/{}".format(results_path, threaded_file))
 
+'''
+def create_after_init(f):
+	def decorate(*args, **kwargs):
+		ret = f(*args, **kwargs)
+		
+		CreateNetwork(10000)
+		
+		return ret
+	return decorate
+'''
 
-def Simulate(T):
+def Simulate(time):
+	"""
 	"""
 
-	Args:
-		T (float): (ms) simulation time
-	"""
 	# Output memory usage
-	__logger.info("Used memory for neurons: {:,.3f} MB".format(api_globals.nrn_mem_usage))
-	__logger.info("Used memory for synapses: {:,.3f} MB".format(api_globals.syn_mem_usage))
-	__logger.info("Used memory for devices: {:,.3f} MB".format(api_globals.dev_mem_usage))
-	__logger.info("Total used memory: {:,.3f} MB".format(api_globals.nrn_mem_usage +
-	                                                     api_globals.syn_mem_usage +
-	                                                     api_globals.dev_mem_usage))
-	__logger.info("Total number of neurons {:,}".format(api_globals.global_sim_nrn_number))
-	__logger.info("Total number of synapses {:,}".format(api_globals.global_syn_number))
+	__logger.info("Used memory for neurons: {:,.3f} MB".format(nrn_mem_usage))
+	__logger.info("Used memory for synapses: {:,.3f} MB".format(syn_mem_usage))
+	__logger.info("Used memory for devices: {:,.3f} MB".format(dev_mem_usage))
+	__logger.info("Total used memory: {:,.3f} MB".format(nrn_mem_usage +
+	                                                     syn_mem_usage +
+	                                                     dev_mem_usage))
+	__logger.info("Total number of neurons {:,}".format(global_sim_nrn_number))
+	__logger.info("Total number of synapses {:,}".format(global_syn_number))
 	#
 	startsimulate = datetime.datetime.now()
-
+	__logger.info("Total number of connections {:,}".format(NEST.GetKernelStatus()['num_connections']))
 	# Simulation
-	api_globals.NEST.Simulate(float(T))
+	NEST.Simulate(float(time))
 
 	#
 	endsimulate = datetime.datetime.now()
 	# Log actions
 	__logger.info('Success. {0}'.format(endsimulate - startsimulate))
 	# Merge splitted results files by threads to one thread file
-	mergeResultFiles()
+	__mergeResultFiles()

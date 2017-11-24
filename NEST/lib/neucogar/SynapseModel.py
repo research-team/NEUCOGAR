@@ -1,6 +1,6 @@
-from neucogar import api_globals
+from neucogar import api_kernel
 
-logger = api_globals.log.getLogger('SynapseModel')
+logger = api_kernel.log.getLogger('SynapseModel')
 
 class SynapseModel:
 	"""
@@ -54,15 +54,15 @@ class SynapseModel:
 		if nest_model in ["stdp_dopamine_synapse",
 						  "stdp_serotonin_synapse",
 						  "stdp_noradrenaline_synapse"]:
-			self.__volume_transmitter = api_globals.NEST.Create("volume_transmitter")
+			self.__volume_transmitter = api_kernel.NEST.Create("volume_transmitter")
 			self.__synapse_parameters['vt'] = self.__volume_transmitter[0]
 			# Create model with defaults parameters and volume transmitter
-			api_globals.NEST.CopyModel(nest_model,  # NEST model name
+			api_kernel.NEST.CopyModel(nest_model,  # NEST model name
 									   user_model,  # User model name
 									   {'vt': self.__volume_transmitter[0]})    # Build parameters to NEST readable
 		else:
 			# Copy model with default parameters
-			api_globals.NEST.CopyModel(nest_model, user_model)
+			api_kernel.NEST.CopyModel(nest_model, user_model)
 		# Log actions
 		logger.info("{0} synapse ({1}) {2}".format(self.__synapse_user_model,
 		                                           self.__synapse_nest_model,
