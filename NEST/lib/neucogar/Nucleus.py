@@ -1,6 +1,11 @@
+__author__ = "Alexey Panzer"
+__version__ = "1.0.3"
+__tested___ = "27.11.2017 NEST 2.12.0 Python 3"
+
 import numpy
 from neucogar.namespaces import *
 from neucogar import api_kernel
+from neucogar.SynapseModel import SynapseModel
 
 logger = api_kernel.log.getLogger("Nucleus")
 
@@ -9,8 +14,8 @@ class Nucleus:
 	Nucleus a collection of neurons that are thought to work together in performing certain functions
 
 	"""
+
 	def __init__(self, nucleus_name):
-		# if not re-initialized will be COMMIN DOCT for object WTF
 		#  Glu : Nucleus Object
 		# GABA : Nucleus Object
 		self._nuclei = {}
@@ -37,11 +42,8 @@ class Nucleus:
 	def getNeurons(self):
 		return self._neuron_ids
 
-	def reduceNeuronNumber(self, coeficient):
-		self._scale_nrn_number = coeficient * 100
-		self._neuron_number = int(self._neuron_number * coeficient)
 
-	def addSubNucleus(self, neurotransmitter, params, number, model=HH_COND_EXP_TRAUB):
+	def addSubNucleus(self, neurotransmitter, params, number, model=HH_COND_EXP_TRAUB, forColumns=False):
 		"""
 
 		Args:
@@ -49,16 +51,19 @@ class Nucleus:
 			params (dict):
 			number (int):
 			model (str):
+			forColumns (bool):
 		"""
 		if neurotransmitter in self._nuclei.keys():
 			raise KeyError(neurotransmitter, "this key is already used in", self.getName())
+
 		self._nuclei[neurotransmitter] = SubNucleus(self._full_nucleus_name,
 		                                            neurotransmitter,
 		                                            model,
 		                                            params,
-		                                            number)
-		api_kernel.nulcei_global_list.append(self._nuclei[neurotransmitter])
-
+		                                            number,
+		                                            forColumns)
+		if not forColumns:
+			api_kernel.nulcei_global_list.append(self._nuclei[neurotransmitter])
 
 
 	def nuclei(self, nucleus):
@@ -81,23 +86,27 @@ class Nucleus:
 			return self._nuclei[nucleus]
 
 
+	def _reduceNeuronNumber(self, coeficient):
+		self._scale_nrn_number = coeficient * 100
+		self._neuron_number = int(self._neuron_number * coeficient)
+
 	@staticmethod
-	def useRandomDistribution(params):
+	def _useRandomDistribution(params):
 		new_dict = dict(params)
 		for parameter, value in new_dict.items():
 			if type(value) is list:
 				new_dict[parameter] = numpy.random.uniform(value[0], value[1])
 		return new_dict
 
+
 	@staticmethod
-	def __usage_memory(number, element):
+	def _usage_memory(number, element):
 		"""
 		Return memory usage of this element (or number * element)
 
 		Args:
 			number (int): number of elements
 			element (str or tuple): NEST element (string for synapses, tuple for devices):
-
 		Returns:
 			float: Megabytes
 		"""
@@ -116,7 +125,8 @@ class Nucleus:
 		# Return final size in MB
 		return round(number * size / api_kernel.byte2mb, 3)
 
-	def createNeurons(self):
+
+	def _createNeurons(self):
 		"""
 
 		"""
@@ -132,8 +142,8 @@ class Nucleus:
 			# For every neuron create random distribution in listed parameters
 			for _ in range(self._neuron_number):
 				list_of_ids.append(api_kernel.NEST.Create(self._nucleus_model,
-				                                           1,
-				                                           self.useRandomDistribution(self._neuron_parameters))[0])
+				                                          1,
+				                                          self._useRandomDistribution(self._neuron_parameters))[0])
 				self._neuron_ids = tuple(list_of_ids)
 		# Calculate memory usage for these created neurons
 		mem_usage = round((self._neuron_number *
@@ -142,10 +152,11 @@ class Nucleus:
 		# Increment global value of neurons memory usage
 		api_kernel.nrn_mem_usage += mem_usage
 		# Log actions
-		logger.info("{0} {1:,} neurons ({2:.2f}% of real) = {3:,.2f} MB".format(self.getName(),
-		                                                                        self.getNeuronNumber(),
-		                                                                        self._scale_nrn_number,
-		                                                                        mem_usage))
+		logger.info("{0} {1:,} neurons ({2:.2f}% of real) = {3:,.2f} MB".format(
+			self.getName(),
+			self.getNeuronNumber(),
+			self._scale_nrn_number,
+			mem_usage))
 
 
 	def connect(self, nucleus, synapse, weight, delay=None, conn_prob=1., rec_weight=False):
@@ -154,10 +165,11 @@ class Nucleus:
 
 		Args:
 			nucleus (Nucleus): target (post-synaptic) neurons Population:
-			synapse (Synapse): synapse model
+			synapse (SynapseModel): synapse model
 			weight (float): synaptic strength
 			delay (list):  interval distribution (low, high) or if it None use the data in parameters
-		rec_weight (bool): the flag to add weigth recorder
+			conn_prob:
+			rec_weight (bool): the flag to add weigth recorder
 		"""
 		# If delay is specified for this connection then check it
 		if type(delay) is list:
@@ -182,17 +194,14 @@ class Nucleus:
 			'multapses': True,  # multiple connections between a pair of nodes
 			'autapses': False  # self-connections
 		}
-
 		# Create dictionary of synapse behavior and change weight parameter
 		syn_spec = synapse.buildSynapseSpec()
 		syn_spec['weight'] = float(weight)
-
 		# Connect neurons in the normal mode
 		api_kernel.NEST.Connect(self.getNeurons(),
-		                         nucleus.getNeurons(),
-		                         conn_spec=conn_spec,
-		                         syn_spec=syn_spec)
-
+		                        nucleus.getNeurons(),
+		                        conn_spec=conn_spec,
+		                        syn_spec=syn_spec)
 		# Check if connection must include weight recorder
 		if rec_weight:
 			weight_recorder_params = {
@@ -210,17 +219,14 @@ class Nucleus:
 			for connection in connections_list:
 				print(connection)
 				api_kernel.NEST.SetStatus(connections_list, 'weight_recorder', weight_recorder[0])
-
 		# Get number of synapses
 		created_synapses = current_synapses * self.getNeuronNumber()
 		# Update global sum of synapses
 		api_kernel.global_syn_number += created_synapses
-
 		# Get memory usage of connections
-		syn_mem_usage = self.__usage_memory(created_synapses, synapse.getModel())
+		syn_mem_usage = self._usage_memory(created_synapses, synapse.getModel())
 		# Update global sum
 		api_kernel.syn_mem_usage += syn_mem_usage
-
 		# Log actions
 		logger.info("{0} ({1:,}) to {2} ({3:,}) by 1:{4:,} = {5:,} synapses = {6} MB. Weight={7} nS. {8}".format(
 			self.getName(),  # 0
@@ -235,7 +241,7 @@ class Nucleus:
 		))
 
 
-	def ConnectPoissonGenerator(self, weight, rate, start=0, stop=99999999, conn_percent=100):
+	def ConnectPoissonGenerator(self, weight, rate, start=None, stop=99999999, conn_percent=100):
 		"""
 		Poisson_generator - simulate neuron firing with Poisson processes statistics.
 
@@ -245,14 +251,15 @@ class Nucleus:
 		parrot neuron inbetween the poisson generator and the targets.
 
 		Args:
-			self (object):
 			weight (float): Synaptic weight of generator (nS)
 			rate (int or float): Rate in HZ of spiking (Hz)
 			start (int or float): Start generator at this time (ms)
 			stop (int or float): Stop generator at this time (ms)
 			conn_percent (int or float): Probability of connections. How much neurons will be connected to the generator
 		"""
-		start = api_kernel.NEST.GetKernelStatus('resolution')
+		# Set standard start time if it is not specified
+		if start is None:
+			start = api_kernel.NEST.GetKernelStatus('resolution')
 		# Set outdegree synapse number
 		outdegree = int(self.getNeuronNumber() * conn_percent / 100)
 		# Set generator parameters
@@ -277,21 +284,19 @@ class Nucleus:
 		}
 		# Create the generator with target neurons
 		api_kernel.NEST.Connect(generator,
-		                         self.getNeurons(),
-		                         conn_spec=conn_spec,
-		                         syn_spec=syn_spec)
+		                        self.getNeurons(),
+		                        conn_spec=conn_spec,
+		                        syn_spec=syn_spec)
 		# Get memory usage of connections
-		syn_mem_usage = self.__usage_memory(outdegree, "static_synapse")
+		syn_mem_usage = self._usage_memory(outdegree, "static_synapse")
 		# Update global sum
 		api_kernel.syn_mem_usage += syn_mem_usage
 		# Update global sum of synapses
 		api_kernel.global_syn_number += outdegree
-
 		# Get memory usage of device
-		dev_mem_usage = self.__usage_memory(1, generator)
+		dev_mem_usage = self._usage_memory(1, generator)
 		# Update global sum
 		api_kernel.dev_mem_usage += dev_mem_usage
-
 		# Log actions
 		logger.info("(ID:{0}) to {1} (connected {2}%). Interval: {3}-{4} ms. Dev: {5} MB. Syn: {6} MB".format(
 			generator[0],
@@ -319,26 +324,21 @@ class Nucleus:
 		}
 		# Set number of tracing neurons
 		tracing_neurons = self.getNeurons()[:api_kernel.N_detect]
-
 		# Create spikedetector with parameters
 		spike_detector = api_kernel.NEST.Create('spike_detector',
 		                                         params=detector_params)
-
 		# Connect tracing neurons to the spikedetector
 		api_kernel.NEST.Connect(tracing_neurons, spike_detector)
-
 		# Get memory usage of connections
-		syn_mem_usage = self.__usage_memory(len(tracing_neurons), 'static_synapse')
+		syn_mem_usage = self._usage_memory(len(tracing_neurons), 'static_synapse')
 		# Update global sum
 		api_kernel.syn_mem_usage += syn_mem_usage
 		# Update global sum of synapses
 		api_kernel.global_syn_number += len(tracing_neurons)
-
 		# Get memory usage of device
-		dev_mem_usage = self.__usage_memory(1, spike_detector)
+		dev_mem_usage = self._usage_memory(1, spike_detector)
 		# Update global sum
 		api_kernel.dev_mem_usage += dev_mem_usage
-
 		# Log actions
 		logger.info("(ID:{0}) to {1} (monitoring {2:.2f}% neurons) = {3} MB".format(
 			spike_detector[0],
@@ -370,19 +370,16 @@ class Nucleus:
 		                                     params=multimeter_param)
 		# Connect multimeter to neurons
 		api_kernel.NEST.Connect(multimeter, tracing_neurons)
-
 		# Get memory usage of connections
-		syn_mem_usage = self.__usage_memory(len(tracing_neurons), 'static_synapse')
+		syn_mem_usage = self._usage_memory(len(tracing_neurons), 'static_synapse')
 		# Update global sum
 		api_kernel.syn_mem_usage += syn_mem_usage
 		# Update global sum of synapses
 		api_kernel.global_syn_number += len(tracing_neurons)
-
 		# Get memory usage of device
-		dev_mem_usage = self.__usage_memory(1, multimeter)
+		dev_mem_usage = self._usage_memory(1, multimeter)
 		# Update global sum
 		api_kernel.dev_mem_usage += dev_mem_usage
-
 		# Log actions
 		logger.info("(ID:{0}) to {1} (monitoring {2:.2f}% neurons). Dev: {4} MB. Syn: {5} MB".format(
 			multimeter[0],
@@ -399,7 +396,7 @@ class SubNucleus(Nucleus):
 
 	"""
 
-	def __init__(self, full_nucleus_name, neurotransmitter, model, params, number):
+	def __init__(self, full_nucleus_name, neurotransmitter, model, params, number, forColumns):
 		self._nuclei = {}
 		self._nucleus_model = model
 		self._neuron_number = number
@@ -408,3 +405,6 @@ class SubNucleus(Nucleus):
 		self._full_nucleus_name = full_nucleus_name
 		api_kernel.global_real_nrn_number += number
 
+		if forColumns:
+			self._scale_nrn_number = 1
+			self._createNeurons()

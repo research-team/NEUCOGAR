@@ -45,6 +45,9 @@ vta.nuclei(DA).ConnectPoissonGenerator(start=400., stop=600., rate=350, conn_per
 
 # Connect spikedetectors
 motor_cortex.nuclei(Glu_0).ConnectDetector()
+striatum.nuclei(GABA_D1).ConnectDetector()
+striatum.nuclei(GABA_D2).ConnectDetector()
 
 # Connect multimeters
 motor_cortex.nuclei(Glu_0).ConnectMultimeter()
+striatum.nuclei(GABA_D2).ConnectMultimeter()

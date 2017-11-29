@@ -1,19 +1,12 @@
 __author__  = "Alexey Panzer"
-__version__ = "2.0.0"
-__tested___ = "09.11.2017 NEST 2.12.0 Python 3"
+__version__ = "2.0.3"
+__tested___ = "27.11.2017 NEST 2.12.0 Python 3"
 
+import datetime
+import logging as log
 import os
 import sys
-import datetime
-import numpy as np
-import logging as log
 from collections import defaultdict
-
-from neucogar.namespaces import *
-from neucogar.Nucleus import Nucleus
-from neucogar.ColumnsStructure import MotorCortexColumns
-from neucogar.ColumnsStructure import SensoryCortexColumns
-
 
 log.basicConfig(format='%(name)s::%(funcName)s %(message)s', level=log.INFO)
 __logger = log.getLogger('api_kernel')
@@ -55,7 +48,6 @@ byte2mb = 1024 ** 2
 syn_mem_usage = 0
 nrn_mem_usage = 0
 dev_mem_usage = 0
-__current_path = ""
 
 def SetKernelStatus(**kwargs):
 	"""
@@ -86,7 +78,6 @@ def SetKernelStatus(**kwargs):
 	need leads to decreased performance due to more update calls and communication cycles (small dmin),
 	or increased memory consumption of NEST (large dmax).
 	"""
-	global __current_path
 
 	# List of available parameters for kernel
 	available_param = ['resolution', 'local_num_threads', 'num_rec_processes', 'num_sim_processes',
@@ -108,8 +99,8 @@ def SetKernelStatus(**kwargs):
 			raise ValueError("Key {0} is not recognized".format(key))
 	# Create data folder
 	data_path = user_property['data_path']
+	# Create dir if you are not in the current dir
 	if data_path != './':
-		__current_path = data_path
 		if not os.path.exists(data_path):
 			os.makedirs(data_path)
 	# Set kernel status
@@ -131,8 +122,8 @@ def CreateNetwork(simulation_neuron_number):
 	reduce_coef = simulation_neuron_number / global_real_nrn_number
 	# Reduce and create all neuron populations
 	for nucleus in nulcei_global_list:
-		nucleus.reduceNeuronNumber(reduce_coef)
-		nucleus.createNeurons()
+		nucleus._reduceNeuronNumber(reduce_coef)
+		nucleus._createNeurons()
 		global_sim_nrn_number += nucleus.getNeuronNumber()
 
 
@@ -163,7 +154,9 @@ def __mergeResultFiles():
 	# Create structure - the dict of a lists. Main file (string) : child files (list)
 	files_map = defaultdict(list)
 	# Build tree of rough (threaded) files
-	for threaded_file in os.listdir(results_path):
+	files_list = [file for file in os.listdir(results_path) if os.path.isfile("{}/{}".format(results_path, file))]
+
+	for threaded_file in files_list:
 		main_file_name = "{}.{}".format(threaded_file.split('-')[0],    # Get body name of the file without thread number
 		                                threaded_file.split('.')[-1])   # Get file format
 		# Add child file to the main_file's list in dictionary
@@ -174,23 +167,12 @@ def __mergeResultFiles():
 		with open("{}/{}".format(results_path, main_file), 'w') as f_main:
 			# Get data from every child files and write to the main file
 			for threaded_file in child_files:
-				print(results_path)
 				with open("{}/{}".format(results_path, threaded_file), 'r') as f_child:
 					for line in f_child:
 						f_main.write(line)
 				# Delete finished needless child file
 				os.remove("{}/{}".format(results_path, threaded_file))
 
-'''
-def create_after_init(f):
-	def decorate(*args, **kwargs):
-		ret = f(*args, **kwargs)
-		
-		CreateNetwork(10000)
-		
-		return ret
-	return decorate
-'''
 
 def Simulate(time):
 	"""

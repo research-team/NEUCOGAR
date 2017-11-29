@@ -1,19 +1,25 @@
-import neucogar.api_kernel
-from neucogar.LayersStructure import MotorCortexLayers
-from neucogar.LayersStructure import SensoryCortexLayer
+__author__ = "Alexey Panzer"
+__version__ = "1.0.3"
+__tested___ = "27.11.2017 NEST 2.12.0 Python 3"
+
 import numpy as np
+from neucogar import api_kernel
+from neucogar.LayersClasses.MotorCortexLayers import MotorCortexLayers
 
-class AbstractColumn:
-	# column index : Layers Objects
-	# {0 : Layer Objects} . . .
-	_columns = {}
+_logger = api_kernel.log.getLogger('AColumns')
 
-	# 0 1 2 3 4
-	# 5 6 7 8 9
-	_column_mapping = []
+class AbstractColumns:
+	"""
+	Abstract column class contains basic functions for own implementation
+	of column classes.
+	"""
 
-	_width_x = 0
-	_height_y = 0
+	def __init__(self):
+		self._columns = {}          # column index : Layers Objects
+		self._column_mapping = []   # just a matrix wih column indexes
+		self._width_x = 0           # width of the column map
+		self._height_y = 0          # height of the column map
+
 
 	def columns(self, index):
 		"""
@@ -21,7 +27,6 @@ class AbstractColumn:
 
 		Args:
 			index (int): columns number
-
 		Returns:
 			MotorCortexLayers: layers object
 		"""
@@ -30,7 +35,6 @@ class AbstractColumn:
 
 	def getColumnsIndexes(self):
 		"""
-		!!!!!!!
 		Returns:
 			list: list of column keys
 		"""
@@ -39,10 +43,10 @@ class AbstractColumn:
 
 	def __getPosByIndex(self, colum_index):
 		"""
+		By columns map size returns position of the column (x,y)
 
 		Args:
-			colum_index (int):
-
+			colum_index (int): index of the column
 		Returns:
 			tuple: column positions x and y
 		"""
@@ -54,16 +58,16 @@ class AbstractColumn:
 
 	def _getColumnNeighbors(self, column_index):
 		"""
+		Finds neighbors of current column by position on the column map
 
 		Args:
 			column_index (int): index of the column
-
 		Returns:
 			list: indexes of column neighbors
 		"""
 		column_neighbors = []
 
-		print(self._column_mapping)
+		column_number = len(self._column_mapping)
 
 		right = left = top = bottom = False
 		pos_x, pos_y = self.__getPosByIndex(column_index)
@@ -90,39 +94,10 @@ class AbstractColumn:
 				column_neighbors.append(column_index + self._width_x + 1)
 			if left:
 				column_neighbors.append(column_index + self._width_x - 1)
-		print(column_neighbors)
+		_logger.info("Column #{} has {} neighbors".format(column_index, column_neighbors))
 
 		return column_neighbors
 
 
-	def setConnectomes(self):
-		pass
-
-
-class MotorCortexColumns(AbstractColumn):
-	def __init__(self, x, y):
-		"""
-		Args:
-			column_num (int): column number
-		"""
-		self._columns = {}
-		self._column_mapping = []
-		self._width_x = x
-		self._height_y = y
-
-		for column in range(x * y):
-			self._columns[column] = MotorCortexLayers()
-
-		self._column_mapping = np.arange(self._height_y * self._width_x).reshape((self._height_y, self._width_x))
-
-
-	def setConnectomes(self):
-		for column_index in self.getColumnsIndexes():
-			for neighbor_index in self._getColumnNeighbors(column_index):
-				self.columns(column_index).layers(L2).nuclei(Glu).connect(self.columns(neighbor_index).layers(L2).nuclei(Glu),
-				                                                          synapse=Glu, weight=0.5, conn_prob=L2_to_L2)
-
-
-class SensoryCortexColumns(AbstractColumn):
-	def __init__(self):
+	def _setConnectomes(self):
 		pass
