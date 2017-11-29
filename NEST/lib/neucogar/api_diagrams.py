@@ -250,7 +250,7 @@ def __make_spikes_diagram(times, gids, file_name, results_dir, hist_binwidth):
 	pylab.title(title)
 	pylab.xlim([0, simulation_time])
 	pylab.draw()
-	pylab.savefig("{0}/img/{1}.png".format(results_dir, title), dpi=120, format='png')
+	pylab.savefig("{0}/img/spikes_{1}.png".format(results_dir, title), dpi=120, format='png')
 	return 'OK'
 
 def __make_voltage_diagram(times, voltages, name, path):
@@ -263,6 +263,8 @@ def __make_voltage_diagram(times, voltages, name, path):
 		name (str): name of brain part
 		path (str): path to save results
 	"""
+	title = file_name.split(".")[0]
+
 	pylab.ioff()  # turn updates off
 	pylab.figure()
 	time.sleep(1.5)
@@ -274,7 +276,7 @@ def __make_voltage_diagram(times, voltages, name, path):
 	pylab.title(name)
 	pylab.grid(True)
 	pylab.draw()
-	pylab.savefig("{0}/img/{1}.png".format(path, name), dpi=120, format='png')
+	pylab.savefig("{0}/img/voltage_{1}.png".format(path, name), dpi=120, format='png')
 	return 'OK'
 
 # As independent script

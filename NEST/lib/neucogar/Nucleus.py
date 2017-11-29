@@ -159,11 +159,12 @@ class Nucleus:
 			mem_usage))
 
 
-	def connect(self, nucleus, synapse, weight, delay=None, conn_prob=1., rec_weight=False):
+	def connect(self, nucleus, synapse, weight, delay=None, conn_type=fixed_outdegree, rec_weight=False):
 		"""
 		Establish a connection between two neurons Population
 
 		Args:
+		 conn_type:
 			nucleus (Nucleus): target (post-synaptic) neurons Population:
 			synapse (SynapseModel): synapse model
 			weight (float): synaptic strength
@@ -187,13 +188,24 @@ class Nucleus:
 		else:
 			current_synapses = nucleus.getNeuronNumber()
 
-		# Create dictionary of connection rules
-		conn_spec = {
-			'rule': 'fixed_outdegree',  # fixed number of output connections
-			'outdegree': current_synapses,  # number of output connections
-			'multapses': True,  # multiple connections between a pair of nodes
-			'autapses': False  # self-connections
-		}
+		if conn_type == fixed_outdegree:
+			# Create dictionary of connection rules
+			conn_spec = {
+				'rule': 'fixed_outdegree',  # fixed number of output connections
+				'outdegree': current_synapses,  # number of output connections
+				'multapses': True,  # multiple connections between a pair of nodes
+				'autapses': False  # self-connections
+			}
+		elif conn_type == all_to_all:
+			conn_spec = {
+				'rule': all_to_all,  # fixed number of output connections
+				'multapses': True,  # multiple connections between a pair of nodes
+				'autapses': False  # self-connections
+			}
+		else:
+			conn_spec = {
+				'rule': one_to_one,  # fixed number of output connections
+			}
 		# Create dictionary of synapse behavior and change weight parameter
 		syn_spec = synapse.buildSynapseSpec()
 		syn_spec['weight'] = float(weight)
@@ -241,7 +253,7 @@ class Nucleus:
 		))
 
 
-	def ConnectPoissonGenerator(self, weight, rate, start=None, stop=99999999, conn_percent=100):
+	def ConnectPoissonGenerator(self, weight, rate, start=None, stop=99999999, conn_percent=None):
 		"""
 		Poisson_generator - simulate neuron firing with Poisson processes statistics.
 
@@ -255,27 +267,37 @@ class Nucleus:
 			rate (int or float): Rate in HZ of spiking (Hz)
 			start (int or float): Start generator at this time (ms)
 			stop (int or float): Stop generator at this time (ms)
-			conn_percent (int or float): Probability of connections. How much neurons will be connected to the generator
+			conn_percent (int or float or None): Probability of connections. How much neurons will be connected to the generator
 		"""
 		# Set standard start time if it is not specified
 		if start is None:
 			start = api_kernel.NEST.GetKernelStatus('resolution')
+
 		# Set outdegree synapse number
-		outdegree = int(self.getNeuronNumber() * conn_percent / 100)
+		if conn_percent:
+			created_synapses = int(self.getNeuronNumber() * conn_percent / 100)
+			conn_spec = {
+				'rule': 'fixed_outdegree',
+				'outdegree': created_synapses
+			}
+		else:
+			created_synapses = self._neuron_number
+			conn_spec = {
+				'rule': 'all_to_all'
+			}
+
 		# Set generator parameters
 		generator_parameterers = {
 			'rate': float(rate),
 			'start': float(start),
 			'stop': float(stop)
 		}
+
 		# Create the Poisson generator
 		generator = api_kernel.NEST.Create('poisson_generator',
 		                                    params=generator_parameterers)
 		# Connection specification
-		conn_spec = {
-			'rule': 'fixed_outdegree',
-			'outdegree': outdegree
-		}
+
 		# Synapse specification
 		syn_spec = {
 			'model': 'static_synapse',
@@ -288,11 +310,11 @@ class Nucleus:
 		                        conn_spec=conn_spec,
 		                        syn_spec=syn_spec)
 		# Get memory usage of connections
-		syn_mem_usage = self._usage_memory(outdegree, "static_synapse")
+		syn_mem_usage = self._usage_memory(created_synapses, "static_synapse")
 		# Update global sum
 		api_kernel.syn_mem_usage += syn_mem_usage
 		# Update global sum of synapses
-		api_kernel.global_syn_number += outdegree
+		api_kernel.global_syn_number += created_synapses
 		# Get memory usage of device
 		dev_mem_usage = self._usage_memory(1, generator)
 		# Update global sum
