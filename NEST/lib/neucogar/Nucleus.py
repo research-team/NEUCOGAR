@@ -210,10 +210,7 @@ class Nucleus:
 		syn_spec = synapse.buildSynapseSpec()
 		syn_spec['weight'] = float(weight)
 		# Connect neurons in the normal mode
-		api_kernel.NEST.Connect(self.getNeurons(),
-		                        nucleus.getNeurons(),
-		                        conn_spec=conn_spec,
-		                        syn_spec=syn_spec)
+
 		# Check if connection must include weight recorder
 		if rec_weight:
 			weight_recorder_params = {
@@ -224,13 +221,29 @@ class Nucleus:
 			# Create weight recorder with parameters
 			weight_recorder = api_kernel.NEST.Create('weight_recorder',
 			                                          params=weight_recorder_params)
-			# Get connections for weight recording
-			connections_list = api_kernel.NEST.GetConnections(self.getNeurons()[: api_kernel.rec_weight_nrn_num],
-			                                                   nucleus.getNeurons()[: api_kernel.rec_weight_nrn_num])
-			# Add to them weight recorder
-			for connection in connections_list:
-				print(connection)
-				api_kernel.NEST.SetStatus(connections_list, 'weight_recorder', weight_recorder[0])
+			## Get connections for weight recording
+			#connections_list = api_kernel.NEST.GetConnections(self.getNeurons()[: api_kernel.rec_weight_nrn_num],
+			#                                                   nucleus.getNeurons()[: api_kernel.rec_weight_nrn_num])
+			## Add to them weight recorder
+			#for connection in connections_list:
+			#	print(connection)
+			#	api_kernel.NEST.SetStatus(connections_list, 'weight_recorder', weight_recorder[0])
+			api_kernel.NEST.Connect(self.getNeurons()[5:],
+			                        nucleus.getNeurons(),
+			                        conn_spec=conn_spec,
+			                        syn_spec=syn_spec)
+
+			api_kernel.NEST.CopyModel(synapse.getModel(), 'weight_recorder_syn', {'weight_recorder':weight_recorder[0]})
+
+			api_kernel.NEST.Connect(self.getNeurons()[:5],
+			                        nucleus.getNeurons(),
+			                        conn_spec=conn_spec,
+			                        syn_spec='weight_recorder_syn')
+		else:
+			api_kernel.NEST.Connect(self.getNeurons(),
+			                        nucleus.getNeurons(),
+			                        conn_spec=conn_spec,
+			                        syn_spec=syn_spec)
 		# Get number of synapses
 		created_synapses = current_synapses * self.getNeuronNumber()
 		# Update global sum of synapses

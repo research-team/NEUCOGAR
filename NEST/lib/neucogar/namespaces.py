@@ -67,6 +67,6 @@ STDP_NORA_SYNAPSE = 'stdp_noradrenaline_synapse'
 
 
 all_to_all = "all_to_all"
-one_to_one = "ont_to_one"
+one_to_one = "one_to_one"
 fixed_outdegree = "fixed_outdegree"
 

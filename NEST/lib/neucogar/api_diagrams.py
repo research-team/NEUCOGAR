@@ -152,7 +152,7 @@ def BuildWeightDiagrams(results_dir=None):
 	# collect all .csv files
 	# if file is not empty take data
 	for weight_file in files_csv:
-		file_path = "{0}/{1}".format(results_dir, voltage_file)
+		file_path = "{0}/{1}".format(results_dir, weight_file)
 		if os.stat(file_path).st_size > 0:
 			with open("{0}/{1}".format(results_dir, weight_file), 'r') as file:
 				for line in file:
@@ -180,10 +180,11 @@ def __make_weight_diagram(conn_dict, txt_path):
 	fig.suptitle("STDP")
 	pylab.xlabel("Time (ms)")
 	pylab.ylabel("Weight")
-
 	for conn in list(conn_dict)[:10]:
-		times = [data[0] for data in conn_dict[conn]]
-		weights = [data[1] for data in conn_dict[conn]]
+		times = [float(data[0]) for data in conn_dict[conn]]
+		weights = [float(data[1]) for data in conn_dict[conn]]
+		yticks = numpy.linspace(start=min(weights), stop=max(weights), num=10)
+		pylab.yticks([int(a) for a in yticks])
 		pylab.plot(times, weights, label="{}".format(conn))
 		pylab.draw()
 
@@ -219,7 +220,7 @@ def __make_spikes_diagram(times, gids, file_name, results_dir, hist_binwidth):
 	pylab.ylabel("Neuron ID")
 	pylab.xticks([])
 	pylab.axes([0.1, 0.1, 0.85, 0.17])
-	pylab.xlim([0, simulation_time])
+	pylab.xlim([0, 100])
 	# Figure of spikes
 	t_bins = numpy.arange(start=numpy.amin(times),
 	                      stop=numpy.amax(times) + 2 * hist_binwidth,
@@ -248,19 +249,20 @@ def __make_spikes_diagram(times, gids, file_name, results_dir, hist_binwidth):
 	pylab.grid(True)
 	pylab.axes(location)
 	pylab.title(title)
-	pylab.xlim([0, simulation_time])
+	pylab.xlim([0, 100])
 	pylab.draw()
 	pylab.savefig("{0}/img/spikes_{1}.png".format(results_dir, title), dpi=120, format='png')
+	pylab.close()
 	return 'OK'
 
-def __make_voltage_diagram(times, voltages, name, path):
+def __make_voltage_diagram(times, voltages, file_name, path):
 	"""
 	Draw voltage diagram
 
 	Args:
 		times (dict): time data of neuron (if list) and neurons (if dict)
 		voltages (dict): voltage data of neuron (if list) and neurons (if dict)
-		name (str): name of brain part
+		file_name (str): name of brain part
 		path (str): path to save results
 	"""
 	title = file_name.split(".")[0]
@@ -273,10 +275,11 @@ def __make_voltage_diagram(times, voltages, name, path):
 	pylab.ylabel("Membrane potential (mV)")
 	pylab.xlabel("Time (ms)")
 	pylab.legend(loc="best")
-	pylab.title(name)
+	pylab.title(title)
 	pylab.grid(True)
 	pylab.draw()
-	pylab.savefig("{0}/img/voltage_{1}.png".format(path, name), dpi=120, format='png')
+	pylab.savefig("{0}/img/voltage_{1}.png".format(path, title), dpi=120, format='png')
+	pylab.close()
 	return 'OK'
 
 # As independent script
