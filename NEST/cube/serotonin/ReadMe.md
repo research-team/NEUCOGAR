@@ -6,6 +6,8 @@
 [Hornung, 2012]:https://www.elsevier.com/books/the-human-nervous-system/mai/978-0-12-374236-0
 [Salvador, 2013]: https://www.ncbi.nlm.nih.gov/pubmed/24021594
 
+[Nakamura, 2013]:https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3753458/pdf/fnint-07-00060.pdf
+
 # Serotonin (5-HT)
 
 :man: - Information is related for humans 
@@ -252,18 +254,179 @@ The caudal group is composed of the RMg, the ROb, and the RPa. The group of sero
 - Mood Disorders and Drug Addiction
 - Motor Activity
 
+
+
+
+
+Cortical areas projecting to the DRN include the medial prefrontal
+(Arnsten and Goldman-Rakic, 1984), lateral and medial
+orbital, cingulate, infralimbic, and insular cortices (Arnsten and
+Goldman-Rakic, 1984; Sesack et al., 1989; Amat et al., 2005).
+At least a part of the projection from the medial frontal cortex
+is via GABA interneurons in the raphé nuclei (Arnsten and
+Goldman-Rakic, 1984; Hajos et al., 1998; Varga et al., 2001, 2003;
+Jankowski and Sesack, 2004), which in turn project to 5-HT
+neurons.
+([Nakamura, 2013])
+
+
+The hypothalamus is also an important source of reward information
+for the DRN (Celada et al., 2002). Hypothalamic orexin
+neurons are activated by arousal, feeding, and rewarding stimuli
+(Mieda and Yanagisawa, 2002; Lee et al., 2005; Harris and AstonJones,
+2006) and facilitate 5-HT release (Tao et al., 2006).
+([Nakamura, 2013])
+
+
+The dopamine neurons in the ventral tegmental area (VTA)
+and substantia nigra pars compacta (SNc) also project to the DRN
+and MRN (Kalen et al., 1988; Mansour et al., 1990; Peyron et al.,
+1995; Kitahama et al., 2000), which may exert facilitatory effects
+on putative 5-HT neurons in the DRN by D2-like dopamine
+receptor activation (Ferre and Artigas, 1993; Mendlin et al., 1999;
+Haj-Dahmane, 2001).
+([Nakamura, 2013])
+
+
+Finally, the activity of neurons in the raphé nuclei is regulated
+by 5-HT via the 5-HT1A receptor found on the somata and
+dendrites of neurons in the raphé nuclei, where it functions as
+a somato-dendritic auto-receptor (Wang and Aghajanian, 1977a;
+Gozlan et al., 1983; Verge et al., 1985; Carey et al., 2004).
+([Nakamura, 2013])
+
+
+The SNr is one of the major targets of the DRN in rats (Dray et al., 1976; Fibiger and Miller, 1977; Azmitia and Segal, 1978; Van Der Kooy and Hattori, 1980; Wirtshafter et al., 1987; Corvaja et al., 1993; Van Bockstaele et al., 1994; Moukhles et al., 1997), cats (Mori et al., 1987), and monkeys (Lavoie and Parent, 1990). In monkeys, 5-HT innervations are particularly dense in the SNr, but much less so in the SNc (Lavoie and Parent, 1990). Coexpression of 5-HT2C receptor mRNA with glutamic acid decarboxylase, but not with tyrosine hydroxylase mRNA, indicates that 5-HT2C receptors are restricted to GABAergic neurons (Eberle-Wang et al., 1997). **The functional significance of 5-HT in the SNr, however, is not well understood**
+([Nakamura, 2013])
+
+
+Projections to the SNc and VTA
+Electron microscopy studies have shown that 5-HT neurons
+make direct synaptic contacts with dopaminergic and nondopaminergic
+neurons in the VTA (Herve et al., 1987; Van
+Bockstaele et al., 1994), indicating the direct and indirect influence
+of the raphé nuclei on the midbrain dopamine system.
+Electrical stimulation of the MRN (Dray et al., 1976) and DRN
+(Trent and Tepper, 1991; Gervais and Rouillard, 2000) inhibits
+the majority of (but not all) the activity of dopamine neurons
+
+([Nakamura, 2013])
+
+
+As 5-HT2C receptors are mainly localized in GABAergic neurons
+in the SNr and VTA, which in turn inhibit dopamine neurons,
+the inhibitory effect of a 5-HT2C agonist on dopamine function
+is, at least in part, due to the GABA-mediated tonic inhibitory
+effect of 5-HT on mesolimbic and nigrostriatal dopamine function.
+On the other hand, the activation of VTA 5-HT1B receptors
+increases mesolimbic dopamine release, probably by inhibiting
+GABA release (Yan and Yan, 2001; Yan et al., 2004). Some authors
+have reported direct facilitatory effects of 5-HT on dopamine
+neurons in vitro (Nedergaard et al., 1988). In addition, 5-HT
+receptors located presynaptically on dopamine terminals or postsynaptically
+in dopamine projection areas could activate feedback
+loops, such as the striato-nigral, nucleus accumbens-VTA, or
+frontal-VTA pathways, thus indirectly altering the excitability of
+dopamine neurons in the SNc or VTA, resulting in changes in
+their baseline firing rates (Di Giovanni et al., 2010).
+([Nakamura, 2013])
+
+
+Projections to the amygdala
+Several nuclei of the amygdala receive rich serotonergic innervations
+(Steinbusch, 1981). In rats, the rostral and medial subregions
+are dense projection sites of 5-HT neurons. In monkeys,
+5-HT projections are found widely in the amygdala, with the
+highest concentration in the lateral division of the central nucleus
+and lateral-dorsal part of the bed nucleus of the stria terminalis
+(Sadikot and Parent, 1990; Freedman and Shi, 2001). The effect
+of DRN on neurons in the amygdala is reportedly inhibitory
+and mediated by direct DRN-amygdala serotonergic projections
+(Wang and Aghajanian, 1977b).
+([Nakamura, 2013])
+
+
+
+### Projections to the hypothalamus
+The hypothalamus plays a significant role in the processing
+of natural rewards, such as food and sex (Harris et al., 2005;
+Muschamp et al., 2007), and it receives strong inputs from the
+DRN (Nambu et al., 1999). Extracellular 5-HT levels increased
+in the medial and lateral hypothalamus during the anticipation
+and intake of food, but not after its consumption (Schwartz et al.,
+1990). Interestingly, this finding was interpreted in line with the
+**reward-inhibiting** and satiety-facilitating functions of 5-HT in the
+hypothalamus (Hoebel et al., 1989)
+([Nakamura, 2013])
+
+
+
+Projections to the cortex
+The DRN also projects to virtually all cortical areas, and its effect
+can be excitatory and inhibitory, depending on which layers it
+projects to and the presence of different receptor types. Electrical
+stimulation of the DRN and MRN inhibits the majority of medial
+prefrontal cortex neurons via 5-HT1A (Hajos et al., 2003; Puig
+et al., 2005) or 5-HT2 (Mantz et al., 1990) receptors. Among
+several receptor types, 5-HT2A receptors are particularly dense
+in the prefrontal and anterior cingulate cortices (Pazos et al.,
+1985), and they are primarily located on the apical dendrites of
+pyramidal neurons (Jakab and Goldman-Rakic, 1998; CorneaHebert
+et al., 1999). Prefrontal 5-HT2A receptors may activate
+cortico-tegmental projection neurons, which in turn facilitate
+VTA dopamine neurons (Pehek et al., 2006). On the other hand,
+5-HT2A/2C receptors are also present in the GABAergic interneurons
+of the cortex and may regulate glutamatergic output (AbiSaab
+et al., 1999). 5-HT2C activation in the medial frontal cortex
+suppresses cocaine-seeking behavior (Pentkowski et al., 2010).
+([Nakamura, 2013])
+
+
+However, many lines of evidence indicate the inhibitory effects
+of 5-HT on the reward circuitry
+([Nakamura, 2013])
+
+
+
+The role of 5-HT in reward is complicated by the fact that
+it binds to a large number of receptor types that have different
+effects on reward-oriented behavior (Higgins and Fletcher,
+2003). One of the principal receptor types involved in rewardoriented
+behavior may be the 5-HT2C receptor. This receptor’s
+mRNA is expressed in the anterior olfactory nucleus, olfactory tubercle, claustrum, piriform and entorhinal cortices, lateral septal
+nucleus, amygdala, subiculum and ventral part of CA3, lateral
+habenula, subthalamic nucleus, SNr, VTA (Molineaux et al., 1989;
+Pompeiano et al., 1994; Wright et al., 1995; Eberle-Wang et al.,
+1997; Clemett et al., 2000), and dorsal and ventral (including
+nucleus accumbens) striatum, all of which are important parts of
+the reward-related circuitry. 
+([Nakamura, 2013])
+
+
+The lateral septum is a relay center for connections from the CA3 of the hippocampus to the ventral tegmental area. These connections help link reward signals with the context in which they occur.[6]
+
+Luo, A. H.; Tahsili-Fahadan, P.; Wise, R. A.; Lupica, C. R.; Aston-Jones, G. (14 July 2011). "Linking Context with Reward: A Functional Circuit from Hippocampal CA3 to Ventral Tegmental Area". Science. 333 (6040): 353–357. doi:10.1126/science.1204622. PMC 3150711 Freely accessible. PMID 21764750.
+
+
+
 ## References
 
-[PierreHornung, 2003] The human raphe nuclei and the serotonergic system
+1 [PierreHornung, 2003] The human raphe nuclei and the serotonergic system
 
-[Iskra et al., 2014] A Whole-Brain Atlas of Inputs to Serotonergic Neurons of the Dorsal and Median Raphe Nuclei
+2 [Iskra et al., 2014] A Whole-Brain Atlas of Inputs to Serotonergic Neurons of the Dorsal and Median Raphe Nuclei
 
-[Wiki Neuronbank] Raphe Nuclei (NeuroWiki Bank)
+3 [Wiki Neuronbank] Raphe Nuclei (NeuroWiki Bank)
 
-[Miguelez, et al., 2010] Locus coeruleus and dorsal raphe neuron activity and response to acute antidepressant administration in a rat model of Parkinson’s disease
+4 [Miguelez, et al., 2010] Locus coeruleus and dorsal raphe neuron activity and response to acute antidepressant administration in a rat model of Parkinson’s disease
 
-[Aldahmash, 2010] Cell numbers in the dorsal and median raphe nuclei of AS and AS/AGU rats 
+5 [Aldahmash, 2010] Cell numbers in the dorsal and median raphe nuclei of AS and AS/AGU rats 
 
-[Hornung, 2012] Raphe Nuclei (Chapter 11). The Human Nervous System, Third Edition 
+6 [Hornung, 2012] Raphe Nuclei (Chapter 11). The Human Nervous System, Third Edition 
 
-[Salvador, 2013] Nicotinic modulation of serotonergic activity in the dorsal raphe nucleus
+7 [Salvador, 2013] Nicotinic modulation of serotonergic activity in the dorsal raphe nucleus
+
+8 [Nakamura, 2013]
+
+9 https://en.wikipedia.org/wiki/Septal_nuclei
+
+10 https://en.wikipedia.org/wiki/Periaqueductal_gray
