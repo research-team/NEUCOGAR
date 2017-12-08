@@ -54,3 +54,11 @@ At the 200 ms we increase the level of the 5HT placing the simulated brain in th
 **Affective computing** - first time the bio-plausible implementation of psycho-emotional states mapped to computational processes will be demonstrated. 
 
 **Cognitive architectures and robotics** - first time the bio-plausible emotional drives will be implemented to form behavioral strategies of an artificial system. We have already demonstrated: "fear-like" and "disgust-like" states.
+
+## Installation
+**Description**
+The project use 3 repositories.
+# [neucogar-lib]  (!https://github.com/research-team/neucogar-lib) -- lib for the NEST which used by Neucogar;
+# [neucogar-nest] (!https://github.com/research-team/neucogar-nest) -- for of the [NEST] framework;
+# [neucogar] -- main repo.
+
