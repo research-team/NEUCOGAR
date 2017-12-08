@@ -64,3 +64,11 @@ The project use 3 repositories.
 1. [neucogar-nest] (!https://github.com/research-team/neucogar-nest) -- for of the [NEST] framework;
 1. [neucogar] -- main repo.
 
+**Installation** 
+1. Install python3;
+1. Install GNU Scientific Library;
+1. Download Neucogar-nest repo;
+1. 'cmake -DCMAKE_INSTALL_PREFIX:PATH="~/nest" -DPYTHON_EXECUTABLE=/usr/bin/python3.5 -DPYTHON_INCLUDE_DIR=/usr/include/python3.5 -DPYTHON_LIBRARY=/usr/lib/python3.5/config-3.5m-x86_64-linux-gnu/libpython3.5.so -Dwith-mpi=ON' 
+1. Nest will be installed to the 'home/(username)/nest';
+1. For test open the neucogar-lib project, run 'example\run.py';
+1. In Pycharm create new environment with Python3 . Add to project sourse path to 'nest/lib/python3.5/site-packages' to include nest lib.
