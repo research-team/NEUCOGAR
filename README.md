@@ -1,5 +1,5 @@
 # Quick links
-1. [Installation](#Installation)
+1. [Installation](#installation)
 # Neuromodulating Cognitive Architecture project
 
 ![NEUCOGAR](./logo.png)
