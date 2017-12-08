@@ -57,7 +57,7 @@ At the 200 ms we increase the level of the 5HT placing the simulated brain in th
 
 **Cognitive architectures and robotics** - first time the bio-plausible emotional drives will be implemented to form behavioral strategies of an artificial system. We have already demonstrated: "fear-like" and "disgust-like" states.
 
-##Installation
+## Installation
 **Description**
 The project use 3 repositories.
 1. [neucogar-lib]  (!https://github.com/research-team/neucogar-lib) -- lib for the NEST which used by Neucogar;
