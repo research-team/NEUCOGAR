@@ -6,16 +6,18 @@ from .parameters import *
 
 from neucogar.ColumnsClassess.MotorCortexColumns import MotorCortexColumns
 
-motor_cortex = MotorCortexColumns(height=2, width=2)
+sensory_cortex = MotorCortexColumns(height=2, width=2) #3 3
+motor_cortex = MotorCortexColumns(height=7, width=7) # 2.2
+pfc = MotorCortexColumns(height=2, width=1)
 
 thalamus = Nucleus("Thalamus")
-thalamus.addSubNucleus(Glu_0, params=nrn_parameters, number=833333)   # ToDo check
-thalamus.addSubNucleus(Glu_1, params=nrn_parameters, number=833333)   # ToDo check
+thalamus.addSubNucleus(Glu_0, params=nrn_parameters, number=833333)   # ToDo ???
+thalamus.addSubNucleus(Glu_1, params=nrn_parameters, number=60000)   # ToDo ???
 
 striatum = Nucleus("Striatum")
 striatum.addSubNucleus(GABA_D1, params=nrn_parameters, number=1062500)
 striatum.addSubNucleus(GABA_D2, params=nrn_parameters, number=1062500)
-striatum.addSubNucleus(DA, params=nrn_parameters, number=1062500) # ToDo check
+#striatum.addSubNucleus(DA, params=nrn_parameters, number=1062500) # ToDo ???
 
 gpe = Nucleus("GPe")
 gpe.addSubNucleus(GABA, params=nrn_parameters, number=84100)
@@ -34,12 +36,9 @@ snc.addSubNucleus(DA, params=nrn_parameters, number=12700)
 
 vta = Nucleus("VTA")
 vta.addSubNucleus(DA, params=nrn_parameters, number=20000)
-# From Serotonin pathway
-vta.addSubNucleus(HT5, params=nrn_parameters, number=20000)
 
 nac = Nucleus("NAc")
 nac.addSubNucleus(DA, params=nrn_parameters, number=20000)
 
-
-CreateNetwork(10000)
+CreateNetwork(500000)
 
