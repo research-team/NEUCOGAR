@@ -1,0 +1,21 @@
+# NEST paths
+export LD_LIBRARY_PATH=/shared/NEST-2.12.0/lib:LD_LIBRARY_PATH
+export NEST_INSTALL_DIR=/gpfs/GLOBAL_JOB_REPO_KPFU/openlab/simulator/build
+export NEST_DATA_DIR=$NEST_INSTALL_DIR/share/nest
+export NEST_DOC_DIR=$NEST_INSTALL_DIR/share/doc/nest
+export NEST_MODULE_PATH=$NEST_INSTALL_DIR/lib64/nest
+export NEST_PYTHON_PREFIX=$NEST_INSTALL_DIR/lib64/python3.6/site-packages
+export PYTHONPATH=$NEST_PYTHON_PREFIX:$PYTHONPATH
+export PATH=$NEST_INSTALL_DIR/bin:$PATH
+
+export CC=/shared/gcc_8/bin/gcc
+export CXX=/shared/gcc_8/bin/g++
+
+LD_LIBRARY_PATH=/shared/gcc_8/lib64:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH
+
+LD_LIBRARY_PATH=/usr/mpi/gcc/openmpi-1.10.2-lsf/lib:${LD_LIBRARY_PATH}
+export LD_LIBRARY_PATH
+
+PATH=/usr/mpi/gcc/openmpi-1.10.2-lsf/bin:${PATH}
+export PATH
